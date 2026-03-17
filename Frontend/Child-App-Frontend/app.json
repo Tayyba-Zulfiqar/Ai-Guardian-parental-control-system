@@ -1,29 +1,21 @@
 {
   "expo": {
-    "name": "myApp",
-    "slug": "myApp",
+    "name": "AI GUARDIAN",
+    "slug": "AI GUARDIAN",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/SplashScreen.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/images/SplashScreen.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#c7d2fe"
     },
     "ios": {
       "supportsTablet": true
     },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
-      }
-    },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/images/SplashScreen.png"
     }
   }
 }
