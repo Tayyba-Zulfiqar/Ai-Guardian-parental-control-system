@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { Text, StyleSheet, Image, Animated } from "react-native";
+import { StyleSheet, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient"; // Import LinearGradient
-
+import ScreenTitle from "../components/UI/ScreenTitle";
 const SplashScreen = ({ navigation }) => {
     const scaleAnim = new Animated.Value(0);
     const fadeAnim = new Animated.Value(0);
@@ -15,7 +15,7 @@ const SplashScreen = ({ navigation }) => {
 
         // Navigate to Home after 4 seconds
         const timer = setTimeout(() => {
-            navigation.replace("Home");
+            navigation.replace("ParentConnection");
         }, 3000);
 
         return () => clearTimeout(timer); // cleanup
@@ -32,8 +32,15 @@ const SplashScreen = ({ navigation }) => {
                 source={require("../../assets/images/SplashScreen.png")}
                 style={[styles.image, { transform: [{ scale: scaleAnim }] }]}
             />
-            <Animated.Text style={[styles.title, { opacity: fadeAnim }]}>AI Guardian</Animated.Text>
-            <Animated.Text style={[styles.subtitle, { opacity: fadeAnim }]}>Keeping you safe online</Animated.Text>
+            <ScreenTitle
+                title="AI Guardian"
+                subtitle="Keeping you safe online"
+                animated={true}
+                fadeAnim={fadeAnim}
+                titleStyle={styles.title}
+                subtitleStyle={styles.subtitle}
+                containerStyle={{ marginBottom: 40 }}
+            />
         </LinearGradient>
     );
 };
@@ -52,7 +59,7 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     title: {
-        fontSize: 32,
+        fontSize: 26,
         fontWeight: "900",
         color: "#1e1b4b"
     },
@@ -60,6 +67,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#1e1b4b",
         opacity: 0.7,
-        marginTop: 5
+        marginTop: 6
     },
 });
