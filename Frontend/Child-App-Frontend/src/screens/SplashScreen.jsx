@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { StyleSheet, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient"; // Import LinearGradient
 import ScreenTitle from "../components/UI/ScreenTitle";
+import { Colors } from "../../constants/Colors";
 const SplashScreen = ({ navigation }) => {
     const scaleAnim = new Animated.Value(0);
     const fadeAnim = new Animated.Value(0);
@@ -23,7 +24,7 @@ const SplashScreen = ({ navigation }) => {
 
     return (
         <LinearGradient
-            colors={['#8b8de3', '#c7d2fe']} // Gradient colors
+            colors={[Colors.primaryPurple, Colors.secondaryPurple]} // Gradient colors
             start={{ x: 0, y: 0 }} // Top-left
             end={{ x: 1, y: 2 }}   // Bottom-right
             style={styles.container}

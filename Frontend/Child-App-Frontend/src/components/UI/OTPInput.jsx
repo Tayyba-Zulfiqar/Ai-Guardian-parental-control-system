@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
+import { Colors } from "../../../constants/Colors";
 
 const OTPInput = ({
     code,
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     focusedInput: {
-        borderColor: '#8b8de3',
+        borderColor: Colors.primaryPurple,
         borderWidth: 2,
     },
 });

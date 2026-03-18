@@ -1,10 +1,11 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { Colors } from "../../../constants/Colors";
 
 const PrimaryButton = ({
     title,
     onPress,
-    colors = ['#6E68E8', '#8C7BFF'],
+    colors = [Colors.buttonDarkPurple, Colors.buttonLightPurple],
     buttonStyle,
     gradientStyle,
     textStyle
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 16,
         overflow: 'hidden',
-        shadowColor: '#6E68E8',
+        shadowColor: Colors.buttonDarkPurple,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 8,
