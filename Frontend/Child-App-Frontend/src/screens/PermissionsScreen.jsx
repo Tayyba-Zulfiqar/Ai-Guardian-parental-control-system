@@ -30,9 +30,16 @@ const PermissionsScreen = ({ navigation }) => {
         setAlertVisible(true);
     };
 
-    const handleConfirmAll = () => {
+    const handleConfirmAll = async () => {
         setAlertVisible(false);
-        navigation.navigate('Home');
+
+        // Small delay ONLY for modal close animation
+        setTimeout(() => {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Home' }],
+            });
+        }, 250);
     };
 
     return (
