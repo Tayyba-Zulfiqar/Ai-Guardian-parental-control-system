@@ -1,14 +1,20 @@
+# 🌸💜 AI Guardian - Parental Control System 💐
 
-# 🌸💜 AI Guardian - Child App (Frontend) 💐
+Welcome to the **AI Guardian** project! 🌸
+This system is designed to **keep children safe online** while being **fun, colorful, and easy to use**. 💜
 
-Welcome to the **AI Guardian Child App**! 🌸
-This app is designed to **keep children safe online** while being **fun, colorful, and easy to use**.
-
-The app is built with **React Native + Expo** and follows a **component-based architecture**, ensuring responsive and child-friendly UI. 💜
+This repository contains the applications composing the AI Guardian system, with current focus on the **Child App Frontend**. 💐
 
 ---
 
-## 🎨 Color & Style Theme 💐
+## 📱 Project Structure 🌸
+
+* **`Frontend/Child-App-Frontend/`**: The mobile frontend application tailored for children 💜
+* **`Frontend/Parent-App-Frontend/`**: *(Planned)* The secure dashboard for parents 💐
+
+---
+
+## 🎨 Color & Style Theme (Child App) 💐
 
 * Soft pastel purples, blues, and pinks for a friendly look 🌸
 * Rounded UI elements for a safe, approachable feel 💜
@@ -20,48 +26,69 @@ The app is built with **React Native + Expo** and follows a **component-based ar
 ## 🖼 Screens Completed So Far 🌸
 
 ### 1️⃣ Splash Screen 💜
-
 * Animated mascot zoom-in 🌸
 * App name and subtitle fade-in 💐
 * Gradient background blending soft purple → light blue 🌸
 
-> Next screens will include **Permissions**, **Parent Connection**, and **Home Screen**.
+### 2️⃣ Permissions Screen 💜
+* Displays required app permissions list (SMS, Location, Call Logs) 🌸
+* Bulk toggle option via "Enable All" 💐
+* Themed `CustomAlert` confirmation dialogs 🌸
+
+### 3️⃣ Parent Connection Screen 💜
+* Secure UI to link parent and child devices 🌸
+* Uses custom `OTPInput` for code entry 💐
+
+### 4️⃣ Home Screen 💜
+* Clean and simple dashboard interface for daily use 🌸
+
+---
+
+## 🧩 Reusable UI Components 💜
+
+* **`CustomAlert.jsx`**: A friendly, themed alert dialog 🌸
+* **`CustomSwitch.jsx`**: An animated, soft toggle switch 💜
+* **`PermissionCard.jsx`**: Reusable card for permission requests 💐
+* **`OTPInput.jsx`**: Safe and clear OTP entry boxes 🌸
+* **`PrimaryButton.jsx`**: Standardized soft-edged main action button 💜
+* **`ScreenTitle.jsx`**: Consistent page header component 💐
 
 ---
 
 ## ⚡ Tech Stack 💜
 
-* **React Native** – Cross-platform mobile app
-* **Expo** – Quick setup, easy animations
-* **Animated API** – Smooth transitions and effects
-* **LinearGradient** – Soft gradient backgrounds
+* **React Native** – Cross-platform mobile app 🌸
+* **Expo** – Quick setup, easy animations 💐
+* **React Native Reanimated & Animated APIs** – Smooth transitions and effects 🌸
+* **Lucide-React-Native** - For modern, clean icons 💜
+* **Expo LinearGradient** – Soft gradient backgrounds 💐
 
 ---
 
 ## 🚀 How to Run 🌸
 
 1. **Clone the repository**:
-   `git clone <your-repo-url>`
+   `git clone <your-repo-url>` 💜
 
 2. **Navigate to the frontend folder**:
-   `cd Frontend/Child-App-Frontend`
+   `cd Frontend/Child-App-Frontend` 🌸
 
 3. **Install dependencies**:
-   `npm install`
+   `npm install` 💐
 
 4. **Start the app**:
-   `npx expo start`
+   `npx expo start` 💜
 
-> Make sure you have **Node.js** and **Expo CLI** installed. 💜
+> Make sure you have **Node.js** and **Expo CLI** installed. 🌸
 
 ---
 
 ## 📝 Next Steps 💐
 
-* Design **Permissions Screen UI** 🌸
-* Design **Parent Connection Screen UI** 💜
-* Build **Home Screen UI** 🌸
-* Add logic for permissions and parent-child connection 💐
+* Finalize backend integration for permission states 🌸
+* Design and build **Parent App Frontend** screens 💜
+* Wire up real device permissions logic 🌸
+* Ensure cross-device seamless synchronization 💐
 
 ---
 
@@ -76,5 +103,3 @@ The app is built with **React Native + Expo** and follows a **component-based ar
 ## 🌸 Inspiration 💜
 
 The pastel colors, soft gradients, and smooth animations are designed to make **digital safety feel approachable and fun for children**. 🌸💐
-
-
