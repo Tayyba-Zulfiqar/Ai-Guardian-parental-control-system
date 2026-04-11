@@ -9,9 +9,10 @@ const { width } = Dimensions.get('window');
 const CustomAlert = ({ visible, title, message, onConfirm, onCancel, confirmText = "Confirm", cancelText = "Cancel" }) => {
     return (
         <Modal
-            transparent
+            transparent={true}
             visible={visible}
             animationType="fade"
+            statusBarTranslucent={true}
         >
             <View style={styles.overlay}>
                 <View style={styles.alertBox}>
@@ -22,9 +23,11 @@ const CustomAlert = ({ visible, title, message, onConfirm, onCancel, confirmText
                     <Text style={styles.message}>{message}</Text>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
-                            <Text style={styles.cancelText}>{cancelText}</Text>
-                        </TouchableOpacity>
+                        {cancelText ? (
+                            <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+                                <Text style={styles.cancelText}>{cancelText}</Text>
+                            </TouchableOpacity>
+                        ) : null}
 
                         <TouchableOpacity style={styles.confirmButton} onPress={onConfirm}>
                             <Text style={styles.confirmText}>{confirmText}</Text>
@@ -39,6 +42,8 @@ const CustomAlert = ({ visible, title, message, onConfirm, onCancel, confirmText
 const styles = StyleSheet.create({
     overlay: {
         flex: 1,
+        width: '100%',
+        height: '100%',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'center',
         alignItems: 'center',
