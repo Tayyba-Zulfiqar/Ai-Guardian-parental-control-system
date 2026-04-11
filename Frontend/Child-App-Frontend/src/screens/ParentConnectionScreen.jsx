@@ -15,13 +15,13 @@ import PrimaryButton from '../components/UI/PrimaryButton';
 const { width } = Dimensions.get('window');
 
 
-const ParentConnectionScreen = () => {
+const ParentConnectionScreen = ({ navigation }) => {
     const [code, setCode] = useState(['', '', '', '', '', '']);
 
 
     const handleConnection = () => {
         console.log("Code entered:", code.join(''));
-        // Add your actual connection logic here
+        navigation.navigate('Permissions');
     };
 
     return (

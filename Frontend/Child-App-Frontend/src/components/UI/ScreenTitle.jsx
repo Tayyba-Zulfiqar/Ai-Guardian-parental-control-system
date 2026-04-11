@@ -1,4 +1,7 @@
-import { View, Text, StyleSheet, Animated } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import Animated from "react-native-reanimated";
+import { Fonts } from "../../../constants/Fonts";
+import { Colors } from "../../../constants/Colors";
 
 const ScreenTitle = ({
     title,
@@ -34,14 +37,15 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     title: {
-        fontSize: 26,
-        fontWeight: "bold",
-        color: "#1A2138",
+        fontSize: 24,
+        fontFamily: Fonts.bold,
+        color: Colors.Titles,
         textAlign: 'center',
     },
     subtitle: {
-        fontSize: 16,
-        color: "#7B809A",
+        fontSize: 14,
+        fontFamily: Fonts.regular,
+        color: Colors.Subtitles,
         textAlign: 'center',
         marginTop: 5,
     },

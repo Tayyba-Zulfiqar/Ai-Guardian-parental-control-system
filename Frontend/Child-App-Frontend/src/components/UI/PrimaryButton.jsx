@@ -1,6 +1,7 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Colors } from "../../../constants/Colors";
+import { Fonts } from "../../../constants/Fonts";
 
 const PrimaryButton = ({
     title,
@@ -12,7 +13,7 @@ const PrimaryButton = ({
 }) => {
     return (
         <TouchableOpacity
-            style={[styles.button, buttonStyle]}  // default + override
+            style={[styles.button, buttonStyle]}
             activeOpacity={0.8}
             onPress={onPress}
         >
@@ -20,7 +21,7 @@ const PrimaryButton = ({
                 colors={colors}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
-                style={[styles.gradientButton, gradientStyle]} // default + override
+                style={[styles.gradientButton, gradientStyle]}
             >
                 <Text style={[styles.buttonText, textStyle]}>{title}</Text>
             </LinearGradient>
@@ -30,7 +31,8 @@ const PrimaryButton = ({
 
 const styles = StyleSheet.create({
     button: {
-        width: '100%',
+        width: '95%',
+        alignSelf: 'center',
         borderRadius: 16,
         overflow: 'hidden',
         shadowColor: Colors.buttonDarkPurple,
@@ -46,9 +48,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     buttonText: {
-        color: '#FFFFFF',
-        fontSize: 18,
-        fontWeight: 'bold',
+        color: Colors.BackgroundColor,
+        fontSize: 16,
+        fontFamily: Fonts.bold
     },
 });
 

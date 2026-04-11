@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "AI GUARDIAN",
-    "slug": "AI GUARDIAN",
+    "slug": "ai-guardian",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/SplashScreen.png",
@@ -16,6 +16,9 @@
     },
     "web": {
       "favicon": "./assets/images/SplashScreen.png"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

@@ -1,48 +1,55 @@
-import { useEffect } from "react";
-import { StyleSheet, Animated } from "react-native";
-import { LinearGradient } from "expo-linear-gradient"; // Import LinearGradient
+import { useEffect, useRef } from "react";
+import { StyleSheet, View, Animated } from "react-native";
 import ScreenTitle from "../components/UI/ScreenTitle";
 import { Colors } from "../../constants/Colors";
+import { Fonts } from "../../constants/Fonts";
+
 const SplashScreen = ({ navigation }) => {
-    const scaleAnim = new Animated.Value(0);
-    const fadeAnim = new Animated.Value(0);
+    // Shared values (React Native Animated)
+    const scaleAnim = useRef(new Animated.Value(0)).current;
+    const fadeAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
-        // Animate mascot zoom in
-        Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true }).start();
+        // Start animations
+        Animated.parallel([
+            Animated.spring(scaleAnim, {
+                toValue: 1,
+                useNativeDriver: true,
+                friction: 5,
+            }),
+            Animated.timing(fadeAnim, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true,
+            })
+        ]).start();
 
-        // Fade in text
-        Animated.timing(fadeAnim, { toValue: 1, delay: 300, duration: 500, useNativeDriver: true }).start();
-
-        // Navigate to Home after 4 seconds
         const timer = setTimeout(() => {
             navigation.replace("ParentConnection");
         }, 3000);
 
-        return () => clearTimeout(timer); // cleanup
+        return () => clearTimeout(timer);
     }, []);
 
     return (
-        <LinearGradient
-            colors={[Colors.primaryPurple, Colors.secondaryPurple]} // Gradient colors
-            start={{ x: 0, y: 0 }} // Top-left
-            end={{ x: 1, y: 2 }}   // Bottom-right
-            style={styles.container}
-        >
+        <View style={styles.container}>
+            {/* Animated Image */}
             <Animated.Image
                 source={require("../../assets/images/SplashScreen.png")}
                 style={[styles.image, { transform: [{ scale: scaleAnim }] }]}
             />
-            <ScreenTitle
-                title="AI Guardian"
-                subtitle="Keeping you safe online"
-                animated={true}
-                fadeAnim={fadeAnim}
-                titleStyle={styles.title}
-                subtitleStyle={styles.subtitle}
-                containerStyle={{ marginBottom: 40 }}
-            />
-        </LinearGradient>
+
+            {/* Animated Text Section */}
+            <Animated.View style={{ opacity: fadeAnim }}>
+                <ScreenTitle
+                    title="AI Guardian"
+                    subtitle="Keeping you safe online"
+                    titleStyle={styles.title}
+                    subtitleStyle={styles.subtitle}
+                    containerStyle={{ marginBottom: 40 }}
+                />
+            </Animated.View>
+        </View>
     );
 };
 
@@ -53,21 +60,23 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: Colors.primaryPurple,
     },
     image: {
         width: 160,
         height: 160,
-        marginBottom: 20
+        marginBottom: 20,
     },
     title: {
-        fontSize: 26,
-        fontWeight: "900",
-        color: "#1e1b4b"
+        fontSize: 28,
+        fontFamily: Fonts.bold,
+        color: "#ecececff"
     },
     subtitle: {
-        fontSize: 16,
-        color: "#1e1b4b",
+        fontSize: 18,
         opacity: 0.7,
-        marginTop: 6
+        marginTop: 6,
+        color: "#ecececff",
+        fontFamily: Fonts.regular
     },
 });

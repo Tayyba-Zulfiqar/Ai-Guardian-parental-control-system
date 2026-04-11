@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { Colors } from "../../../constants/Colors";
+import { Bold } from "lucide-react-native";
 
 const OTPInput = ({
     code,
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#1A2138',
         backgroundColor: '#FFFFFF',
+        fontWeight: 'bold'
     },
     focusedInput: {
         borderColor: Colors.primaryPurple,
