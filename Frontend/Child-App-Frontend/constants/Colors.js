@@ -11,5 +11,6 @@ export const Colors = {
     Subtitles: '#6b7280',
     BackgroundColor: '#FFFFFF',
     IconColor: '#6366f1',
-    IconCircle: '#ede9fe'
+    IconCircle: '#ede9fe',
+    BorderColor: '#Eef2f6'
 }; 
