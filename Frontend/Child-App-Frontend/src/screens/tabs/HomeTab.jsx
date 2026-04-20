@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         marginBottom: 4,
     },
     mainTitle: {
-        fontSize: 32,
+        fontSize: 26,
         fontFamily: Fonts.bold,
         color: Colors.textMain,
     },

@@ -18,7 +18,7 @@ const StatusCard = ({ label, status }) => {
             </View>
             <View style={styles.badgeContainer}>
                 <View style={styles.activeBadge}>
-                    <Text style={styles.activeBadgeText}>Online</Text>
+                    <Text style={styles.activeBadgeText}>Active</Text>
                 </View>
             </View>
         </View>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         padding: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 16,
+        marginBottom: 14,
         shadowColor: Colors.textMain,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.02,

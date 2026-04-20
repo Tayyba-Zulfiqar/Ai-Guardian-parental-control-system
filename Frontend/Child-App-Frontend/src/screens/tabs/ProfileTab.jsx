@@ -67,7 +67,7 @@ const ProfileTab = () => {
                             <SectionHeader title={section.title} />
                         )}
 
-                        {/* ✅ FIX: spacing applied here */}
+
                         <View style={styles.cardGroup}>
                             {section.data.map((item) => (
                                 <InfoCard
@@ -113,11 +113,11 @@ const styles = StyleSheet.create({
         paddingBottom: 40,
     },
     headerTitle: {
-        fontSize: 32,
+        fontSize: 26,
         fontFamily: Fonts.bold,
         color: Colors.textMain,
         marginTop: 45,
-        marginBottom: 16,
+        marginBottom: 18,
     },
 
     // ✅ FIXED SPACING GROUP
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
 
     sectionHeaderContainer: {
         marginTop: 18,
-        marginBottom: 10,
+        marginBottom: 12,
         marginLeft: 4,
     },
     sectionHeader: {

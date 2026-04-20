@@ -1,5 +1,4 @@
-
-import { TouchableOpacity, View } from "react-native";
+import { View, Pressable } from "react-native";
 import { ChevronRight } from "lucide-react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import BaseCard from "./BaseCard";
@@ -18,10 +17,19 @@ const InfoCard = ({
     delay = 0,
     animated = false,
 }) => {
-    const Wrapper = onPress ? TouchableOpacity : View;
+    const Wrapper = onPress ? Pressable : View;
 
     const content = (
-        <Wrapper onPress={onPress} activeOpacity={0.7}>
+        <Wrapper
+            onPress={onPress}
+            style={({ pressed }) => [
+                {
+                    borderRadius: 16,
+                    overflow: "hidden",
+                },
+                pressed && onPress ? { opacity: 0.8 } : null,
+            ]}
+        >
             <BaseCard
                 icon={icon}
                 iconColor={iconColor}
