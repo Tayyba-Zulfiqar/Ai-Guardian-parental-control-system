@@ -16,52 +16,65 @@ This repository contains the applications composing the AI Guardian system, with
 
 ## 🎨 Color & Style Theme (Child App) 💐
 
-* Soft pastel purples, blues, and pinks for a friendly look 🌸
-* Rounded UI elements for a safe, approachable feel 💜
-* Smooth gradients for backgrounds and animations 🌸
-* Animations like zoom-in mascot and fade-in texts for engagement 💐
+* **"Soft & Sophisticated"** theme using curated pastel purples, blues, and pinks 🌸
+* Rounded UI elements with **24px corner radius** for a safe, approachable feel 💜
+* Smooth gradients and **smudged shadows** for advanced depth and modern aesthetics 🌸
+* Interactive micro-animations like zoom-in mascots, pulsing rings, and staggered fade-ins 💐
 
 ---
 
 ## 🖼 Screens Completed So Far 🌸
 
 ### 1️⃣ Splash Screen 💜
-* Animated mascot zoom-in 🌸
-* App name and subtitle fade-in 💐
-* Gradient background blending soft purple → light blue 🌸
+* Animated mascot zoom-in with soft shadow effects 🌸
+* App name and subtitle fade-in animations 💐
+* Gradient background blending secondary purple colors 🌸
 
-### 2️⃣ Permissions Screen 💜
-* Displays required app permissions list (SMS, Location, Call Logs) 🌸
-* Bulk toggle option via "Enable All" 💐
-* Themed `CustomAlert` confirmation dialogs 🌸
+### 2️⃣ Home Dashboard 💜
+* **Dynamic Greetings**: Time-based greetings (Good morning, Good evening) 🌸
+* **Safety Score**: Interactive progress ring tracking safe activities (current: 98%) 💐
+* **Screen Time**: Visual usage tracker for total daily app time 🌸
+* **Protection Status**: Quick-glance card showing current safety level 💜
 
-### 3️⃣ Parent Connection Screen 💜
-* Secure UI to link parent and child devices 🌸
-* Uses custom `OTPInput` for code entry 💐
+### 3️⃣ Activity Log 💜
+* **Real-time Status**: Visualize if protection is "Active" or "Paused" with dynamic shield icons 🌸
+* **Visual Pulse**: Animated pulse ring decoration signaling active monitoring 💐
+* **Safety Highlights**: Summary of browsing activity and blocked events 🌸
 
-### 4️⃣ Home Screen 💜
-* Clean and simple dashboard interface for daily use 🌸
+### 4️⃣ Profile & Settings 💜
+* **User Profile**: Modular card displaying child info and parent linking details 🌸
+* **Quick Toggle**: Real-time switch for managing app notifications 💜
+* **Support & Privacy**: Organized access to help center and system permissions 💐
+* **Styled Logout**: Elegant and accessible exit button with brand colors 🌸
+
+### 5️⃣ Permissions & Connection 💜
+* **Secure Pairing**: Custom `OTPInput` for linking parent and child devices securely 🌸
+* **Protection Setup**: Staggered fade-in cards for enabling SMS, Location, and Call Log safety 💐
+* **Themed Alerts**: `CustomAlert` confirmation dialogs for bulk permission activation 🌸
 
 ---
 
 ## 🧩 Reusable UI Components 💜
 
-* **`CustomAlert.jsx`**: A friendly, themed alert dialog 🌸
-* **`CustomSwitch.jsx`**: An animated, soft toggle switch 💜
-* **`PermissionCard.jsx`**: Reusable card for permission requests 💐
-* **`OTPInput.jsx`**: Safe and clear OTP entry boxes 🌸
-* **`PrimaryButton.jsx`**: Standardized soft-edged main action button 💜
-* **`ScreenTitle.jsx`**: Consistent page header component 💐
+* **`BaseCard.jsx`**: The foundation for all cards with shadow and radius logic 🌸
+* **`InfoCard.jsx`**: Versatile card supporting icons, titles, and right-aligned elements (switches/badges) 💜
+* **`ProgressCard.jsx`**: Specialized card for metrics like score and screen time 💐
+* **`StatusCard.jsx`**: Bold, high-visibility card for system status 🌸
+* **`CustomSwitch.jsx`**: An animated, soft toggle switch with customized brand colors 💜
+* **`OTPInput.jsx`**: Premium OTP entry boxes with automatic focus and validation 💐
+* **`ScreenTitle.jsx`**: Global title component supporting multi-alignment and subtitles 🌸
+* **`SectionHeader.jsx`**: Standardized labeling for grouped settings and lists 💜
+* **`Badge.jsx`**: Compact status indicators (Active/Inactive) with refined padding 💐
 
 ---
 
 ## ⚡ Tech Stack 💜
 
-* **React Native** – Cross-platform mobile app 🌸
-* **Expo** – Quick setup, easy animations 💐
-* **React Native Reanimated & Animated APIs** – Smooth transitions and effects 🌸
-* **Lucide-React-Native** - For modern, clean icons 💜
-* **Expo LinearGradient** – Soft gradient backgrounds 💐
+* **React Native** – Cross-platform mobile app development 🌸
+* **Expo** – Fast iteration, font loading, and linear gradients 💐
+* **React Native Reanimated** – Complex layout transitions and micro-interactions 🌸
+* **Lucide-React-Native** - For modern, clean, and consistent iconography 💜
+* **Google Fonts (Inter)** – Clean typography for readability and premium feel 💐
 
 ---
 
@@ -79,27 +92,17 @@ This repository contains the applications composing the AI Guardian system, with
 4. **Start the app**:
    `npx expo start` 💜
 
-> Make sure you have **Node.js** and **Expo CLI** installed. 🌸
-
 ---
 
 ## 📝 Next Steps 💐
 
-* Finalize backend integration for permission states 🌸
-* Design and build **Parent App Frontend** screens 💜
-* Wire up real device permissions logic 🌸
-* Ensure cross-device seamless synchronization 💐
-
----
-
-## 💡 Notes 🌸
-
-* Currently all screens use **placeholder navigation** for smooth UI flow. 💜
-* Animations and gradients are tailored for a **friendly, safe, and engaging experience**. 🌸
-* Code is **modular and ready for adding backend logic** later 💐
+* **Backend Integration**: Connect pairing codes and activity logs to real API endpoints 🌸
+* **Real-time Engine**: Implement background services for SMS and Location monitoring 💜
+* **Parent Dashboard**: Build the companion app for managing child safety remotely 🌸
+* **Push Notifications**: Enable instant alerts for parents when risky activity is detected 💐
 
 ---
 
 ## 🌸 Inspiration 💜
 
-The pastel colors, soft gradients, and smooth animations are designed to make **digital safety feel approachable and fun for children**. 🌸💐
+The "Soft & Sophisticated" design uses pastel colors and smooth interactions to change how children perceive parental controls—making digital safety feel **approachable, fun, and empowering**. 🌸💐

@@ -7,21 +7,24 @@ import ActivityTab from './tabs/ActivityTab';
 import ProfileTab from './tabs/ProfileTab';
 import { Colors } from "../../constants/Colors";
 
+import { Fonts } from "../../constants/Fonts";
+
 const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
     const insets = useSafeAreaInsets();
-    // compute dynamic bottom padding so the bar doesn't sit flush with system navigations
-    const bottomPadding = Math.max(insets.bottom, Platform.OS === 'android' ? 15 : 10);
-    const tabBarHeight = 62 + bottomPadding;
+    const bottomPadding = Math.max(insets.bottom, Platform.OS === 'android' ? 12 : 10);
+    const tabBarHeight = 65 + bottomPadding;
 
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ color }) => {
-                    if (route.name === 'HomeTab') return <Home color={color} size={24} strokeWidth={1.8} />;
-                    if (route.name === 'ActivityTab') return <Activity color={color} size={24} strokeWidth={1.8} />;
-                    if (route.name === 'ProfileTab') return <User color={color} size={24} strokeWidth={1.8} />;
+                    const iconSize = 22;
+                    const stroke = 2;
+                    if (route.name === 'HomeTab') return <Home color={color} size={iconSize} strokeWidth={stroke} />;
+                    if (route.name === 'ActivityTab') return <Activity color={color} size={iconSize} strokeWidth={stroke} />;
+                    if (route.name === 'ProfileTab') return <User color={color} size={iconSize} strokeWidth={stroke} />;
                     return null;
                 },
                 tabBarLabel: ({ focused, color }) => {
@@ -37,16 +40,15 @@ const HomeScreen = () => {
                         </View>
                     );
                 },
-                tabBarActiveTintColor: Colors.buttonDarkPurple,
-                tabBarInactiveTintColor: Colors.textSecondary,
+                tabBarActiveTintColor: Colors.purpleIcon,
+                tabBarInactiveTintColor: Colors.textGray,
                 headerShown: false,
                 tabBarStyle: {
                     height: tabBarHeight,
-                    paddingTop: 8,
+                    paddingTop: 10,
                     paddingBottom: bottomPadding,
                     backgroundColor: Colors.BackgroundColor,
-                    borderTopWidth: 1,
-                    borderTopColor: Colors.BorderColor,
+                    borderTopWidth: 0,
                     elevation: 0,
                     shadowOpacity: 0,
                 }
@@ -62,28 +64,20 @@ const HomeScreen = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: Colors.BackgroundColor,
-    },
-    title: {
-        fontSize: 24,
-        fontFamily: 'Inter_700Bold',
-    },
     labelContainer: {
         alignItems: 'center',
-        marginTop: 1,
+        marginTop: 2,
     },
     labelText: {
-        fontFamily: 'Inter_400Regular',
-        fontSize: 12,
+        fontFamily: Fonts.bold,
+        fontSize: 10,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
     },
     dot: {
-        width: 6,
-        height: 6,
-        borderRadius: 3,
+        width: 4,
+        height: 4,
+        borderRadius: 2,
         marginTop: 4,
     }
 });
