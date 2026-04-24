@@ -37,9 +37,10 @@ This repository contains the applications composing the AI Guardian system, with
 * **Protection Status**: Quick-glance card showing current safety level 💜
 
 ### 3️⃣ Activity Log 💜
-* **Real-time Status**: Visualize if protection is "Active" or "Paused" with dynamic shield icons 🌸
-* **Visual Pulse**: Animated pulse ring decoration signaling active monitoring 💐
-* **Safety Highlights**: Summary of browsing activity and blocked events 🌸
+* **Protection Dashboard**: A structured grid showing daily active hours, dates, and full day names 🌸
+* **Protection Averages**: Summary bubbles highlighting Daily Average and Peak Day metrics 💐
+* **Dynamic History**: A detailed table UI with weekly/monthly toggles for historical tracking 🌸
+* **Modular Integration**: Built with specialized sub-components for optimized performance 💜
 
 ### 4️⃣ Profile & Settings 💜
 * **User Profile**: Modular card displaying child info and parent linking details 🌸
@@ -56,15 +57,20 @@ This repository contains the applications composing the AI Guardian system, with
 
 ## 🧩 Reusable UI Components 💜
 
-* **`BaseCard.jsx`**: The foundation for all cards with shadow and radius logic 🌸
-* **`InfoCard.jsx`**: Versatile card supporting icons, titles, and right-aligned elements (switches/badges) 💜
-* **`ProgressCard.jsx`**: Specialized card for metrics like score and screen time 💐
-* **`StatusCard.jsx`**: Bold, high-visibility card for system status 🌸
-* **`CustomSwitch.jsx`**: An animated, soft toggle switch with customized brand colors 💜
-* **`OTPInput.jsx`**: Premium OTP entry boxes with automatic focus and validation 💐
-* **`ScreenTitle.jsx`**: Global title component supporting multi-alignment and subtitles 🌸
-* **`SectionHeader.jsx`**: Standardized labeling for grouped settings and lists 💜
-* **`Badge.jsx`**: Compact status indicators (Active/Inactive) with refined padding 💐
+* **`ScanHistoryCard.jsx`**: Premium status card with shield iconography and scan timestamps 🌸
+* **`ProtectionStats.jsx`**: Metric summary bubbles with pastel backgrounds and bold values 💜
+* **`PeriodSelector.jsx`**: Pill-shaped toggle for filtering Week/Month analytics 💐
+* **`TableHeader.jsx`**: Global grid header for structured data logs 🌸
+* **`HistoryTableRow.jsx`**: Aligned, symmetrical data rows with clean dividers 💜
+* **`BaseCard.jsx`**: The foundation for all cards with shadow and radius logic 💐
+* **`InfoCard.jsx`**: Versatile card supporting icons, titles, and right-aligned elements 🌸
+* **`ProgressCard.jsx`**: Specialized card for metrics like score and screen time 💜
+* **`StatusCard.jsx`**: Bold, high-visibility card for system status 💐
+* **`CustomSwitch.jsx`**: An animated, soft toggle switch with brand colors 🌸
+* **`OTPInput.jsx`**: Premium OTP entry boxes with automatic focus 💜
+* **`ScreenTitle.jsx`**: Global title component supporting multi-alignment 💐
+* **`SectionHeader.jsx`**: Standardized labeling for grouped settings 🌸
+* **`Badge.jsx`**: Compact status indicators (Active/Inactive) 💜
 
 ---
 

@@ -1,163 +1,107 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { Shield, ShieldOff, Sparkles } from "lucide-react-native";
+import {
+    StyleSheet,
+    ScrollView,
+    SafeAreaView,
+    StatusBar,
+    Text,
+    View,
+} from "react-native";
 import { Fonts } from "../../../constants/Fonts";
 import { Colors } from "../../../constants/Colors";
+
+import { weeklyStats, monthlyStats } from "../../../constants/activityData";
+
+// components
+import ActivityHeader from "../../components/UI/ActivityTab/ActivityHeader";
+import ScanHistoryCard from "../../components/UI/ActivityTab/ScanHistoryCard";
+import ProtectionStats from "../../components/UI/ActivityTab/ProtectionStats";
+import PeriodSelector from "../../components/UI/ActivityTab/PeriodSelector";
+import TableHeader from "../../components/UI/ActivityTab/TableHeader";
+import HistoryTableRow from "../../components/UI/ActivityTab/HistoryTableRow";
+
 const ActivityTab = () => {
-    // Simulated state - in a real app this would come from a service/context
-    const [isActive, setIsActive] = useState(true);
+    const [period, setPeriod] = useState('Week');
+
+    const stats = period === 'Week' ? weeklyStats : monthlyStats;
 
     return (
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
-            {/* Header Section */}
-            <View style={styles.header}>
-                <Text style={styles.mainTitle}>Activity Log</Text>
-            </View>
+        <SafeAreaView style={styles.safeArea}>
+            <StatusBar barStyle="dark-content" />
 
-            {/* Centered Protection Status */}
-            <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => setIsActive(!isActive)}
-                style={styles.centerSection}
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                showsVerticalScrollIndicator={false}
             >
-                <View style={[styles.shieldContainer, !isActive && styles.shieldContainerInactive]}>
-                    {isActive ? (
-                        <Shield color={Colors.badgeGreenText} size={80} strokeWidth={1.5} />
-                    ) : (
-                        <ShieldOff color={Colors.logoutText} size={80} strokeWidth={1.5} />
-                    )}
+                <ActivityHeader />
 
-                    {isActive && (
-                        <View style={styles.sparkleContainer}>
-                            <Sparkles color="#BBF7D0" size={32} />
-                        </View>
-                    )}
+                <ScanHistoryCard lastScan="2 min ago" />
+
+                <Text style={styles.sectionHeader}>PROTECTION HISTORY</Text>
+
+                <ProtectionStats avg={stats.avg} peak={stats.peak} />
+
+                <PeriodSelector period={period} onSelect={setPeriod} />
+
+                <View style={styles.tableCard}>
+                    <TableHeader period={period} />
+
+                    <View style={styles.tableBody}>
+                        {stats.dailyData.map((item, index) => (
+                            <HistoryTableRow
+                                key={index}
+                                day={item.day}
+                                date={item.date}
+                                hours={item.hours}
+                                isLast={index === stats.dailyData.length - 1}
+                            />
+                        ))}
+                    </View>
                 </View>
 
-                <View style={styles.textContainer}>
-                    <Text style={styles.statusPrimary}>
-                        {isActive ? "Currently Active" : "Protection Paused"}
-                    </Text>
-                    <Text style={[styles.statusSecondary, !isActive && styles.statusSecondaryInactive]}>
-                        {isActive ? "Safety Monitoring Active" : "Monitoring is currently off"}
-                    </Text>
-                </View>
-
-                {/* Pulse ring decoration */}
-                <View style={[styles.pulseRing, !isActive && styles.pulseRingInactive]} />
-            </TouchableOpacity>
-
-            <View style={styles.footerInfo}>
-                <View style={styles.infoCard}>
-                    <Text style={styles.footerText}>
-                        {isActive
-                            ? "AI-Guardian is working in the background to ensure a safe digital environment."
-                            : "Manual restart required to resume real-time protection and monitoring."}
-                    </Text>
-                </View>
-            </View>
-        </ScrollView>
+                <Text style={styles.infoText}>
+                    These logs represent AI-Guardian monitoring activity.
+                </Text>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
 export default ActivityTab;
 
 const styles = StyleSheet.create({
-    container: {
+    safeArea: {
         flex: 1,
         backgroundColor: Colors.backgroundLight,
     },
+    container: {
+        flex: 1,
+    },
     contentContainer: {
         paddingHorizontal: 20,
-        paddingTop: 60,
+        paddingTop: 10,
         paddingBottom: 40,
     },
-    header: {
-        marginBottom: 40,
-        marginTop: 10,
-        marginLeft: 4,
-    },
-    mainTitle: {
-        fontSize: 32,
-        fontFamily: Fonts.bold,
-        color: Colors.textMain,
-    },
-    centerSection: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    shieldContainer: {
-        width: 180,
-        height: 180,
-        borderRadius: 90,
-        backgroundColor: Colors.badgeGreenBg,
-        justifyContent: 'center',
-        alignItems: 'center',
-        shadowColor: Colors.badgeGreenText,
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.1,
-        shadowRadius: 20,
-        elevation: 2,
-    },
-    shieldContainerInactive: {
-        backgroundColor: Colors.logoutBg,
-        shadowColor: Colors.logoutText,
-    },
-    sparkleContainer: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-    },
-    pulseRing: {
-        position: 'absolute',
-        width: 240,
-        height: 240,
-        borderRadius: 120,
-        borderWidth: 2,
-        borderColor: 'rgba(52, 199, 89, 0.05)',
-        zIndex: -1,
-    },
-    pulseRingInactive: {
-        borderColor: 'rgba(191, 58, 103, 0.05)',
-    },
-    textContainer: {
-        marginTop: 40,
-        alignItems: 'center',
-    },
-    statusPrimary: {
-        fontSize: 24,
-        fontFamily: Fonts.bold,
-        color: Colors.textMain,
-        marginBottom: 6,
-    },
-    statusSecondary: {
-        fontSize: 15,
-        fontFamily: Fonts.regular,
-        color: Colors.badgeGreenText,
-    },
-    statusSecondaryInactive: {
-        color: Colors.logoutText,
-    },
-    footerInfo: {
-        marginTop: 60,
-        paddingHorizontal: 10,
-    },
-    infoCard: {
-        backgroundColor: Colors.BackgroundColor,
-        borderRadius: 20,
-        padding: 20,
-        shadowColor: Colors.textMain,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.01,
-        shadowRadius: 10,
-        elevation: 1,
-    },
-    footerText: {
+    sectionHeader: {
         fontSize: 14,
+        fontFamily: Fonts.bold,
+        color: Colors.textGray,
+        marginBottom: 10,
+    },
+    tableCard: {
+        backgroundColor: Colors.BackgroundColor,
+        borderRadius: 24,
+        overflow: "hidden",
+    },
+    tableBody: {
+        paddingHorizontal: 12,
+    },
+    infoText: {
+        marginTop: 25,
+        fontSize: 13,
         fontFamily: Fonts.regular,
         color: Colors.textSecondary,
-        textAlign: 'center',
-        lineHeight: 22,
+        textAlign: "center",
     },
 });
