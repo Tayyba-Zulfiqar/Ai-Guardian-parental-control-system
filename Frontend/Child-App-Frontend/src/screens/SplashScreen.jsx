@@ -4,6 +4,7 @@ import ScreenTitle from "../components/UI/ScreenTitle";
 import { Colors } from "../../constants/Colors";
 import { Fonts } from "../../constants/Fonts";
 
+
 const SplashScreen = ({ navigation }) => {
     // Shared values (React Native Animated)
     const scaleAnim = useRef(new Animated.Value(0)).current;

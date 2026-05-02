@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         color: Colors.textMain,
     },
     scanText: {
-        fontSize: 13,
+        fontSize: 14.5,
         fontFamily: Fonts.regular,
         color: Colors.textSecondary,
     },

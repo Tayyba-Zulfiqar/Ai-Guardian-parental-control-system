@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
         marginTop: 6,
     },
     learnMoreContainer: {
-        marginTop: 20,
+        marginTop: 22,
         alignItems: "center",
     },
     learnMoreText: {
