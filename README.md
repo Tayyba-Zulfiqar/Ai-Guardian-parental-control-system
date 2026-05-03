@@ -76,28 +76,33 @@ The **Child App** is designed to be **fun, colorful, and comforting to use** �
 
 ---
 
-## 💻✨ Parent Dashboard 🛡️💖
+## 💻🎀 Parent Dashboard 🛡️💖🧸
 
-The **Parent Dashboard** is a web app where parents can stay aware, informed, and in control of their child’s digital world 🌍📱
+The **Parent Dashboard** is a comforting web app where parents can stay gracefully aware, informed, and securely in control of their child’s digital world 🌍📱🌷
 
-### 🧁 Features & Capabilities
-* 👀 View their child’s screen time
-* 📊 Track app usage
-* 🚨 Get alerts for harmful activity
-* ⚙️ Manage controls and restrictions
+### 🧁 Core Features & Capabilities ✨
 
-All in a clean, calm, and easy-to-use interface 🌈✨
+* 🏠🎀 **Intelligence Dashboard**: Quick status overview, behavior insights, and remote actions (e.g., gently locking devices) 🧠✨
+* 🔔💖 **Live Alerts**: Real-time notifications for harmful events with AI summaries of actions taken 🚨🧸
+* 📱☁️ **Child Activity**: Detailed app usage tracking and visual pie charts for daily, weekly, or monthly usage 🥧✨
+* ⏱️🪄 **Screen Time**: Beautiful visual charts breaking down app-wise screen time and calculating averages 📊🌸
+* 🧩🍓 **Content Reports**: Threat timeline analysis, content categorization, and AI-driven summaries of blocked risks 🤖💖
+* 👤🩰 **Child Profile**: Easily link devices via QR codes and manage multiple child profiles in a sweet roster 🔗🌸
+* 🚪🎀 **Advanced Controls**: Flexible logout policies including Approval Mode, PIN Mode, and Free Mode 🔒☁️
+* ⚙️🧁 **System Settings**: Complete control over parent profiles, notification preferences, and active monitoring 🛑🌷
 
-### 🛠️ Tech Stack (Parent App) 🌼
-* ⚛️ React (Vite)
-* 💛 JavaScript
-* 🌐 React Router *(coming soon)*
+All crafted in a clean, calm, and incredibly friendly pastel interface 🌈☁️🪄
 
-### 🌷 Future Plans for Dashboard
-* 📈 Beautiful charts for screen time
-* 🔔 Real-time alerts
-* 🤖 Smart AI-based monitoring
-* 🔐 Secure authentication
+### 🛠️ Tech Stack (Parent App) 🌼🪄
+* ⚛️ **React (Vite)**
+* 💛 **JavaScript**
+* 🌐 **React Router** *(coming soon)*
+
+### 🌷 Future Plans for Dashboard 🎀
+* 📈 Beautiful, colorful charts for screen time and activity
+* 🔔 Real-time alerts via gentle push notifications
+* 🤖 Smart AI-based behavior monitoring and summaries
+* 🔐 Secure authentication and session management
 
 ---
 
