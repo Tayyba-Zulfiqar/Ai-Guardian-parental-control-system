@@ -1,3 +1,5 @@
+import React from 'react';
+
 //tIME BASED BEHAVIOR TRACKING
 
 
@@ -18,3 +20,13 @@ device info
 status (online/offline/linked/not linked)
 last active time
 */
+
+const ChildProfile = () => {
+  return (
+    <div>
+      <h1>ChildProfile</h1>
+    </div>
+  );
+};
+
+export default ChildProfile;

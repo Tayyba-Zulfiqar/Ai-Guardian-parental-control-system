@@ -1,3 +1,5 @@
+import React from 'react';
+
 //live harmful events notification
 
 
@@ -14,3 +16,13 @@ INCOMING DETECTED CONTENT:
 “Parent notified”
 “Device locked (if applicable)”
 */
+
+const Alerts = () => {
+  return (
+    <div>
+      <h1>Alerts</h1>
+    </div>
+  );
+};
+
+export default Alerts;

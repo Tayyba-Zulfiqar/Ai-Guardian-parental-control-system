@@ -1,3 +1,5 @@
+import React from 'react';
+
 //tIME BASED BEHAVIOR TRACKING
 
 
@@ -8,3 +10,13 @@
     YouTube → 2h 30m
     Instagram → 1h 10m
 */
+
+const ScreenTime = () => {
+  return (
+    <div>
+      <h1>ScreenTime</h1>
+    </div>
+  );
+};
+
+export default ScreenTime;

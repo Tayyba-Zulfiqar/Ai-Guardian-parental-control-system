@@ -1,3 +1,5 @@
+import React from 'react';
+
 // child activity monitoring
 
 /* 
@@ -8,3 +10,13 @@
 
 
 */
+
+const ChildActivity = () => {
+  return (
+    <div>
+      <h1>ChildActivity</h1>
+    </div>
+  );
+};
+
+export default ChildActivity;

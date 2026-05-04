@@ -1,3 +1,5 @@
+import React from 'react';
+
 //intelligence and summary page
 
 
@@ -19,3 +21,13 @@ lock device /
 
 
 */
+
+const Dashboard = () => {
+  return (
+    <div>
+      <h1>Dashboard</h1>
+    </div>
+  );
+};
+
+export default Dashboard;

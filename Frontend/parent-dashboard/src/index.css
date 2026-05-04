@@ -1,0 +1,35 @@
+:root {
+    --sidebar-bg: #0f172a;
+    --sidebar-text: #f8fafc;
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --text-light: #f8fafc;
+    --text-muted: #64748b;
+    --bg-dark: #1e293b;
+    --bg-light: #f8fafc;
+    --border-dark: rgba(255, 255, 255, 0.05);
+    --border-light: #e2e8f0;
+    --error: #ef4444;
+    --white: #ffffff;
+    --hover-bg: rgba(255, 255, 255, 0.03);
+    --logout-hover: rgba(239, 68, 68, 0.1);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+#root {
+    height: 100%;
+}

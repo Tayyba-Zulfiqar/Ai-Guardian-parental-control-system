@@ -1,3 +1,5 @@
+import React from 'react';
+
 //Pattern Analysis + Threat Intelligence Dashboard
 
 
@@ -30,3 +32,13 @@ risk scores graph (updown trend wise)
 “Repeated exposure to similar risky content categories detected on Instagram”
 
 */
+
+const ContentReports = () => {
+  return (
+    <div>
+      <h1>ContentReports</h1>
+    </div>
+  );
+};
+
+export default ContentReports;

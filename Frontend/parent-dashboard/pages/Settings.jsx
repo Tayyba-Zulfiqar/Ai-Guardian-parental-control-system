@@ -1,3 +1,4 @@
+import React from 'react';
 
 /* 
 
@@ -58,3 +59,13 @@ OFF → child device is not monitored at all
 
 
 */
+
+const Settings = () => {
+  return (
+    <div>
+      <h1>Settings</h1>
+    </div>
+  );
+};
+
+export default Settings;
