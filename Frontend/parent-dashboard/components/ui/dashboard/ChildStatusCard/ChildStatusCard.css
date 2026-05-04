@@ -2,7 +2,7 @@
     background: var(--bg-card-light);
     border-radius: 20px;
     padding: 2rem 2.5rem;
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
     border: 1px solid var(--border-card-light);
     width: 100%;
     max-width: 1100px;

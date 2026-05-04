@@ -1,0 +1,78 @@
+.top-apps-container {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-light);
+    width: 100%;
+    max-width: 1100px;
+    margin-top: 2rem;
+}
+
+.section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--bg-dark);
+    margin-bottom: 1.5rem;
+}
+
+.apps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.app-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-info-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.app-icon-wrapper {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bg-dark);
+}
+
+.app-category {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.app-usage-right {
+    display: flex;
+    align-items: center;
+}
+
+.usage-time {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--bg-dark);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .top-apps-container {
+        padding: 1.5rem;
+    }
+}

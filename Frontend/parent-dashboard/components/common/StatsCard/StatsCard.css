@@ -2,7 +2,7 @@
     background: var(--white);
     border-radius: 20px;
     padding: 1.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     border: 1px solid var(--border-light);
     flex: 1;
     min-width: 250px;

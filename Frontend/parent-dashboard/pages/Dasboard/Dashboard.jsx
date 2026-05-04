@@ -1,6 +1,8 @@
 import DashboardHeader from '../../components/ui/dashboard/DashboardHeader/DashboardHeader';
 import ChildStatusCard from '../../components/ui/dashboard/ChildStatusCard/ChildStatusCard';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
+import TopApps from '../../components/ui/dashboard/TopApps/TopApps';
+import AISummary from '../../components/ui/dashboard/AISummary/AISummary';
 import { childData } from '../../data/childData';
 import { statsData } from '../../data/statsData';
 import './Dashboard.css';
@@ -33,6 +35,9 @@ const Dashboard = () => {
             />
           ))}
         </div>
+
+        <TopApps />
+        <AISummary />
       </section>
     </div>
   );
