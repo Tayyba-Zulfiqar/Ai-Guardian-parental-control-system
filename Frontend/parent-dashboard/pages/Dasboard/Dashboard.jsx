@@ -3,8 +3,8 @@ import ChildStatusCard from '../../components/ui/dashboard/ChildStatusCard/Child
 import StatsCard from '../../components/common/StatsCard/StatsCard';
 import TopApps from '../../components/ui/dashboard/TopApps/TopApps';
 import AISummary from '../../components/ui/dashboard/AISummary/AISummary';
-import { childData } from '../../data/childData';
-import { statsData } from '../../data/statsData';
+import { childData } from '../../data/Dashboard/childData';
+import { statsData } from '../../data/Dashboard/statsData';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -23,20 +23,27 @@ const Dashboard = () => {
           lastSeen={childData.lastSeen}
         />
 
-        <div className="stats-overview-grid">
-          {statsData.map((stat, index) => (
-            <StatsCard
-              key={index}
-              title={stat.title}
-              value={stat.value}
-              subtitle={stat.subtitle}
-              trend={stat.trend}
-              Icon={stat.Icon}
-            />
-          ))}
+        <div className="stats-section">
+          <h2 className="dashboard-section-title">Today's Overview:</h2>
+          <div className="stats-overview-grid">
+            {statsData.map((stat, index) => (
+              <StatsCard
+                key={index}
+                title={stat.title}
+                value={stat.value}
+                subtitle={stat.subtitle}
+                trend={stat.trend}
+                Icon={stat.Icon}
+              />
+            ))}
+          </div>
         </div>
 
-        <TopApps />
+        <div className="stats-section">
+          <h2 className="dashboard-section-title">Top Apps Used Today:</h2>
+          <TopApps />
+        </div>
+
         <AISummary />
       </section>
     </div>

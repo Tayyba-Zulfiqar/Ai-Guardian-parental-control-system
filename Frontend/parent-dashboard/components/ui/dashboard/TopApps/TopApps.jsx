@@ -1,12 +1,10 @@
 import './TopApps.css';
-import { topAppsData } from '../../../../data/topAppsData';
+import { topAppsData } from '../../../../data/Dashboard/topAppsData';
 
 const TopApps = () => {
   return (
     <div className="top-apps-container">
       <div className="top-apps-list-section">
-        <h3 className="section-title">Top Apps Used Today</h3>
-
         <div className="apps-list">
           {topAppsData.map((app) => (
             <div key={app.id} className="app-item">

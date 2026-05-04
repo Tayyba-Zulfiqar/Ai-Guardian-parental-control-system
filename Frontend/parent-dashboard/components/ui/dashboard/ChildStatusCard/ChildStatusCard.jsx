@@ -1,4 +1,4 @@
-import { childData } from '../../../../data/childData';
+import { childData } from '../../../../data/Dashboard/childData';
 import './ChildStatusCard.css';
 
 const ChildStatusCard = ({
