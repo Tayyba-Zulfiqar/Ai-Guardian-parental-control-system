@@ -1,0 +1,117 @@
+.child-status-card {
+    background: var(--bg-card-light);
+    border-radius: 20px;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border-card-light);
+    width: 100%;
+    max-width: 1100px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.child-status-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+    margin-bottom: 1.5rem;
+}
+
+.label-text {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: capitalize;
+
+}
+
+.card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.child-name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--bg-dark);
+    margin: 0;
+}
+
+.child-age {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin: 0.25rem 0 0 0;
+}
+
+.status-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+}
+
+.status-badge {
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-badge.online {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.status-badge.offline {
+    background: var(--bg-light);
+    color: var(--text-muted);
+}
+
+.last-seen-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.last-seen-text {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border-light);
+    position: relative;
+}
+
+.status-dot.active {
+    background: #10b981;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+    .child-status-card {
+        padding: 1.5rem;
+    }
+
+    .card-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .status-container {
+        align-items: flex-start;
+        width: 100%;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+
+    .child-name {
+        font-size: 1.5rem;
+    }
+}

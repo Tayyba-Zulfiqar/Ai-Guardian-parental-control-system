@@ -13,6 +13,8 @@
     --white: #ffffff;
     --hover-bg: rgba(255, 255, 255, 0.03);
     --logout-hover: rgba(239, 68, 68, 0.1);
+    --bg-card-light: #f7fbfe;
+    --border-card-light: #f6f8f9;
 }
 
 *,

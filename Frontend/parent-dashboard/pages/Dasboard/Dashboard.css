@@ -1,0 +1,19 @@
+.dashboard-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 2rem;
+
+}
+
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-page {
+        padding: 1rem;
+    }
+}
