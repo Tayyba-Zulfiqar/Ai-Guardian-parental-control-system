@@ -15,6 +15,8 @@
     --logout-hover: rgba(239, 68, 68, 0.1);
     --bg-card-light: #f7fbfe;
     --border-card-light: #f6f8f9;
+    --success: #10b981;
+    --warning: #f59e0b;
 }
 
 *,

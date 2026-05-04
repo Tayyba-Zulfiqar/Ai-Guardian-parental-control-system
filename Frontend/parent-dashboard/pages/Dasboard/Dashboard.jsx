@@ -1,6 +1,8 @@
 import DashboardHeader from '../../components/ui/dashboard/DashboardHeader/DashboardHeader';
 import ChildStatusCard from '../../components/ui/dashboard/ChildStatusCard/ChildStatusCard';
+import StatsCard from '../../components/common/StatsCard/StatsCard';
 import { childData } from '../../data/childData';
+import { statsData } from '../../data/statsData';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -18,6 +20,19 @@ const Dashboard = () => {
           status={childData.status}
           lastSeen={childData.lastSeen}
         />
+
+        <div className="stats-overview-grid">
+          {statsData.map((stat, index) => (
+            <StatsCard
+              key={index}
+              title={stat.title}
+              value={stat.value}
+              subtitle={stat.subtitle}
+              trend={stat.trend}
+              Icon={stat.Icon}
+            />
+          ))}
+        </div>
       </section>
     </div>
   );

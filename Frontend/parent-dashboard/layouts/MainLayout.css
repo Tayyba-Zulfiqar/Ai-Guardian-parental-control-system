@@ -11,44 +11,10 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  margin-top: 5px;
 }
 
-.top-header-bar {
-  height: 55px;
-  background-color: var(--white);
-  border-bottom: 1px solid var(--border-light);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  flex-shrink: 0;
-}
 
-.header-right {
-  display: flex;
-  align-items: flex-end;
-  margin-left: auto;
-
-}
-
-.user-profile-summary {
-  display: flex;
-  align-items: center;
-  padding-right: 6px;
-}
-
-.user-avatar-wrapper {
-  width: 32px;
-  height: 32px;
-  background-color: var(--primary);
-  color: var(--white);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
-  cursor: pointer;
-}
 
 .content-section {
   flex: 1;
