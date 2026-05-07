@@ -1,4 +1,4 @@
-import DashboardHeader from '../../components/ui/dashboard/DashboardHeader/DashboardHeader';
+import PageHeader from '../../components/common/PageHeader/PageHeader';
 import ChildStatusCard from '../../components/ui/dashboard/ChildStatusCard/ChildStatusCard';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
 import TopApps from '../../components/ui/dashboard/TopApps/TopApps';
@@ -10,9 +10,9 @@ import './Dashboard.css';
 const Dashboard = () => {
   return (
     <div className="dashboard-page">
-      <DashboardHeader
-        parentName={childData.parentName}
-        childName={childData.name}
+      <PageHeader
+        title={`Welcome Back, ${childData.parentName}`}
+        subtitle={`Here's what's happening with ${childData.name}'s device`}
       />
 
       <section className="dashboard-content">
