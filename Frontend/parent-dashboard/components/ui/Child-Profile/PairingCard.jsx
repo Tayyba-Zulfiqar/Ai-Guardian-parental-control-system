@@ -53,8 +53,8 @@ const PairingCard = ({ pairingCode, expiryTime, onRegenerate, onSimulateConnect,
             <div className="code-value-container">
               <span className="code-value">{pairingCode}</span>
               <div className="copy-wrapper">
-                <button 
-                  className={`copy-btn ${copied ? 'copied' : ''}`} 
+                <button
+                  className={`copy-btn ${copied ? 'copied' : ''}`}
                   onClick={handleCopy}
                   title="Copy to clipboard"
                 >

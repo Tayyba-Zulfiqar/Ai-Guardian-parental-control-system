@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'; // Added useNavigate
 import { Users, Plus, ChevronDown } from 'lucide-react';
 import { childrenData } from '../../../../data/Dashboard/childData';
 import './AccountSwitcher.css';
@@ -6,7 +7,8 @@ import './AccountSwitcher.css';
 const AccountSwitcher = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const switcherRef = useRef(null);
-  
+  const navigate = useNavigate(); // Initialize navigate
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -18,7 +20,7 @@ const AccountSwitcher = () => {
     if (isDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-    
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -32,9 +34,10 @@ const AccountSwitcher = () => {
 
   return (
     <div className="account-switcher-container" ref={switcherRef}>
-      <button 
-        className="avatar-trigger-btn"
+      <button
+        className={`avatar-trigger-btn ${isDropdownOpen ? 'active' : ''}`}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        data-tooltip={"Child Profile"}
       >
         <div className="trigger-avatar">{activeChild.avatar}</div>
         <span className="trigger-name">{activeChild.name}</span>
@@ -72,9 +75,15 @@ const AccountSwitcher = () => {
           </div>
 
           <div className="dropdown-footer">
-            <button 
+            <button
               className={`add-child-menu-btn ${isLimitReached ? 'disabled' : ''}`}
               disabled={isLimitReached}
+              onClick={() => {
+                if (!isLimitReached) {
+                  navigate('/child-profile/1');
+                  setIsDropdownOpen(false);
+                }
+              }}
             >
               {isLimitReached ? (
                 <Users size={16} />

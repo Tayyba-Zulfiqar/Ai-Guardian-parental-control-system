@@ -39,7 +39,7 @@ const ChildProfile = () => {
 
     setLocalChildren((prev) => [...prev, newChild]);
     setIsModalOpen(false);
-    
+
     // Show success feedback
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
