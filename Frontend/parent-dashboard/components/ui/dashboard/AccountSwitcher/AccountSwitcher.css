@@ -1,0 +1,226 @@
+/* Google Style Account Switcher */
+.account-switcher-container {
+    position: relative;
+}
+
+.avatar-trigger-btn {
+    background: none;
+    border: none;
+    padding: 4px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.avatar-trigger-btn:hover {
+    background: var(--bg-light);
+}
+
+.trigger-name {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--bg-dark);
+    text-transform: capitalize;
+}
+
+.trigger-avatar {
+    width: 40px;
+    height: 40px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.account-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 320px;
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--border-light);
+    z-index: 1000;
+    overflow: hidden;
+    animation: dropdownSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dropdownSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-header {
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.active-profile-large {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+}
+
+.large-avatar {
+    width: 80px;
+    height: 80px;
+    background: #f8fafc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.active-profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--bg-dark);
+}
+
+.profile-email {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: var(--border-light);
+    margin: 0;
+}
+
+.dropdown-body {
+    padding: 1.25rem;
+}
+
+.section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    padding-left: 0.5rem;
+}
+
+.child-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.child-menu-item:hover {
+    background: var(--bg-light);
+}
+
+.child-item-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.item-avatar {
+    font-size: 1.2rem;
+}
+
+.item-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--bg-dark);
+}
+
+.item-switch-btn {
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.item-switch-btn:hover {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--white);
+}
+
+.no-other-children {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 0.5rem;
+}
+
+.dropdown-footer {
+    padding: 0.75rem 1.25rem 1.25rem;
+    display: flex;
+    justify-content: center;
+}
+
+.add-child-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--bg-light);
+    color: var(--bg-dark);
+    border: 1px dashed var(--border-light);
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.add-child-menu-btn:hover {
+    background: var(--white);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.add-child-menu-btn.disabled {
+    background: #f1f5f9;
+    color: #94a3b8;
+    border: 1px solid #e2e8f0;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.add-child-menu-btn.disabled:hover {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+    transform: none;
+    box-shadow: none;
+}

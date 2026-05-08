@@ -1,12 +1,13 @@
 import './TopApps.css';
-import { topAppsData } from '../../../../data/Dashboard/topAppsData';
 
-const TopApps = () => {
+const TopApps = ({ child }) => {
+  const apps = child?.topApps || [];
+
   return (
     <div className="top-apps-container">
       <div className="top-apps-list-section">
         <div className="apps-list">
-          {topAppsData.map((app) => (
+          {apps.map((app) => (
             <div key={app.id} className="app-item">
               <div className="app-info-left">
                 <div className="app-icon-wrapper" style={{ backgroundColor: `${app.color}10` }}>

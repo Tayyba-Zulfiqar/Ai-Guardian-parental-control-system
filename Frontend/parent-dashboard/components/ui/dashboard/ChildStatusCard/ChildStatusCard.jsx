@@ -1,12 +1,14 @@
-import { childData } from '../../../../data/Dashboard/childData';
 import './ChildStatusCard.css';
 
-const ChildStatusCard = ({
-  name = childData.name,
-  age = childData.age,
-  status = childData.status,
-  lastSeen = childData.lastSeen
-}) => {
+const ChildStatusCard = ({ child }) => {
+  // Destructure with fallbacks to avoid crashes
+  const { 
+    name = "Child", 
+    age = "--", 
+    status = "Unknown", 
+    lastActive = "Not seen recently" 
+  } = child || {};
+
   const isOnline = status.toLowerCase() === 'online';
 
   return (
@@ -28,7 +30,7 @@ const ChildStatusCard = ({
             </span>
           </div>
           <div className="last-seen-info">
-            <span className="last-seen-text">{lastSeen}</span>
+            <span className="last-seen-text">{lastActive}</span>
             <div className={`status-dot ${isOnline ? 'active' : ''}`}></div>
           </div>
         </div>

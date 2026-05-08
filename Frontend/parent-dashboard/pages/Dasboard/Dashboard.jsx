@@ -3,30 +3,32 @@ import ChildStatusCard from '../../components/ui/dashboard/ChildStatusCard/Child
 import StatsCard from '../../components/common/StatsCard/StatsCard';
 import TopApps from '../../components/ui/dashboard/TopApps/TopApps';
 import AISummary from '../../components/ui/dashboard/AISummary/AISummary';
-import { childData } from '../../data/Dashboard/childData';
-import { statsData } from '../../data/Dashboard/statsData';
+import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/AccountSwitcher'; // New Component
+import { childrenData, parentData } from '../../data/Dashboard/childData';
 import './Dashboard.css';
 
 const Dashboard = () => {
+  // Temporary active child mock (first child in the list)
+  const activeChild = childrenData[0];
+
   return (
     <div className="dashboard-page">
-      <PageHeader
-        title={`Welcome Back, ${childData.parentName}`}
-        subtitle={`Here's what's happening with ${childData.name}'s device`}
-      />
-
-      <section className="dashboard-content">
-        <ChildStatusCard
-          name={childData.name}
-          age={childData.age}
-          status={childData.status}
-          lastSeen={childData.lastSeen}
+      <div className="dashboard-header-row">
+        <PageHeader
+          title={`Welcome Back, ${parentData.name}`}
+          subtitle={`Here's what's happening in your family today`}
         />
 
+        <AccountSwitcher />
+      </div>
+
+      <section className="dashboard-content">
+        <ChildStatusCard child={activeChild} />
+
         <div className="stats-section">
-          <h2 className="dashboard-section-title">Today's Overview:</h2>
+          <h2 className="dashboard-section-title">Today's Overview for {activeChild.name}:</h2>
           <div className="stats-overview-grid">
-            {statsData.map((stat, index) => (
+            {activeChild.stats.map((stat, index) => (
               <StatsCard
                 key={index}
                 title={stat.title}
@@ -41,10 +43,10 @@ const Dashboard = () => {
 
         <div className="stats-section">
           <h2 className="dashboard-section-title">Top Apps Used Today:</h2>
-          <TopApps />
+          <TopApps child={activeChild} />
         </div>
 
-        <AISummary />
+        <AISummary child={activeChild} />
       </section>
     </div>
   );
