@@ -52,8 +52,10 @@ Here is a delightful breakdown of the structure and features, categorized by the
 * **AI Summary**: Natural language summaries of blocked threats (e.g., "Violence-related content has increased over the last 7 days") 🤖💖
 
 #### 6️⃣ 👤🩰 Child Profile (`ChildProfile.jsx`)
-* **Link Child Device**: Generate unique pairing/QR codes with an expiry time and regenerate options 🔗🌸
-* **Child Roster**: List of connected children with name, age, device info, connection status (online/offline/linked), and last active time 🧸💖
+*   **🔗 Premium Pairing System**: Generate unique pairing codes and QR codes with a **10-minute expiry timer** ⏳💖. The system automatically resets the code and timer after a successful link, ensuring maximum security and a fresh start for every sibling 🎀✨.
+*   **👦👧 Personalized Roster**: A beautiful list of connected children featuring **gender-based avatars** (Boy 👦 / Girl 👧) assigned automatically during setup. Tracks age, device info, connection status, and last active time in real-time ☁️🌷.
+*   **🚀 Instant Regeneration**: No more waiting! The regeneration cooldown resets instantly after a successful pairing, so you can link all your family's devices in one go 🧸✨.
+*   **✨ Smart Feedback**: Receive a lovely **Success Toast** notification immediately when a child is added, giving you instant peace of mind 🍞🌸.
 
 #### 7️⃣ 🚪🎀 Controls (`Controls.jsx`)
 * **Logout Policies**: Configure how the child app gracefully handles logouts 🔒☁️
@@ -81,6 +83,9 @@ Here is a delightful breakdown of the structure and features, categorized by the
 ## 🌼 Current Status 🏗️✅
 
 ✅ **Intelligence Dashboard Page Completed** 🏠🎀
+✅ **Premium Child Pairing System with QR & Auto-Reset** 🔗✨
+✅ **Gender-based Avatar Personalization** 👧👦
+✅ **Success Feedback Notification System** 🔔💖
 ✅ **Reusable Stats Component System** 📊✨
 ✅ **Standalone AI Summary Card** 🧠💖
 ✅ **Modular File Architecture** 📂🩰
