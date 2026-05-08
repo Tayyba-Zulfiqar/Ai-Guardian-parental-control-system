@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'; // Added useNavigate
-import { Users, Plus, ChevronDown } from 'lucide-react';
+import { Users, Plus } from 'lucide-react';
 import { childrenData } from '../../../../data/Dashboard/childData';
 import './AccountSwitcher.css';
 

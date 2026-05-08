@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { pairingData } from '../data/Child-Profile/profileData';
+import { pairingData } from '../data/Family-Profiles/profileData';
 import { generatePairingCode } from '../utils/pairingUtils';
 import { formatTime } from '../utils/timeUtils';
 

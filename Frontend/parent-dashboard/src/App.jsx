@@ -5,9 +5,9 @@ import Alerts from "../pages/Alerts";
 import ChildActivity from "../pages/Child-Activity/ChildActivity";
 import Controls from "../pages/Controls";
 import ScreenTime from "../pages/ScreenTime";
-import ChildProfile from "../pages/Child-Profile/ChildProfile";
 import Settings from "../pages/Settings";
 import ContentReports from "../pages/ContentReports";
+import FamilyProfile from '../pages/Family-Profile/FamilyProfile';
 import NotFound from "../pages/NotFound";
 
 export default function App() {
@@ -19,7 +19,7 @@ export default function App() {
         <Route path="/child-activity/:childId" element={<ChildActivity />} />
         <Route path="/controls/:childId" element={<Controls />} />
         <Route path="/screen-time/:childId" element={<ScreenTime />} />
-        <Route path="/child-profile/:childId" element={<ChildProfile />} />
+        <Route path="/family-profiles/:childId" element={<FamilyProfile />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/content-reports/:childId" element={<ContentReports />} />
       </Route>

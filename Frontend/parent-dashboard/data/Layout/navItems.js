@@ -6,7 +6,7 @@ import {
 
 export const NAV_ITEMS = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-    { name: 'Child Profile', path: '/child-profile/1', icon: User },
+    { name: 'Family Profiles', path: '/family-profiles/1', icon: User },
     { name: 'Child Activity', path: '/child-activity/1', icon: Activity },
     { name: 'Screen Time', path: '/screen-time/1', icon: Clock },
     { name: 'App Controls', path: '/controls/1', icon: ShieldCheck },

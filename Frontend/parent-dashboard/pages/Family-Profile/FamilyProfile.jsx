@@ -4,11 +4,11 @@ import PageHeader from '../../components/common/PageHeader/PageHeader';
 import PairingCard from '../../components/ui/Child-Profile/PairingCard';
 import ChildList from '../../components/ui/Child-Profile/ChildList';
 import AddChildModal from '../../components/ui/Child-Profile/AddChildModal';
-import { childrenList } from '../../data/Child-Profile/profileData';
+import { childrenList } from '../../data/Family-Profiles/profileData';
 import { usePairingCode } from '../../hooks/usePairingCode';
-import './ChildProfile.css';
+import './FamilyProfile.css';
 
-const ChildProfile = () => {
+const FamilyProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [localChildren, setLocalChildren] = useState(childrenList);
   const [showToast, setShowToast] = useState(false);
@@ -86,7 +86,7 @@ const ChildProfile = () => {
   );
 };
 
-export default ChildProfile;
+export default FamilyProfile;
 
 
 //tIME BASED BEHAVIOR TRACKING
