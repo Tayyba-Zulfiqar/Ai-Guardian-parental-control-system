@@ -6,7 +6,8 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
   const [formData, setFormData] = useState({
     name: '',
     age: '',
-    deviceName: ''
+    deviceName: '',
+    gender: ''
   });
   const [errors, setErrors] = useState({});
 
@@ -18,6 +19,7 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
     if (!formData.deviceName.trim()) newErrors.deviceName = 'Please give this device a recognizable name';
     if (!formData.age) newErrors.age = 'Child\'s age is required';
     else if (formData.age < 2 || formData.age > 18) newErrors.age = 'Age must be between 2 and 18 years';
+    if (!formData.gender) newErrors.gender = 'Please select a gender';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -27,7 +29,7 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
     e.preventDefault();
     if (validate()) {
       onConfirm(formData);
-      setFormData({ name: '', age: '', deviceName: '' });
+      setFormData({ name: '', age: '', deviceName: '', gender: '' });
     }
   };
 
@@ -85,7 +87,9 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
                 </div>
                 {errors.deviceName && <span className="error-message">{errors.deviceName}</span>}
               </div>
+            </div>
 
+            <div className="form-row">
               <div className="input-field-group age-input">
                 <label className="modal-label">
                   <Calendar size={14} />
@@ -101,6 +105,25 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
                   />
                 </div>
                 {errors.age && <span className="error-message">{errors.age}</span>}
+              </div>
+
+              <div className="input-field-group flex-1">
+                <label className="modal-label">
+                  <User size={14} />
+                  <span>Gender <span className="required-star">*</span></span>
+                </label>
+                <div className={`input-wrapper ${errors.gender ? 'error' : ''}`}>
+                  <select
+                    value={formData.gender}
+                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                    className="modal-input modal-select"
+                  >
+                    <option value="" disabled>Select Gender</option>
+                    <option value="male">Boy</option>
+                    <option value="female">Girl</option>
+                  </select>
+                </div>
+                {errors.gender && <span className="error-message">{errors.gender}</span>}
               </div>
             </div>
 

@@ -34,7 +34,7 @@ const ChildProfile = () => {
       deviceType: Smartphone,
       status: "Online",
       lastActive: "Just now",
-      avatar: "🆕"
+      avatar: childInfo.gender === 'male' ? "👦" : "👧"
     };
 
     setLocalChildren((prev) => [...prev, newChild]);

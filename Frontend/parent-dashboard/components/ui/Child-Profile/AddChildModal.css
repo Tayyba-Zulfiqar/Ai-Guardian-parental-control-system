@@ -163,7 +163,7 @@
     background: #fef2f2;
 }
 
-.modal-input {
+.modal-input, .modal-select {
     width: 100%;
     padding: 0.85rem 1.25rem;
     border: none;
@@ -171,6 +171,11 @@
     font-size: 1rem;
     color: var(--bg-dark);
     outline: none;
+    appearance: none;
+}
+
+.modal-select {
+    cursor: pointer;
 }
 
 .error-message {

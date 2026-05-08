@@ -1,5 +1,4 @@
 import React from 'react';
-import { MoreVertical, Settings2, Smartphone, Tablet, Monitor } from 'lucide-react';
 import './ChildList.css';
 
 const ChildList = ({ children }) => {
@@ -46,15 +45,7 @@ const ChildList = ({ children }) => {
               </div>
             </div>
 
-            <div className="item-actions">
-              <button className="action-btn-secondary">
-                <Settings2 size={18} />
-                <span>Settings</span>
-              </button>
-              <button className="action-btn-icon">
-                <MoreVertical size={18} />
-              </button>
-            </div>
+
           </div>
         ))}
       </div>
