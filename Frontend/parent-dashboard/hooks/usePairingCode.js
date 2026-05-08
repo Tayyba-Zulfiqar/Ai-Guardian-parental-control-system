@@ -13,15 +13,15 @@ export const usePairingCode = () => {
     cooldownRef.current = cooldown;
   }, [cooldown]);
 
-  const handleRegenerateCode = useCallback((force = false) => {
+  const handleRegenerateCode = useCallback((force = false, newCooldown = 60) => {
     if (force !== true && cooldownRef.current > 0) return;
 
     setCurrentPairing((prev) => ({
       ...prev,
       code: generatePairingCode()
     }));
-    setCooldown(60); 
-    setExpiryTimer(600); 
+    setCooldown(newCooldown);
+    setExpiryTimer(600);
   }, []);
 
   useEffect(() => {

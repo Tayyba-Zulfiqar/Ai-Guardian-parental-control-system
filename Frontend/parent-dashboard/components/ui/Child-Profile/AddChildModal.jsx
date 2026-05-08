@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { X, ShieldCheck, User, Calendar, CheckCircle2, Smartphone } from 'lucide-react';
 import './AddChildModal.css';
 
@@ -18,7 +18,7 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
     if (!formData.deviceName.trim()) newErrors.deviceName = 'Please give this device a recognizable name';
     if (!formData.age) newErrors.age = 'Child\'s age is required';
     else if (formData.age < 2 || formData.age > 18) newErrors.age = 'Age must be between 2 and 18 years';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -57,11 +57,11 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
                 <span>Child's Full Name <span className="required-star">*</span></span>
               </label>
               <div className={`input-wrapper ${errors.name ? 'error' : ''}`}>
-                <input 
-                  type="text" 
-                  placeholder="e.g. Sarah Ahmed" 
+                <input
+                  type="text"
+                  placeholder="e.g. Sarah Ahmed"
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="modal-input"
                 />
               </div>
@@ -75,11 +75,11 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
                   <span>Device Name <span className="required-star">*</span></span>
                 </label>
                 <div className={`input-wrapper ${errors.deviceName ? 'error' : ''}`}>
-                  <input 
-                    type="text" 
-                    placeholder="e.g. Sarah's iPhone" 
+                  <input
+                    type="text"
+                    placeholder="e.g. Sarah's iPhone"
                     value={formData.deviceName}
-                    onChange={(e) => setFormData({...formData, deviceName: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, deviceName: e.target.value })}
                     className="modal-input"
                   />
                 </div>
@@ -92,11 +92,11 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
                   <span>Age <span className="required-star">*</span></span>
                 </label>
                 <div className={`input-wrapper ${errors.age ? 'error' : ''}`}>
-                  <input 
-                    type="number" 
-                    placeholder="12" 
+                  <input
+                    type="number"
+                    placeholder="12"
                     value={formData.age}
-                    onChange={(e) => setFormData({...formData, age: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, age: e.target.value })}
                     className="modal-input"
                   />
                 </div>

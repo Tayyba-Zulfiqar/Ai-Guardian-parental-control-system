@@ -16,3 +16,33 @@
     color: var(--primary);
     font-weight: 600;
 }
+
+/* Success Toast Styling */
+.success-toast {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    background: #ecfdf5;
+    color: #065f46;
+    padding: 1rem 1.5rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    z-index: 10000;
+    animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-weight: 600;
+    border: 1px solid #d1fae5;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

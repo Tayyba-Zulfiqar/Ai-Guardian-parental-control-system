@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Smartphone } from 'lucide-react';
+import { Smartphone, CheckCircle2 } from 'lucide-react';
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import PairingCard from '../../components/ui/Child-Profile/PairingCard';
 import ChildList from '../../components/ui/Child-Profile/ChildList';
@@ -11,12 +11,13 @@ import './ChildProfile.css';
 const ChildProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [localChildren, setLocalChildren] = useState(childrenList);
-  
-  const { 
-    pairingCode, 
-    expiryTime, 
-    cooldown, 
-    handleRegenerateCode 
+  const [showToast, setShowToast] = useState(false);
+
+  const {
+    pairingCode,
+    expiryTime,
+    cooldown,
+    handleRegenerateCode
   } = usePairingCode();
 
   const handleSimulateConnect = () => {
@@ -36,14 +37,25 @@ const ChildProfile = () => {
       avatar: "🆕"
     };
 
-    setLocalChildren([...localChildren, newChild]);
+    setLocalChildren((prev) => [...prev, newChild]);
     setIsModalOpen(false);
-    // Force regenerate the code for the next child
-    handleRegenerateCode(true);
+    
+    // Show success feedback
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+
+    // Force regenerate the code for the next child and reset the regeneration option (cooldown = 0)
+    handleRegenerateCode(true, 0);
   };
 
   return (
     <div className="dashboard-page child-profile-page">
+      {showToast && (
+        <div className="success-toast">
+          <CheckCircle2 size={18} />
+          <span>Child profile added successfully!</span>
+        </div>
+      )}
       <PageHeader
         title="Family Profiles"
         subtitle="Manage and link your children's devices here"
