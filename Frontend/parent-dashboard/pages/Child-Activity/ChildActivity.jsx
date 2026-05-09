@@ -15,7 +15,7 @@ import {
   appUsageDistribution,
   weeklyActivityTrend,
   aiInsightsData
-} from '../../data/Child-Activity/childActivityData';
+} from '../../data/Child-Activity';
 
 import { childrenData } from '../../data/Dashboard/childData';
 
