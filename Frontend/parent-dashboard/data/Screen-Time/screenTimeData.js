@@ -2,17 +2,17 @@ export const averageScreenTimeStats = {
   daily: {
     title: "Daily Average",
     value: "3h 15m",
-    trend: { direction: "up", value: "15m", text: "vs yesterday" }
+    trend: { direction: "up", value: "15m", text: "vs yesterday", type: "danger" }
   },
   weekly: {
     title: "Weekly Average",
     value: "22h 45m",
-    trend: { direction: "down", value: "2h", text: "vs last week" }
+    trend: { direction: "down", value: "2h", text: "vs last week", type: "success" }
   },
   monthly: {
     title: "Monthly Average",
     value: "98h 30m",
-    trend: { direction: "up", value: "5h", text: "vs last month" }
+    trend: { direction: "up", value: "5h", text: "vs last month", type: "danger" }
   }
 };
 

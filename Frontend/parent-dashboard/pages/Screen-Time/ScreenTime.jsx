@@ -14,7 +14,7 @@ import {
 import { childrenData } from '../../data/Dashboard/childrenData';
 
 const ScreenTime = () => {
-  const [chartView, setChartView] = useState('weekly');
+  const [chartView, setChartView] = useState('daily');
 
   // Use the first child as active for now
   const activeChild = childrenData[0];

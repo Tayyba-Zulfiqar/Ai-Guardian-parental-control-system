@@ -9,8 +9,8 @@ export const NAV_ITEMS = [
     { name: 'Family Profiles', path: '/family-profiles/1', icon: User },
     { name: 'Child Activity', path: '/child-activity/1', icon: Activity },
     { name: 'Screen Time', path: '/screen-time/1', icon: Clock },
-    { name: 'App Controls', path: '/controls/1', icon: ShieldCheck },
     { name: 'Alerts', path: '/alerts/1', icon: Bell },
     { name: 'Content Reports', path: '/content-reports/1', icon: FileText },
+    { name: 'App Controls', path: '/app-controls/1', icon: ShieldCheck },
     { name: 'Settings', path: '/settings', icon: Settings },
 ];
