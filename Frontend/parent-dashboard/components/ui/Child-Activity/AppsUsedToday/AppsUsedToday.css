@@ -44,6 +44,36 @@
     align-items: flex-start;
 }
 
+.app-icon-wrapper {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.app-icon-wrapper.youtube {
+    background: #fff1f2;
+    color: #f43f5e;
+}
+
+.app-icon-wrapper.gamepad {
+    background: #f5f3ff;
+    color: #8b5cf6;
+}
+
+.app-icon-wrapper.globe {
+    background: #f0f9ff;
+    color: #0ea5e9;
+}
+
+.app-icon-wrapper.message {
+    background: #f0fdf4;
+    color: #22c55e;
+}
+
 .app-today-info {
     display: flex;
     flex-direction: column;
