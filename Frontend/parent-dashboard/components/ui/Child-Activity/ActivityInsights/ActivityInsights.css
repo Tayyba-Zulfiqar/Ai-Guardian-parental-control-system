@@ -1,0 +1,77 @@
+.activity-insights {
+    background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-light);
+    height: 100%;
+}
+
+.insights-header {
+    margin-bottom: 1.5rem;
+}
+
+.insights-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sparkles-icon {
+    color: #8b5cf6;
+}
+
+.insights-header h3 {
+    font-size: 1.125rem;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.insights-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.insight-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 1rem;
+    border-radius: 12px;
+    background: var(--white);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    border-left: 4px solid transparent;
+    transition: transform 0.2s ease;
+}
+
+.insight-card:hover {
+    transform: translateX(4px);
+}
+
+.insight-card.warning {
+    border-left-color: #f59e0b;
+}
+
+.insight-card.alert {
+    border-left-color: #ef4444;
+}
+
+.insight-card.info {
+    border-left-color: #3b82f6;
+}
+
+.insight-icon-wrapper {
+    margin-top: 2px;
+}
+
+.warning-icon { color: #f59e0b; }
+.alert-icon { color: #ef4444; }
+.info-icon { color: #3b82f6; }
+
+.insight-text {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    line-height: 1.5;
+    margin: 0;
+}

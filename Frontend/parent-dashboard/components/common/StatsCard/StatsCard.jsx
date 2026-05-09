@@ -21,10 +21,9 @@ const StatsCard = ({
       </div>
 
       <div className="stats-card-body">
-        <div className="stats-card-value-container">
-          <span className="stats-card-value">{value}</span>
-          {subtitle && <span className="stats-card-subtitle">{subtitle}</span>}
-        </div>
+        <div className="stats-card-value">{value}</div>
+
+        {subtitle && <span className="stats-card-subtitle">{subtitle}</span>}
 
         {trend && (
           <div className={`stats-card-trend ${trend.type || ''}`}>

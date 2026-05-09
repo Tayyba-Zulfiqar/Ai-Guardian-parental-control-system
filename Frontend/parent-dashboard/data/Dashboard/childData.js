@@ -19,8 +19,7 @@ export const childrenData = [
       },
       {
         title: "Safety Score",
-        value: "85",
-        subtitle: "/ 100",
+        value: "85 / 100",
         trend: { value: "5%", text: "from yesterday", direction: "down", type: "danger" },
         Icon: Shield
       },
@@ -83,8 +82,7 @@ export const childrenData = [
       },
       {
         title: "Safety Score",
-        value: "92",
-        subtitle: "/ 100",
+        value: "92 / 100",
         trend: { value: "2%", text: "from yesterday", direction: "up", type: "success" },
         Icon: Shield
       },

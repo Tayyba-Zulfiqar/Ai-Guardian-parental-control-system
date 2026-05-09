@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Smartphone, CheckCircle2 } from 'lucide-react';
 import PageHeader from '../../components/common/PageHeader/PageHeader';
-import PairingCard from '../../components/ui/Child-Profile/PairingCard';
-import ChildList from '../../components/ui/Child-Profile/ChildList';
-import AddChildModal from '../../components/ui/Child-Profile/AddChildModal';
+import PairingCard from '../../components/ui/Family-Profiles/PairingCard';
+import ChildList from '../../components/ui/Family-Profiles/ChildList';
+import AddChildModal from '../../components/ui/Family-Profiles/AddChildModal';
 import { childrenList } from '../../data/Family-Profiles/profileData';
 import { usePairingCode } from '../../hooks/usePairingCode';
 import './FamilyProfile.css';

@@ -1,0 +1,114 @@
+.apps-used-today {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-light);
+    height: 100%;
+}
+
+.apps-today-header h3 {
+    font-size: 1.125rem;
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.apps-today-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.25rem;
+}
+
+.app-today-card {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 1.25rem;
+    border: 1px solid var(--border-light);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.app-today-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    background: var(--white);
+}
+
+.app-today-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.app-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.app-status.active {
+    background: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.app-status.inactive {
+    background: #cbd5e1;
+}
+
+.app-today-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.app-today-info .app-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.app-category-badge {
+    align-self: flex-start;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: #f0f7ff;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.app-today-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #e2e8f0;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.stat-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+@media (max-width: 640px) {
+    .apps-today-grid {
+        grid-template-columns: 1fr;
+    }
+}

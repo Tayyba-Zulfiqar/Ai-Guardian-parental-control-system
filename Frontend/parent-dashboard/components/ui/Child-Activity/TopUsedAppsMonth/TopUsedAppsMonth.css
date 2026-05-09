@@ -1,0 +1,160 @@
+.top-used-apps-month {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-light);
+    height: 100%;
+}
+
+.top-used-apps-header h3 {
+    font-size: 1.125rem;
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.top-used-apps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.app-list-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 16px;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.app-list-card:hover {
+    background: #f1f5f9;
+    transform: translateX(4px);
+}
+
+.app-info-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.app-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.app-icon-wrapper.youtube { background: #ef4444; }
+.app-icon-wrapper.gamepad { background: #8b5cf6; }
+.app-icon-wrapper.video { background: #000000; }
+.app-icon-wrapper.globe { background: #3b82f6; }
+.app-icon-wrapper.message { background: #10b981; }
+
+.app-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.app-name {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+.app-category {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.app-stats-section {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.app-usage-time {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 80px;
+}
+
+.avg-time {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+.avg-label {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.app-progress-container {
+    width: 120px;
+}
+
+.app-progress-bar {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.app-progress-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 4px;
+    transition: width 1s ease-out;
+}
+
+.app-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-width: 60px;
+    justify-content: flex-end;
+}
+
+.app-trend.increase {
+    color: #ef4444;
+}
+
+.app-trend.decrease {
+    color: #10b981;
+}
+
+@media (max-width: 768px) {
+    .app-stats-section {
+        gap: 1rem;
+    }
+    .app-progress-container {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-list-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .app-stats-section {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
