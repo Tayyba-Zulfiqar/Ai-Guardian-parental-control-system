@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import './AppUsageDistribution.css';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
@@ -7,22 +8,48 @@ const AppUsageDistribution = ({ data }) => {
 
   const chartData = data[timeframe];
   
-  const totalScreenTime = chartData.reduce((acc, curr) => acc + curr.value, 0);
+  const totalMinutes = chartData.reduce((acc, curr) => acc + curr.value, 0);
 
-  const formatTooltip = (value) => {
-    return [`${value}%`, 'Usage'];
+  const formatTime = (mins) => {
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    if (h === 0) return `${m}m`;
+    return `${h}h ${m > 0 ? `${m}m` : ''}`;
   };
 
   const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="custom-tooltip">
-          <p className="tooltip-label">{payload[0].name}</p>
-          <p className="tooltip-value">{`${payload[0].value}%`}</p>
-        </div>
-      );
-    }
-    return null;
+    return (
+      <motion.div 
+        className="custom-tooltip"
+        initial={false}
+        animate={{ 
+          opacity: active ? 1 : 0,
+          scale: active ? 1 : 0.9,
+          y: active ? 0 : 10
+        }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 400, 
+          damping: 30,
+          opacity: { duration: 0.2 }
+        }}
+      >
+        {payload && payload.length > 0 && (
+          <div className="tooltip-content">
+            <div 
+              className="tooltip-indicator" 
+              style={{ backgroundColor: payload[0].payload.fill }}
+            ></div>
+            <div className="tooltip-info">
+              <p className="tooltip-label">{payload[0].name}</p>
+              <div className="tooltip-stats">
+                <span className="tooltip-value">{formatTime(payload[0].value)}</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </motion.div>
+    );
   };
 
   return (
@@ -43,35 +70,51 @@ const AppUsageDistribution = ({ data }) => {
       </div>
 
       <div className="distribution-chart-container">
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={350}>
           <PieChart>
             <Pie
               data={chartData}
               cx="50%"
               cy="50%"
               innerRadius={80}
-              outerRadius={120}
+              outerRadius={110}
               paddingAngle={5}
               dataKey="value"
+              isAnimationActive={true}
               animationBegin={0}
-              animationDuration={800}
+              animationDuration={1200}
+              animationEasing="ease-out"
             >
               {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.fill} />
+                <Cell key={`cell-${index}`} fill={entry.fill} stroke="none" />
               ))}
             </Pie>
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip 
+              content={<CustomTooltip />}
+              cursor={false}
+              isAnimationActive={true}
+              animationDuration={400}
+              animationEasing="cubic-bezier(0.22, 1, 0.36, 1)"
+              wrapperStyle={{ 
+                outline: 'none',
+                zIndex: 1000,
+                transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
+              }}
+            />
             <Legend 
               verticalAlign="bottom" 
-              height={36} 
               iconType="circle"
-              wrapperStyle={{ fontSize: '12px', color: '#64748b' }}
+              wrapperStyle={{ 
+                fontSize: '12px', 
+                color: '#64748b', 
+                paddingTop: '30px' 
+              }}
             />
           </PieChart>
         </ResponsiveContainer>
         
         <div className="chart-center-text">
-          <span className="center-value">{totalScreenTime}%</span>
+          <span className="center-value">{formatTime(totalMinutes)}</span>
           <span className="center-label">Total Used</span>
         </div>
       </div>

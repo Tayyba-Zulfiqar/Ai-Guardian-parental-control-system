@@ -35,21 +35,21 @@ const ChildActivity = () => {
         <div className="activity-stats-row">
           <StatsCard
             title="Total Apps Used Today"
-            value={childActivityStats.totalAppsToday}
+            value={childActivityStats.totalAppsToday.value}
             Icon={LayoutGrid}
-            trend={{ type: 'success', direction: 'up', value: '2', text: 'vs yesterday' }}
+            trend={childActivityStats.totalAppsToday.trend}
           />
           <StatsCard
             title="Most Used App Today"
-            value={childActivityStats.mostUsedAppToday}
+            value={childActivityStats.mostUsedAppToday.value}
             Icon={Sparkles}
-            trend={{ type: 'warning', direction: 'up', value: '15m', text: 'more today' }}
+            trend={childActivityStats.mostUsedAppToday.trend}
           />
           <StatsCard
             title="Most Used Category"
-            value={childActivityStats.mostUsedCategoryToday}
+            value={childActivityStats.mostUsedCategoryToday.value}
             Icon={TrendingUp}
-            subtitle="Highest Activity "
+            subtitle={childActivityStats.mostUsedCategoryToday.subtitle}
           />
         </div>
       </div>
