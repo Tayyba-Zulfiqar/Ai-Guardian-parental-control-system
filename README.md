@@ -82,27 +82,29 @@ The **Parent Dashboard** is a comforting web app where parents can stay graceful
 
 ### 🧁 Core Features & Capabilities ✨
 
-* 🏠🎀 **Intelligence Dashboard**: Quick status overview, behavior insights, and remote actions (e.g., gently locking devices) 🧠✨
+* 🏠🎀 **Intelligence Dashboard**: Quick status overview, top apps, and the standardized **Activity Insights** card system 🧠✨
 * 🔔💖 **Live Alerts**: Real-time notifications for harmful events with AI summaries of actions taken 🚨🧸
-* 📱☁️ **Child Activity**: Detailed app usage tracking and visual pie charts for daily, weekly, or monthly usage 🥧✨
+* 📱☁️ **Child Activity**: Beautiful pie charts with smooth tooltips, weekly trend analysis, and comprehensive app usage grids 🥧✨
 * ⏱️🪄 **Screen Time**: Beautiful visual charts breaking down app-wise screen time and calculating averages 📊🌸
 * 🧩🍓 **Content Reports**: Threat timeline analysis, content categorization, and AI-driven summaries of blocked risks 🤖💖
-* 👤🩰 **Child Profile**: Easily link devices via QR codes and manage multiple child profiles in a sweet roster 🔗🌸
+* 👤🩰 **Child Profile**: Seamless QR pairing with auto-resetting 10-minute timers and personalized gender-based avatars 🔗🌸
 * 🚪🎀 **Advanced Controls**: Flexible logout policies including Approval Mode, PIN Mode, and Free Mode 🔒☁️
 * ⚙️🧁 **System Settings**: Complete control over parent profiles, notification preferences, and active monitoring 🛑🌷
 
 All crafted in a clean, calm, and incredibly friendly pastel interface 🌈☁️🪄
 
 ### 🛠️ Tech Stack (Parent App) 🌼🪄
-* ⚛️ **React (Vite)**
-* 💛 **JavaScript**
-* 🌐 **React Router** *(coming soon)*
+* ⚛️ **React (Vite)** – Fast and modern frontend 🌸
+* ✨ **Framer Motion** – Premium, buttery-smooth tooltip and UI animations 🪄
+* 🎨 **Vanilla CSS** – Custom-crafted pastel design system 🎀
+* 🪄 **Lucide-React** – Elegant and minimalist iconography 💐
+* 📂 **Modular Architecture** – Organized directory structure with barrel exports ☁️
 
 ### 🌷 Future Plans for Dashboard 🎀
-* 📈 Beautiful, colorful charts for screen time and activity
-* 🔔 Real-time alerts via gentle push notifications
-* 🤖 Smart AI-based behavior monitoring and summaries
-* 🔐 Secure authentication and session management
+* 📈 Beautiful, colorful charts for screen time and activity 📊🌈🌷
+* 🔔 Real-time alerts via gentle push notifications ☁️💓✨
+* 🤖 Smart AI-based behavior monitoring and summaries 🧠🎀🪄
+* 🔐 Secure authentication and session management 🛡️🧸🩰
 
 ---
 
@@ -122,7 +124,7 @@ All crafted in a clean, calm, and incredibly friendly pastel interface 🌈☁�
 ### Running the Parent Dashboard 💻✨
 1. Navigate to the parent app folder 🌼
    ```bash
-   cd Frontend/Parent-App-Frontend
+   cd Frontend/parent-dashboard
    ```
 2. Install dependencies & start the dev server 🌈
    ```bash
