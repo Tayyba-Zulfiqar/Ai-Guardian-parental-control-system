@@ -4,10 +4,16 @@
 }
 
 
+.child-profile-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
 .dashboard-content {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 2rem;
     padding-bottom: 3rem;
 }
 

@@ -1,7 +1,7 @@
 .child-activity-page {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 2rem;
     padding-left: 2rem;
     padding-right: 2rem;
     padding-bottom: 3rem;
@@ -29,13 +29,13 @@
 .activity-main-grid {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 2rem;
 }
 
 .activity-secondary-grid {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 2rem;
 }
 
 @media (max-width: 768px) {
