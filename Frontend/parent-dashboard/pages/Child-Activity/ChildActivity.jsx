@@ -2,18 +2,14 @@ import './ChildActivity.css';
 import { LayoutGrid, TrendingUp, Sparkles } from 'lucide-react';
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
-import TopUsedAppsMonth from '../../components/ui/Child-Activity/TopUsedAppsMonth/TopUsedAppsMonth';
 import AppsUsedToday from '../../components/ui/Child-Activity/AppsUsedToday/AppsUsedToday';
-import AppUsageDistribution from '../../components/ui/Child-Activity/AppUsageDistribution/AppUsageDistribution';
-import WeeklyActivityTrend from '../../components/ui/Child-Activity/WeeklyActivityTrend/WeeklyActivityTrend';
-import ActivityInsights from '../../components/ui/Child-Activity/ActivityInsights/ActivityInsights';
+import AppUsageDistribution from '../../components/charts/AppUsageDistribution/AppUsageDistribution';
+import ActivityInsights from '../../components/common/ActivityInsights/ActivityInsights';
 
 import {
   childActivityStats,
-  topUsedAppsMonth,
   appsUsedToday,
   appUsageDistribution,
-  weeklyActivityTrend,
   aiInsightsData
 } from '../../data/Child-Activity';
 
@@ -66,14 +62,6 @@ const ChildActivity = () => {
       </div>
 
       <div className="activity-secondary-grid">
-        <div className="activity-trend-container">
-          <WeeklyActivityTrend data={weeklyActivityTrend} />
-        </div>
-
-        <div className="activity-apps-container">
-          <TopUsedAppsMonth data={topUsedAppsMonth} />
-        </div>
-
         <div className="activity-insights-container">
           <ActivityInsights data={aiInsightsData} />
         </div>
@@ -83,14 +71,3 @@ const ChildActivity = () => {
 };
 
 export default ChildActivity;
-
-
-
-
-// child activity monitoring
-
-/* 
-1- most frequently used apps name monthly(top 5 with average time)
-2- all apps used today name.
-3. APP USAGE DISTRIBUTION (Chart View) --> pie chart (monthly/weekly/daily)
-*/

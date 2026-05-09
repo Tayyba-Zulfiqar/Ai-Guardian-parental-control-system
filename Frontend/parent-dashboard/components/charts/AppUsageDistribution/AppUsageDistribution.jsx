@@ -7,7 +7,7 @@ const AppUsageDistribution = ({ data }) => {
   const [timeframe, setTimeframe] = useState('daily');
 
   const chartData = data[timeframe];
-  
+
   const totalMinutes = chartData.reduce((acc, curr) => acc + curr.value, 0);
 
   const formatTime = (mins) => {
@@ -19,25 +19,25 @@ const AppUsageDistribution = ({ data }) => {
 
   const CustomTooltip = ({ active, payload }) => {
     return (
-      <motion.div 
+      <motion.div
         className="custom-tooltip"
         initial={false}
-        animate={{ 
+        animate={{
           opacity: active ? 1 : 0,
           scale: active ? 1 : 0.9,
           y: active ? 0 : 10
         }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 400, 
+        transition={{
+          type: "spring",
+          stiffness: 400,
           damping: 30,
           opacity: { duration: 0.2 }
         }}
       >
         {payload && payload.length > 0 && (
           <div className="tooltip-content">
-            <div 
-              className="tooltip-indicator" 
+            <div
+              className="tooltip-indicator"
               style={{ backgroundColor: payload[0].payload.fill }}
             ></div>
             <div className="tooltip-info">
@@ -89,30 +89,30 @@ const AppUsageDistribution = ({ data }) => {
                 <Cell key={`cell-${index}`} fill={entry.fill} stroke="none" />
               ))}
             </Pie>
-            <Tooltip 
+            <Tooltip
               content={<CustomTooltip />}
               cursor={false}
               isAnimationActive={true}
               animationDuration={400}
               animationEasing="cubic-bezier(0.22, 1, 0.36, 1)"
-              wrapperStyle={{ 
+              wrapperStyle={{
                 outline: 'none',
                 zIndex: 1000,
                 transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
               }}
             />
-            <Legend 
-              verticalAlign="bottom" 
+            <Legend
+              verticalAlign="bottom"
               iconType="circle"
-              wrapperStyle={{ 
-                fontSize: '12px', 
-                color: '#64748b', 
-                paddingTop: '30px' 
+              wrapperStyle={{
+                fontSize: '12px',
+                color: '#64748b',
+                paddingTop: '30px'
               }}
             />
           </PieChart>
         </ResponsiveContainer>
-        
+
         <div className="chart-center-text">
           <span className="center-value">{formatTime(totalMinutes)}</span>
           <span className="center-label">Total Used</span>

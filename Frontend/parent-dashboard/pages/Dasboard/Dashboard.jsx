@@ -2,9 +2,9 @@ import PageHeader from '../../components/common/PageHeader/PageHeader';
 import ChildStatusCard from '../../components/ui/dashboard/ChildStatusCard/ChildStatusCard';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
 import TopApps from '../../components/ui/dashboard/TopApps/TopApps';
-import AISummary from '../../components/ui/dashboard/AISummary/AISummary';
+import ActivityInsights from '../../components/common/ActivityInsights/ActivityInsights';
 import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/AccountSwitcher'; // New Component
-import { childrenData, parentData } from '../../data/Dashboard/childData';
+import { childrenData, parentData, dashboardInsightsData } from '../../data/Dashboard/childData';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -46,7 +46,9 @@ const Dashboard = () => {
           <TopApps child={activeChild} />
         </div>
 
-        <AISummary child={activeChild} />
+        <div className="dashboard-insights-section">
+           <ActivityInsights data={dashboardInsightsData} />
+        </div>
       </section>
     </div>
   );
