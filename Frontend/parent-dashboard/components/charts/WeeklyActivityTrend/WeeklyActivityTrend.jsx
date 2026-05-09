@@ -1,3 +1,4 @@
+
 import './WeeklyActivityTrend.css';
 import {
   AreaChart,
@@ -9,11 +10,20 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
-const WeeklyActivityTrend = ({ data }) => {
+const WeeklyActivityTrend = ({ data, view = 'weekly' }) => {
+
+  const titleMap = {
+    daily: 'Daily Screen Time Trend',
+    weekly: 'Weekly Screen Time Trend',
+    monthly: 'Monthly Screen Time Trend'
+  };
+
+  const title = titleMap[view] || 'Screen Time Trend';
 
   const formatTime = (minutes) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
+
     return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
   };
 
@@ -28,13 +38,14 @@ const WeeklyActivityTrend = ({ data }) => {
         </div>
       );
     }
+
     return null;
   };
 
   return (
     <div className="weekly-activity-trend">
       <div className="trend-header">
-        <h3>Weekly Activity Trend</h3>
+        <h3>{title}</h3>
       </div>
 
       <div className="trend-chart-container">
@@ -45,11 +56,25 @@ const WeeklyActivityTrend = ({ data }) => {
           >
             <defs>
               <linearGradient id="colorTime" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                <stop
+                  offset="5%"
+                  stopColor="#8b5cf6"
+                  stopOpacity={0.3}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="#8b5cf6"
+                  stopOpacity={0}
+                />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+
+            <CartesianGrid
+              strokeDasharray="3 3"
+              vertical={false}
+              stroke="#e2e8f0"
+            />
+
             <XAxis
               dataKey="day"
               axisLine={false}
@@ -57,13 +82,16 @@ const WeeklyActivityTrend = ({ data }) => {
               tick={{ fontSize: 12, fill: '#64748b' }}
               dy={10}
             />
+
             <YAxis
               axisLine={false}
               tickLine={false}
               tick={{ fontSize: 12, fill: '#64748b' }}
               tickFormatter={(value) => `${Math.floor(value / 60)}h`}
             />
+
             <Tooltip content={<CustomTooltip />} />
+
             <Area
               type="monotone"
               dataKey="time"
