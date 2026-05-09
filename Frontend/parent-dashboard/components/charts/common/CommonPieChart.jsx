@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import './CommonCharts.css';
@@ -23,11 +22,13 @@ const CommonPieChart = ({
   timeframes = ['daily', 'weekly', 'monthly'],
   showToggle = false
 }) => {
+  const [isChartHovered, setIsChartHovered] = useState(false);
+
   // Handle both direct data array and timeframe-based data object
   const chartData = (showToggle && data[timeframe]) ? data[timeframe] : data;
-  
+
   // Calculate total if needed
-  const totalValue = Array.isArray(chartData) 
+  const totalValue = Array.isArray(chartData)
     ? chartData.reduce((acc, curr) => acc + (curr[dataKey] || 0), 0)
     : 0;
 
@@ -39,9 +40,9 @@ const CommonPieChart = ({
     return (
       <motion.div
         className="custom-tooltip"
-        initial={{ opacity: 0, y: 10, scale: 0.98 }}
+        initial={isChartHovered ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 15, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.98 }}
+        exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="tooltip-content">
@@ -67,7 +68,7 @@ const CommonPieChart = ({
           {title && <h3>{title}</h3>}
           {subtitle && <p className="chart-subtitle">{subtitle}</p>}
         </div>
-        
+
         {showToggle && setTimeframe && (
           <div className="timeframe-toggle">
             {timeframes.map((tf) => (
@@ -99,6 +100,8 @@ const CommonPieChart = ({
               animationBegin={0}
               animationDuration={1200}
               animationEasing="ease-out"
+              onMouseEnter={() => setIsChartHovered(true)}
+              onMouseLeave={() => setIsChartHovered(false)}
             >
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color || entry.fill || "#8b5cf6"} stroke="none" />

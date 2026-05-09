@@ -1,5 +1,3 @@
-
-
 import './ContentReports.css';
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
@@ -7,7 +5,7 @@ import ActivityInsights from '../../components/common/ActivityInsights/ActivityI
 import CommonPieChart from '../../components/charts/common/CommonPieChart';
 import CommonAreaChart from '../../components/charts/common/CommonAreaChart';
 import { contentReportsData } from '../../data/Content-Reports/contentReportsData';
-import { ShieldAlert, BarChart2, PieChart as PieIcon, Activity } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
 
 const ContentReports = () => {
   const { threatTimeline, categoryAnalysis, riskScoreTrend, aiInsights } = contentReportsData;
@@ -41,7 +39,7 @@ const ContentReports = () => {
 
       <div className="charts-grid">
         <div className="chart-item">
-          <CommonPieChart 
+          <CommonPieChart
             title="Content Category Analysis"
             subtitle="Threat classification distribution"
             data={categoryAnalysis}
@@ -50,7 +48,7 @@ const ContentReports = () => {
           />
         </div>
         <div className="chart-item">
-          <CommonAreaChart 
+          <CommonAreaChart
             title="Risk Score Trend"
             subtitle="Daily threat intensity variations"
             data={riskScoreTrend}
