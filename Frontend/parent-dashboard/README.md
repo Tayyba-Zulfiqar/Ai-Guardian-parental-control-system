@@ -15,9 +15,9 @@ The Parent Dashboard is a comprehensive and comforting web app where parents can
 
 We've built this app with a modern, modular, and scalable architecture to ensure everything stays organized and "cute" forever:
 
-*   **📂 `components/common/`**: Highly reusable elements like our beautiful `StatsCard` 🧁🪄
-*   **📂 `components/ui/dashboard/`**: Specialized components including `ChildStatusCard`, `TopApps`, and `AISummary` 📱💖
-*   **📂 `data/Dashboard/`**: A centralized "Source of Truth" for all dashboard metrics, app lists, and AI insights 📂🌸
+*   **📂 `components/common/`**: Highly reusable elements like our beautiful `StatsCard` and standardized `ActivityInsights` component 🧁🪄
+*   **📂 `components/charts/`**: A dedicated home for high-performance, reusable chart modules like `AppUsageDistribution` and `WeeklyActivityTrend` 📊✨
+*   **📂 `data/Dashboard/` & `data/Child-Activity/`**: Fully modularized data layers with barrel imports (`index.js`) for a clean and professional "Source of Truth" 📂🌸
 *   **🎨 `src/index.css`**: A centralized design system using CSS variables for a consistent pastel theme 🌈✨
 
 ---
@@ -29,7 +29,7 @@ Here is a delightful breakdown of the structure and features, categorized by the
 #### 1️⃣ 🏠🎀 Intelligence Dashboard (`Dashboard.jsx`)
 *   **✨ Today's Overview**: A bold, high-visibility section featuring **Stats Cards** for Screen Time, Safety Scores, Risk Levels, and Alert counts 📊🧁
 *   **📱 Top Apps Used Today**: A clean, distraction-free list of the child's most used applications with precise usage time 🌷🧸
-*   **🧠 Daily Behavior AI Insights**: A standalone, premium "Intelligence Card" that provides parents with a simple, 2-3 line summary of their child's day 🎀✨
+*   **🧠 Behavioral AI Insights**: Standardized common component that provides a clean, card-based summary of daily activities 🎀✨
 *   **👶 Child Status Card**: Real-time status tracker showing age, online/offline status, and last active time ☁️💖
 
 #### 2️⃣ 🔔💖 Live Alerts (`Alerts.jsx`)
@@ -38,8 +38,10 @@ Here is a delightful breakdown of the structure and features, categorized by the
 * **AI Actions Taken**: Summarizes system actions (e.g., "Content blocked", "App access restricted", "Parent notified", "Device locked") 🛡️🎀
 
 #### 3️⃣ 📱☁️ Child Activity (`ChildActivity.jsx`)
-* **App Usage Tracking**: Lists all apps used today and the top 5 frequently used apps monthly with average time 💖📈
-* **Usage Distribution**: Visual pie charts showing app distribution daily, weekly, or monthly 🥧✨
+*   **📊 App Usage Distribution**: Premium Pie Charts with **butter-smooth tooltip animations** that glide between data points 🥧✨
+*   **📈 Activity Trends**: Beautiful area charts visualizing screen time patterns over the past week 📊🌸
+*   **📱 All Apps Used Today**: A comprehensive, color-coded grid of every application accessed by the child today 🌷🧸
+*   **🧠 Deep AI Insights**: Specific behavioral summaries focused on usage spikes, educational progress, and digital habits 🎀✨
 
 #### 4️⃣ ⏱️🪄 Screen Time (`ScreenTime.jsx`)
 * **Visual Charts**: Beautiful daily, weekly, and monthly screen time tracking charts 📊🌸
@@ -74,21 +76,21 @@ Here is a delightful breakdown of the structure and features, categorized by the
 ## 🛠️ Tech Stack 🌼🪄
 
 *   ⚛️ **React (Vite)** – Fast and modern frontend 🌸
+*   ✨ **Framer Motion** – Premium, buttery-smooth tooltip and UI animations 🪄
 *   🎨 **Vanilla CSS** – Custom-crafted pastel design system 🎀
 *   🪄 **Lucide-React** – Elegant and minimalist iconography 💐
-*   📂 **Data-Driven UI** – Centralized state management for easy updates ☁️
+*   📂 **Modular Architecture** – Organized directory structure with barrel exports for maximum scalability ☁️
 
 ---
 
 ## 🌼 Current Status 🏗️✅
 
 ✅ **Intelligence Dashboard Page Completed** 🏠🎀
+✅ **Child Activity Page & Analytics Completed** 📊✨
 ✅ **Premium Child Pairing System with QR & Auto-Reset** 🔗✨
+✅ **Reusable Chart Library & Standardized AI Insights** 🥧🧸
 ✅ **Gender-based Avatar Personalization** 👧👦
-✅ **Success Feedback Notification System** 🔔💖
-✅ **Reusable Stats Component System** 📊✨
-✅ **Standalone AI Summary Card** 🧠💖
-✅ **Modular File Architecture** 📂🩰
+✅ **Modular Data Architecture with Barrel Imports** 📂🩰
 🚧 UI development for Alerts and Reports in progress... 🎀✨
 
 ---
@@ -104,17 +106,18 @@ Then open 👉 http://localhost:5173/ 💫🧁
 
 ---
 
-## 🌷 Future Plans 🎀
+## 🌷 Future Plans 🎀✨
 
-* 📈 Beautiful, colorful charts for screen time and activity
-* 🔔 Real-time alerts via gentle push notifications
-* 🤖 Smart AI-based behavior monitoring and summaries
-* 🔐 Secure authentication and session management
+* 📈 Beautiful, colorful charts for screen time and activity 📊🌈🌷
+* 🔔 Real-time alerts via gentle push notifications ☁️💓✨
+* 🤖 Smart AI-based behavior monitoring and summaries 🧠🎀🪄
+* 🔐 Secure authentication and session management 🛡️🧸🩰
+
+---
+
+## 💕 Vision 🕊️✨🌷
+
+To create a safe and supportive digital environment for children — while giving parents absolute peace of mind 🕊️💖🌸✨
 
 ---
 
-## 💕 Vision 🕊️✨
-
-To create a safe and supportive digital environment for children — while giving parents absolute peace of mind 🕊️💖🌸
-
----
