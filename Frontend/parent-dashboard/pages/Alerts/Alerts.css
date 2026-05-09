@@ -1,8 +1,7 @@
 .alerts-page {
+  padding: 1.5rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  padding-left: 2rem;
-  padding-right: 2rem; /* Balanced padding */
   display: flex;
   flex-direction: column;
   gap: 2rem;

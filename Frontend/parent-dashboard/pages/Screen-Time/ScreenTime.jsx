@@ -4,7 +4,7 @@ import { Clock, Calendar, CalendarDays } from 'lucide-react';
 
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
-import WeeklyActivityTrend from '../../components/charts/WeeklyActivityTrend/WeeklyActivityTrend';
+import CommonAreaChart from '../../components/charts/common/CommonAreaChart';
 
 import {
   averageScreenTimeStats,
@@ -94,9 +94,12 @@ const ScreenTime = () => {
             </div>
           </div>
 
-          <WeeklyActivityTrend
+          <CommonAreaChart
             data={screenTimeTrendData[chartView]}
-            view={chartView}
+            xKey="day"
+            yKey="time"
+            color="#8b5cf6"
+            yAxisFormatter={(value) => `${Math.floor(value / 60)}h`}
           />
 
         </div>
