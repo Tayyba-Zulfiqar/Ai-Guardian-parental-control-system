@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import Dashboard from "../pages/Dasboard/Dashboard";
+import Dashboard from "../pages/Dashboard/Dashboard";
 import Alerts from "../pages/Alerts";
 import ChildActivity from "../pages/Child-Activity/ChildActivity";
 import Controls from "../pages/Controls";
-import ScreenTime from "../pages/ScreenTime";
+import ScreenTime from "../pages/Screen-Time/ScreenTime";
 import Settings from "../pages/Settings";
 import ContentReports from "../pages/ContentReports";
 import FamilyProfile from '../pages/Family-Profile/FamilyProfile';

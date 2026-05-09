@@ -1,4 +1,4 @@
-import React from 'react';
+import './ScreenTime.css'
 
 //tIME BASED BEHAVIOR TRACKING
 

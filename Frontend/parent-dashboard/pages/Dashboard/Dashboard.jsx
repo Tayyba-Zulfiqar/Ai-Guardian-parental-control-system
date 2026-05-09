@@ -47,7 +47,7 @@ const Dashboard = () => {
         </div>
 
         <div className="dashboard-insights-section">
-           <ActivityInsights data={dashboardInsightsData} />
+          <ActivityInsights data={dashboardInsightsData} />
         </div>
       </section>
     </div>
