@@ -23,40 +23,6 @@
     width: 100%;
 }
 
-.chart-wrapper-with-toggle {
-    position: relative;
-    height: 100%;
-}
-
-.timeframe-toggle-container {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    z-index: 10;
-    display: flex;
-    background: #f1f5f9;
-    border-radius: 12px;
-    padding: 4px;
-}
-
-.toggle-btn {
-    background: transparent;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #64748b;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.toggle-btn.active {
-    background: var(--white);
-    color: var(--bg-dark);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
 .activity-main-grid {
     display: flex;
     flex-direction: column;

@@ -11,6 +11,7 @@ import { ShieldAlert, BarChart2, PieChart as PieIcon, Activity } from 'lucide-re
 
 const ContentReports = () => {
   const { threatTimeline, categoryAnalysis, riskScoreTrend, aiInsights } = contentReportsData;
+  const totalThreats = categoryAnalysis.reduce((acc, curr) => acc + curr.value, 0);
 
   return (
     <div className="content-reports-page">
@@ -43,7 +44,9 @@ const ContentReports = () => {
           <CommonPieChart 
             title="Content Category Analysis"
             subtitle="Threat classification distribution"
-            data={categoryAnalysis} 
+            data={categoryAnalysis}
+            centerValue={totalThreats}
+            centerLabel="Total Threats"
           />
         </div>
         <div className="chart-item">

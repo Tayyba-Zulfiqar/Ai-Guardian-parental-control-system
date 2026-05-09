@@ -20,16 +20,6 @@ const ChildActivity = () => {
   const [timeframe, setTimeframe] = useState('daily');
   const activeChild = childrenData[0];
 
-  const currentChartData = appUsageDistribution[timeframe];
-  const totalMinutes = currentChartData.reduce((acc, curr) => acc + curr.value, 0);
-
-  const formatTime = (mins) => {
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-    if (h === 0) return `${m}m`;
-    return `${h}h ${m > 0 ? `${m}m` : ''}`;
-  };
-
   return (
     <div className="child-activity-page">
       <PageHeader
@@ -68,28 +58,21 @@ const ChildActivity = () => {
         </div>
 
         <div className="activity-right-column">
-          <div className="chart-wrapper-with-toggle">
-            <div className="timeframe-toggle-container">
-              {['daily', 'weekly', 'monthly'].map((tf) => (
-                <button
-                  key={tf}
-                  className={`toggle-btn ${timeframe === tf ? 'active' : ''}`}
-                  onClick={() => setTimeframe(tf)}
-                >
-                  {tf.charAt(0).toUpperCase() + tf.slice(1)}
-                </button>
-              ))}
-            </div>
-            <CommonPieChart 
-              title="App Usage Distribution"
-              data={currentChartData}
-              centerValue={formatTime(totalMinutes)}
-              centerLabel="Total Used"
-              innerRadius={80}
-              outerRadius={110}
-              height={350}
-            />
-          </div>
+          <CommonPieChart 
+            title="App Usage Distribution"
+            subtitle="Time spent per category"
+            data={appUsageDistribution} 
+            showToggle={true}
+            timeframe={timeframe} 
+            setTimeframe={setTimeframe} 
+            centerLabel="Total Used"
+            valueFormatter={(mins) => {
+              const h = Math.floor(mins / 60);
+              const m = mins % 60;
+              if (h === 0) return `${m}m`;
+              return `${h}h ${m > 0 ? `${m}m` : ''}`;
+            }}
+          />
         </div>
       </div>
 
