@@ -16,7 +16,8 @@
     color: var(--bg-dark);
     letter-spacing: -0.02em;
     margin: 0;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+
 }
 
 .activity-stats-row {
@@ -43,7 +44,7 @@
         padding-left: 1rem;
         padding-right: 1rem;
     }
-    
+
     .activity-stats-row {
         flex-direction: column;
     }

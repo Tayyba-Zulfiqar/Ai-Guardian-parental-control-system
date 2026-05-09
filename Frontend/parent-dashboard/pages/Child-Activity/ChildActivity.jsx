@@ -2,7 +2,6 @@ import './ChildActivity.css';
 import { LayoutGrid, TrendingUp, Sparkles } from 'lucide-react';
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
-
 import TopUsedAppsMonth from '../../components/ui/Child-Activity/TopUsedAppsMonth/TopUsedAppsMonth';
 import AppsUsedToday from '../../components/ui/Child-Activity/AppsUsedToday/AppsUsedToday';
 import AppUsageDistribution from '../../components/ui/Child-Activity/AppUsageDistribution/AppUsageDistribution';
@@ -57,6 +56,7 @@ const ChildActivity = () => {
 
       <div className="activity-main-grid">
         <div className="activity-left-column">
+          <h2 className="dashboard-section-title">All Apps Used Today:</h2>
           <AppsUsedToday data={appsUsedToday} />
         </div>
 

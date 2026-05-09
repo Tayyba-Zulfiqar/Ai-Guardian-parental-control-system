@@ -5,6 +5,7 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     border: 1px solid var(--border-light);
     height: 100%;
+    margin-top: 50px;
 }
 
 .apps-today-header h3 {
@@ -41,21 +42,6 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-}
-
-.app-status {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-
-.app-status.active {
-    background: #10b981;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-}
-
-.app-status.inactive {
-    background: #cbd5e1;
 }
 
 .app-today-info {

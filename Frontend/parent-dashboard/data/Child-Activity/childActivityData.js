@@ -88,24 +88,6 @@ export const appsUsedToday = [
     lastOpened: "5 hours ago",
     status: "inactive",
     iconType: "message"
-  },
-  {
-    id: 5,
-    name: "Mathletics",
-    category: "Education",
-    timeSpent: "30m",
-    lastOpened: "1 hour ago",
-    status: "inactive",
-    iconType: "book"
-  },
-  {
-    id: 6,
-    name: "Camera",
-    category: "Utility",
-    timeSpent: "5m",
-    lastOpened: "4 hours ago",
-    status: "inactive",
-    iconType: "camera"
   }
 ];
 
