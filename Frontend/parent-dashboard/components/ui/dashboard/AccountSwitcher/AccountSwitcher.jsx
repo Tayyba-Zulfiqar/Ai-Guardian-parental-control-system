@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'; // Added useNavigate
 import { Users, Plus } from 'lucide-react';
-import { childrenData } from '../../../../data/Dashboard/childData';
+import { childrenData } from '../../../../data/Dashboard/childrenData';
 import './AccountSwitcher.css';
 
 const AccountSwitcher = () => {

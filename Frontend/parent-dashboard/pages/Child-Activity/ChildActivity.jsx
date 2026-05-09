@@ -13,7 +13,7 @@ import {
   aiInsightsData
 } from '../../data/Child-Activity';
 
-import { childrenData } from '../../data/Dashboard/childData';
+import { childrenData } from '../../data/Dashboard/childrenData';
 
 const ChildActivity = () => {
   // Use the first child as active for now, consistent with Dashboard
