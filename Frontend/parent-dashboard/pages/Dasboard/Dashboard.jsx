@@ -4,7 +4,7 @@ import StatsCard from '../../components/common/StatsCard/StatsCard';
 import TopApps from '../../components/ui/dashboard/TopApps/TopApps';
 import ActivityInsights from '../../components/common/ActivityInsights/ActivityInsights';
 import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/AccountSwitcher'; // New Component
-import { childrenData, parentData, dashboardInsightsData } from '../../data/Dashboard/childData';
+import { childrenData, parentData, dashboardInsightsData } from '../../data/Dashboard';
 import './Dashboard.css';
 
 const Dashboard = () => {
