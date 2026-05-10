@@ -63,16 +63,7 @@ const AppControls = () => {
       <section className="dashboard-content">
         <div className="controls-grid single-column">
           <div className="controls-main">
-            {/* Section 1: Monitoring Status */}
-            <div className="stats-section">
-              <h2 className="dashboard-section-title">Monitoring Settings</h2>
-              <MonitoringStatus
-                isActive={isMonitoringActive}
-                onToggle={handleToggleMonitoring}
-              />
-            </div>
-
-            {/* Section 2: Security PIN */}
+            {/* Section 1: Security PIN */}
             <div className="stats-section">
               <h2 className="dashboard-section-title">Security & Access</h2>
               <SecurityPIN
@@ -83,17 +74,48 @@ const AppControls = () => {
               />
             </div>
 
-            {/* Section 3: Logout Protection Mode */}
-            <div className="stats-section">
-              <h2 className="dashboard-section-title">Logout Protection</h2>
-              <LogoutProtection
-                mode={logoutMode}
-                onModeChange={handleModeChange}
-                onSetPin={openPinModal}
-                pendingRequests={requests}
-                onApproveRequest={handleApproveRequest}
-                onDenyRequest={handleDenyRequest}
-              />
+            {/* Section 2: Monitoring Status & Section 3: Logout Protection */}
+            {!isPinSet && (
+              <div className="restricted-banner">
+                <div className="lock-icon-box">
+                  <span role="img" aria-label="lock">🔒</span>
+                </div>
+                <div className="banner-text-content">
+                  <h3>Configuration Locked</h3>
+                  <p>Set a Security PIN above to enable monitoring and logout protection settings.</p>
+                </div>
+              </div>
+            )}
+
+            <div 
+              className={`restricted-access-zone ${!isPinSet ? 'is-disabled' : ''}`}
+              onClick={() => {
+                if (!isPinSet) {
+                  showToast('Set a Security PIN first to configure logout protection', 'warning');
+                }
+              }}
+            >
+              {/* Section 2: Monitoring Status */}
+              <div className="stats-section">
+                <h2 className="dashboard-section-title">Monitoring Settings</h2>
+                <MonitoringStatus
+                  isActive={isMonitoringActive}
+                  onToggle={handleToggleMonitoring}
+                />
+              </div>
+
+              {/* Section 3: Logout Protection Mode */}
+              <div className="stats-section">
+                <h2 className="dashboard-section-title">Logout Protection</h2>
+                <LogoutProtection
+                  mode={logoutMode}
+                  onModeChange={handleModeChange}
+                  onSetPin={openPinModal}
+                  pendingRequests={requests}
+                  onApproveRequest={handleApproveRequest}
+                  onDenyRequest={handleDenyRequest}
+                />
+              </div>
             </div>
           </div>
         </div>
