@@ -1,12 +1,7 @@
 
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { 
-  useMonitoring, 
-  useRequests, 
-  useAppToasts, 
-  usePinWithModals 
-} from '../../hooks/App-Controls';
+import useDeviceControls from '../../hooks/App-Controls/useDeviceControls';
 
 // Common Components
 import PageHeader from '../../components/common/PageHeader/PageHeader';
@@ -28,32 +23,16 @@ import AppControlModals from '../../components/ui/App-Controls/modals/AppControl
 import './AppControls.css';
 
 const AppControls = () => {
-  const appToasts = useAppToasts();
-  
-  // Use refs to pass setters to usePinWithModals to avoid circular dependencies during initialization
-  const monitoringRef = useRef({});
-  const requestsRef = useRef({});
-
   const {
-    pinManager,
-    modalState,
-    pendingActions,
-    handleVerifyPin,
-    handleSetPin,
-    handleRemovePin
-  } = usePinWithModals(monitoringRef.current, requestsRef.current, appToasts);
-
-  const monitoring = useMonitoring(pendingActions, pinManager, appToasts.showToast);
-  const requestsState = useRequests(pendingActions, pinManager, appToasts.showToast);
-
-  // Keep refs in sync with latest state/setters
-  useEffect(() => {
-    monitoringRef.current = monitoring;
-    requestsRef.current = requestsState;
-  }, [monitoring, requestsState]);
+    monitoring,
+    requests,
+    pin,
+    modals,
+    toast
+  } = useDeviceControls();
 
   const handleLockedClick = () => {
-    appToasts.showToast('Set a Security PIN first to configure logout protection', 'warning');
+    toast.show('Set a Security PIN first to configure logout protection', 'warning');
   };
 
   return (
@@ -69,34 +48,34 @@ const AppControls = () => {
             {/* Section 1: Security PIN */}
             <ControlSection title="Security & Access">
               <SecurityPIN
-                isPinSet={pinManager.isPinSet}
-                lastChangedDate={pinManager.lastChangedDate}
-                onSetPin={() => modalState.setIsPinModalOpen(true)}
-                onRemovePin={handleRemovePin}
+                isPinSet={pin.isSet}
+                lastChangedDate={pin.lastChangedDate}
+                onSetPin={pin.openModal}
+                onRemovePin={pin.handleRemove}
               />
             </ControlSection>
 
             {/* Section 2 & 3: Monitoring & Logout Protection */}
-            {!pinManager.isPinSet && <ConfigurationLockedBanner />}
+            {!pin.isSet && <ConfigurationLockedBanner />}
 
             <RestrictedAccessZone
-              isLocked={!pinManager.isPinSet}
+              isLocked={!pin.isSet}
               onLockedClick={handleLockedClick}
             >
               <ControlSection title="Monitoring Settings">
                 <MonitoringStatus
-                  isActive={monitoring.isMonitoringActive}
-                  onToggle={monitoring.handleToggleMonitoring}
+                  isActive={monitoring.isActive}
+                  onToggle={monitoring.handleToggle}
                 />
               </ControlSection>
 
               <ControlSection title="Logout Protection">
                 <LogoutProtection
-                  mode={monitoring.logoutMode}
+                  mode={monitoring.mode}
                   onModeChange={monitoring.handleModeChange}
-                  pendingRequests={requestsState.requests}
-                  onApproveRequest={requestsState.handleApproveRequest}
-                  onDenyRequest={requestsState.handleDenyRequest}
+                  pendingRequests={requests.data}
+                  onApproveRequest={requests.handleApprove}
+                  onDenyRequest={requests.handleDeny}
                 />
               </ControlSection>
             </RestrictedAccessZone>
@@ -106,63 +85,21 @@ const AppControls = () => {
 
       {/* All App Control Modals */}
       <AppControlModals
-        confirmToggle={{
-          isOpen: modalState.isConfirmToggleModalOpen,
-          onClose: () => modalState.setIsConfirmToggleModalOpen(false),
-          onConfirm: pendingActions.execute
-        }}
-        pinSetup={{
-          isOpen: modalState.isPinModalOpen,
-          onClose: () => modalState.setIsPinModalOpen(false),
-          onSave: handleSetPin,
-          isPinSet: pinManager.isPinSet,
-          storedPin: pinManager.storedPin
-        }}
-        verifyPin={{
-          isOpen: modalState.isVerifyModalOpen,
-          onClose: () => {
-            modalState.setIsVerifyModalOpen(false);
-            pendingActions.clearPending();
-          },
-          onVerify: handleVerifyPin,
-          isPendingMonitoringToggle: pendingActions.isPendingMonitoringToggle,
-          pendingRequestId: pendingActions.pendingRequestId,
-          pendingModeChange: pendingActions.pendingModeChange
-        }}
-        pinRecommendation={{
-          isOpen: modalState.isPinRecommendationModalOpen,
-          onClose: () => {
-            modalState.setIsPinRecommendationModalOpen(false);
-            pendingActions.clearPending();
-          },
-          onSkip: pendingActions.skip,
-          onSetup: () => {
-            modalState.setIsPinRecommendationModalOpen(false);
-            modalState.setIsPinModalOpen(true);
-          },
-          isPendingMonitoringToggle: pendingActions.isPendingMonitoringToggle,
-          pendingRequestId: pendingActions.pendingRequestId
-        }}
-        finalConfirm={{
-          isOpen: modalState.isFinalConfirmModalOpen,
-          onClose: () => {
-            modalState.setIsFinalConfirmModalOpen(false);
-            pendingActions.clearPending();
-          },
-          onConfirm: pendingActions.execute,
-          actionType: pendingActions.pendingActionType,
-          requestData: requestsState.requests.find(r => r.id === pendingActions.pendingRequestId)
-        }}
+        confirmToggle={modals.confirmToggle}
+        pinSetup={modals.pinSetup}
+        verifyPin={modals.verifyPin}
+        pinRecommendation={modals.pinRecommendation}
+        finalConfirm={modals.finalConfirm}
       />
 
       {/* Toasts */}
       <AnimatePresence>
-        {appToasts.toast && (
+        {toast.data && (
           <div className="toast-container">
             <Toast
-              message={appToasts.toast.message}
-              type={appToasts.toast.type}
-              onClose={appToasts.closeToast}
+              message={toast.data.message}
+              type={toast.data.type}
+              onClose={toast.close}
             />
           </div>
         )}
