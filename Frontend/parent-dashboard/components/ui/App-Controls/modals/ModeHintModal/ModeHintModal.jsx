@@ -1,6 +1,6 @@
 
-import Modal from '../../../common/Modal/Modal';
-import Button from '../../../common/Button/Button';
+import Modal from '../../../../common/Modal/Modal';
+import Button from '../../../../common/Button/Button';
 
 const ModeHintModal = ({ isOpen, onClose, selectedModeName }) => {
   return (

@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Eye, EyeOff, CheckCircle2, AlertCircle, X } from 'lucide-react';
-import Button from '../../common/Button/Button';
+import Button from '../../../../common/Button/Button';
 import './SecurityPinModal.css';
 
 const SecurityPinModal = ({ onSave, onCancel, initialPin = '' }) => {

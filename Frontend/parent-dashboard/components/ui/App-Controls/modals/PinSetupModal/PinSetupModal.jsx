@@ -1,6 +1,6 @@
 
-import Modal from '../../../common/Modal/Modal';
-import SecurityPinModal from '../SecurityPinModal';
+import Modal from '../../../../common/Modal/Modal';
+import SecurityPinModal from '../SecurityPinModal/SecurityPinModal';
 
 const PinSetupModal = ({ isOpen, onClose, onSave, isPinSet }) => {
   return (

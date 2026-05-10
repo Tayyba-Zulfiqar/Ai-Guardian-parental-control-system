@@ -1,7 +1,7 @@
 
 import { Smartphone, Tablet, Trash2, Globe } from 'lucide-react';
-import Button from '../../common/Button/Button';
-import Card from '../../common/Card/Card';
+import Button from '../../../common/Button/Button';
+import Card from '../../../common/Card/Card';
 import './ConnectedDevices.css';
 
 const ConnectedDevices = ({ devices, onRemoveDevice }) => {

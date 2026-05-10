@@ -1,8 +1,8 @@
 
 import { CheckCircle2, Lock, Unlock, AlertCircle, Clock, Settings } from 'lucide-react';
 
-import Card from '../../common/Card/Card';
-import Button from '../../common/Button/Button';
+import Card from '../../../common/Card/Card';
+import Button from '../../../common/Button/Button';
 import './LogoutProtection.css';
 
 const LogoutProtection = ({ 

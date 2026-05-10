@@ -1,7 +1,7 @@
 
 import { ShieldCheck, Info, AlertTriangle } from 'lucide-react';
-import Card from '../../common/Card/Card';
-import Button from '../../common/Button/Button';
+import Card from '../../../common/Card/Card';
+import Button from '../../../common/Button/Button';
 import './SecurityPIN.css';
 
 const SecurityPIN = ({ isPinSet, lastChangedDate, onSetPin, onRemovePin }) => {

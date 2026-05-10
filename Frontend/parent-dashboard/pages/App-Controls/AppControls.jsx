@@ -4,14 +4,14 @@ import useDeviceControls from '../../hooks/useDeviceControls';
 
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import Toast from '../../components/common/Toast/Toast';
-import MonitoringStatus from '../../components/ui/App-Controls/MonitoringStatus';
-import LogoutProtection from '../../components/ui/App-Controls/LogoutProtection';
-import SecurityPIN from '../../components/ui/App-Controls/SecurityPIN';
+import MonitoringStatus from '../../components/ui/App-Controls/MonitoringStatus/MonitoringStatus';
+import LogoutProtection from '../../components/ui/App-Controls/LogoutProtection/LogoutProtection';
+import SecurityPIN from '../../components/ui/App-Controls/SecurityPIN/SecurityPIN';
 
 // Extracted Modals
-import ConfirmPauseModal from '../../components/ui/App-Controls/modals/ConfirmPauseModal';
-import ModeHintModal from '../../components/ui/App-Controls/modals/ModeHintModal';
-import PinSetupModal from '../../components/ui/App-Controls/modals/PinSetupModal';
+import ConfirmPauseModal from '../../components/ui/App-Controls/modals/ConfirmPauseModal/ConfirmPauseModal';
+import ModeHintModal from '../../components/ui/App-Controls/modals/ModeHintModal/ModeHintModal';
+import PinSetupModal from '../../components/ui/App-Controls/modals/PinSetupModal/PinSetupModal';
 
 import './AppControls.css';
 
@@ -63,7 +63,7 @@ const AppControls = () => {
             {/* Section 2: Security PIN */}
             <div className="stats-section">
               <h2 className="dashboard-section-title">Security & Access</h2>
-              <SecurityPIN 
+              <SecurityPIN
                 isPinSet={isPinSet}
                 lastChangedDate={lastChangedDate}
                 onSetPin={openPinModal}
@@ -88,14 +88,14 @@ const AppControls = () => {
       </section>
 
       {/* Confirmation Modal for Monitoring */}
-      <ConfirmPauseModal 
+      <ConfirmPauseModal
         isOpen={isConfirmToggleModalOpen}
         onClose={closeConfirmModal}
         onConfirm={confirmToggleOff}
       />
 
       {/* PIN Modal */}
-      <PinSetupModal 
+      <PinSetupModal
         isOpen={isPinModalOpen}
         onClose={closePinModal}
         onSave={handleSetPin}
@@ -103,7 +103,7 @@ const AppControls = () => {
       />
 
       {/* Scroll Hint Modal */}
-      <ModeHintModal 
+      <ModeHintModal
         isOpen={isScrollHintModalOpen}
         onClose={closeHintModal}
         selectedModeName={selectedModeName}
