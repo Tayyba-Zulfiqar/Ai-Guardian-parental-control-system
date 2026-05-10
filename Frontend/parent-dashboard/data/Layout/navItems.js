@@ -1,5 +1,5 @@
 import {
-    LayoutDashboard, Activity, Clock, ShieldCheck, Bell, Settings,
+    LayoutDashboard, Activity, Clock, ShieldCheck, Bell,
     User, FileText
 } from 'lucide-react';
 
@@ -12,5 +12,5 @@ export const NAV_ITEMS = [
     { name: 'Alerts', path: '/alerts/1', icon: Bell },
     { name: 'Content Reports', path: '/content-reports/1', icon: FileText },
     { name: 'App Controls', path: '/app-controls/1', icon: ShieldCheck },
-    { name: 'Settings', path: '/settings', icon: Settings },
+    { name: 'Parent Account', path: '/parent-account', icon: User },
 ];

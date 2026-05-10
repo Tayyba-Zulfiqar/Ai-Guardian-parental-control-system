@@ -1,7 +1,34 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import './CommonCharts.css';
+
+const CustomTooltip = ({ active, payload, valueFormatter, isChartHovered }) => {
+  if (!active || !payload || !payload.length) return null;
+
+  return (
+    <motion.div
+      className="custom-tooltip"
+      initial={isChartHovered ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 15, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="tooltip-content">
+        <div
+          className="tooltip-indicator"
+          style={{ backgroundColor: payload[0].payload.fill || payload[0].color }}
+        ></div>
+        <div className="tooltip-info">
+          <p className="tooltip-label">{payload[0].name}</p>
+          <div className="tooltip-stats">
+            <span className="tooltip-value">{valueFormatter(payload[0].value)}</span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 const CommonPieChart = ({
   title,
@@ -33,33 +60,6 @@ const CommonPieChart = ({
     : 0;
 
   const displayValue = centerValue !== undefined ? centerValue : valueFormatter(totalValue);
-
-  const CustomTooltip = ({ active, payload }) => {
-    if (!active || !payload || !payload.length) return null;
-
-    return (
-      <motion.div
-        className="custom-tooltip"
-        initial={isChartHovered ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 15, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <div className="tooltip-content">
-          <div
-            className="tooltip-indicator"
-            style={{ backgroundColor: payload[0].payload.fill || payload[0].color }}
-          ></div>
-          <div className="tooltip-info">
-            <p className="tooltip-label">{payload[0].name}</p>
-            <div className="tooltip-stats">
-              <span className="tooltip-value">{valueFormatter(payload[0].value)}</span>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
 
   return (
     <div className="common-chart-card">
@@ -108,7 +108,7 @@ const CommonPieChart = ({
               ))}
             </Pie>
             <Tooltip
-              content={<CustomTooltip />}
+              content={<CustomTooltip valueFormatter={valueFormatter} isChartHovered={isChartHovered} />}
               cursor={false}
               isAnimationActive={false}
               wrapperStyle={{

@@ -1,4 +1,4 @@
-import { AlertTriangle, ShieldAlert, Ban, Activity } from 'lucide-react';
+import { AlertTriangle, ShieldAlert, Ban } from 'lucide-react';
 
 export const alertsStatsData = [
   {
