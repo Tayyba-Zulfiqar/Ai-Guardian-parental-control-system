@@ -1,0 +1,29 @@
+
+.restricted-access-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.restricted-access-zone.is-disabled {
+  opacity: 0.5;
+  filter: grayscale(1) blur(0.5px);
+  cursor: not-allowed;
+}
+
+.restricted-access-zone.is-disabled > * {
+  pointer-events: none;
+}
+
+.restricted-access-zone.is-disabled::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  z-index: 100;
+  cursor: not-allowed;
+}

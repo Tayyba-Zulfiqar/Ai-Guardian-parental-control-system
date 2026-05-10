@@ -1,7 +1,7 @@
 
 import { Shield, AlertTriangle } from 'lucide-react';
-import Card from '../../../common/Card/Card';
-import Toggle from '../../../common/Toggle/Toggle';
+import Card from '../../../../common/Card/Card';
+import Toggle from '../../../../common/Toggle/Toggle';
 import './MonitoringStatus.css';
 
 const MonitoringStatus = ({ isActive, onToggle }) => {

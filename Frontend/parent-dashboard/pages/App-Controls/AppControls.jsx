@@ -1,19 +1,24 @@
 
+import React from 'react';
 import { AnimatePresence } from 'framer-motion';
 import useDeviceControls from '../../hooks/useDeviceControls';
 
+// Common Components
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import Toast from '../../components/common/Toast/Toast';
-import MonitoringStatus from '../../components/ui/App-Controls/MonitoringStatus/MonitoringStatus';
-import LogoutProtection from '../../components/ui/App-Controls/LogoutProtection/LogoutProtection';
-import SecurityPIN from '../../components/ui/App-Controls/SecurityPIN/SecurityPIN';
 
-// Extracted Modals
-import ConfirmPauseModal from '../../components/ui/App-Controls/modals/ConfirmPauseModal/ConfirmPauseModal';
-import PinSetupModal from '../../components/ui/App-Controls/modals/PinSetupModal/PinSetupModal';
-import SecurityPinVerifyModal from '../../components/ui/App-Controls/modals/SecurityPinVerifyModal/SecurityPinVerifyModal';
-import PinRecommendationModal from '../../components/ui/App-Controls/modals/PinRecommendationModal/PinRecommendationModal';
-import RequestActionModal from '../../components/ui/App-Controls/modals/RequestActionModal/RequestActionModal';
+// Shared App Control Components
+import ControlSection from '../../components/ui/App-Controls/shared/ControlSection';
+import ConfigurationLockedBanner from '../../components/ui/App-Controls/shared/ConfigurationLockedBanner';
+import RestrictedAccessZone from '../../components/ui/App-Controls/shared/RestrictedAccessZone';
+
+// Section Components
+import MonitoringStatus from '../../components/ui/App-Controls/sections/MonitoringStatus/MonitoringStatus';
+import LogoutProtection from '../../components/ui/App-Controls/sections/LogoutProtection/LogoutProtection';
+import SecurityPIN from '../../components/ui/App-Controls/sections/SecurityPIN/SecurityPIN';
+
+// Consolidated Modals
+import AppControlModals from '../../components/ui/App-Controls/modals/AppControlModals';
 
 import './AppControls.css';
 
@@ -28,7 +33,6 @@ const AppControls = () => {
     isVerifyModalOpen,
     isPinRecommendationModalOpen,
     isFinalConfirmModalOpen,
-    selectedModeName,
     isPinSet,
     storedPin,
     lastChangedDate,
@@ -53,8 +57,13 @@ const AppControls = () => {
     handleSetPin,
     handleVerifyPin,
     handleRemovePin,
-    closeToast
+    closeToast,
+    showToast
   } = useDeviceControls();
+
+  const handleLockedClick = () => {
+    showToast('Set a Security PIN first to configure logout protection', 'warning');
+  };
 
   return (
     <div className="app-controls-page">
@@ -67,49 +76,30 @@ const AppControls = () => {
         <div className="controls-grid single-column">
           <div className="controls-main">
             {/* Section 1: Security PIN */}
-            <div className="stats-section">
-              <h2 className="dashboard-section-title">Security & Access</h2>
+            <ControlSection title="Security & Access">
               <SecurityPIN
                 isPinSet={isPinSet}
                 lastChangedDate={lastChangedDate}
                 onSetPin={openPinModal}
                 onRemovePin={handleRemovePin}
               />
-            </div>
+            </ControlSection>
 
-            {/* Section 2: Monitoring Status & Section 3: Logout Protection */}
-            {!isPinSet && (
-              <div className="restricted-banner">
-                <div className="lock-icon-box">
-                  <span role="img" aria-label="lock">🔒</span>
-                </div>
-                <div className="banner-text-content">
-                  <h3>Configuration Locked</h3>
-                  <p>Set a Security PIN above to enable monitoring and logout protection settings.</p>
-                </div>
-              </div>
-            )}
+            {/* Section 2 & 3: Monitoring & Logout Protection */}
+            {!isPinSet && <ConfigurationLockedBanner />}
 
-            <div 
-              className={`restricted-access-zone ${!isPinSet ? 'is-disabled' : ''}`}
-              onClick={() => {
-                if (!isPinSet) {
-                  showToast('Set a Security PIN first to configure logout protection', 'warning');
-                }
-              }}
+            <RestrictedAccessZone 
+              isLocked={!isPinSet} 
+              onLockedClick={handleLockedClick}
             >
-              {/* Section 2: Monitoring Status */}
-              <div className="stats-section">
-                <h2 className="dashboard-section-title">Monitoring Settings</h2>
+              <ControlSection title="Monitoring Settings">
                 <MonitoringStatus
                   isActive={isMonitoringActive}
                   onToggle={handleToggleMonitoring}
                 />
-              </div>
+              </ControlSection>
 
-              {/* Section 3: Logout Protection Mode */}
-              <div className="stats-section">
-                <h2 className="dashboard-section-title">Logout Protection</h2>
+              <ControlSection title="Logout Protection">
                 <LogoutProtection
                   mode={logoutMode}
                   onModeChange={handleModeChange}
@@ -117,84 +107,49 @@ const AppControls = () => {
                   onApproveRequest={handleApproveRequest}
                   onDenyRequest={handleDenyRequest}
                 />
-              </div>
-            </div>
+              </ControlSection>
+            </RestrictedAccessZone>
           </div>
         </div>
       </section>
 
-      {/* Confirmation Modal for Monitoring */}
-      <ConfirmPauseModal
-        isOpen={isConfirmToggleModalOpen}
-        onClose={closeConfirmModal}
-        onConfirm={confirmToggleOff}
-      />
-
-      {/* PIN Modal */}
-      <PinSetupModal
-        isOpen={isPinModalOpen}
-        onClose={closePinModal}
-        onSave={handleSetPin}
-        isPinSet={isPinSet}
-        storedPin={storedPin}
-      />
-
-      {/* Security PIN Verification Modal */}
-      <SecurityPinVerifyModal 
-        isOpen={isVerifyModalOpen}
-        onClose={closeVerifyModal}
-        onVerify={handleVerifyPin}
-        title={
-          isPendingMonitoringToggle ? "Pause Monitoring" : 
-          pendingRequestId ? "Approve Logout Request" : 
-          "Change Protection Mode"
-        }
-        description={
-          isPendingMonitoringToggle 
-            ? "Security PIN required to pause monitoring." 
-            : pendingRequestId
-            ? "Enter Security PIN to approve this logout request."
-            : `Enter Security PIN to change to ${pendingModeChange ? pendingModeChange.charAt(0).toUpperCase() + pendingModeChange.slice(1) : ''} Mode.`
-        }
-        confirmText={
-          isPendingMonitoringToggle ? "Confirm Pause" : 
-          pendingRequestId ? "Approve Request" : 
-          "Apply Change"
-        }
-      />
-
-      {/* PIN Recommendation Modal */}
-      <PinRecommendationModal 
-        isOpen={isPinRecommendationModalOpen}
-        onClose={closeRecommendationModal}
-        onSkip={handleSkipAction}
-        onSetup={handleGoToPinSetup}
-        title={
-          isPendingMonitoringToggle ? "Security PIN Recommended" : 
-          pendingRequestId ? "Secure Approval Required" :
-          "Protect Your Settings"
-        }
-        description={
-          isPendingMonitoringToggle
-            ? "You haven't set a Security PIN yet. Without a PIN, anyone can disable monitoring."
-            : pendingRequestId
-            ? "You haven't set a Security PIN. Without a PIN, anyone with access to this device can approve logout requests."
-            : "Without a Security PIN, anyone with access to this dashboard can change protection rules."
-        }
-        skipText={
-          isPendingMonitoringToggle ? "Skip & Pause" : 
-          pendingRequestId ? "Skip & Approve" :
-          "Skip & Change"
-        }
-      />
-
-      {/* Final Request Confirmation Modal (Approve/Reject) */}
-      <RequestActionModal 
-        isOpen={isFinalConfirmModalOpen}
-        onClose={closeFinalConfirmModal}
-        onConfirm={executePendingRequestAction}
-        actionType={pendingActionType}
-        requestData={requests.find(r => r.id === pendingRequestId)}
+      {/* All App Control Modals */}
+      <AppControlModals 
+        confirmToggle={{ 
+          isOpen: isConfirmToggleModalOpen, 
+          onClose: closeConfirmModal, 
+          onConfirm: confirmToggleOff 
+        }}
+        pinSetup={{ 
+          isOpen: isPinModalOpen, 
+          onClose: closePinModal, 
+          onSave: handleSetPin, 
+          isPinSet, 
+          storedPin 
+        }}
+        verifyPin={{ 
+          isOpen: isVerifyModalOpen, 
+          onClose: closeVerifyModal, 
+          onVerify: handleVerifyPin,
+          isPendingMonitoringToggle,
+          pendingRequestId,
+          pendingModeChange
+        }}
+        pinRecommendation={{ 
+          isOpen: isPinRecommendationModalOpen, 
+          onClose: closeRecommendationModal, 
+          onSkip: handleSkipAction, 
+          onSetup: handleGoToPinSetup,
+          isPendingMonitoringToggle,
+          pendingRequestId
+        }}
+        finalConfirm={{ 
+          isOpen: isFinalConfirmModalOpen, 
+          onClose: closeFinalConfirmModal, 
+          onConfirm: executePendingRequestAction, 
+          actionType: pendingActionType,
+          requestData: requests.find(r => r.id === pendingRequestId)
+        }}
       />
 
       {/* Toasts */}
