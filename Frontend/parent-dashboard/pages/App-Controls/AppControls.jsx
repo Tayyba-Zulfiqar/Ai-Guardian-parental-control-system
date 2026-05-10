@@ -1,7 +1,12 @@
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import useDeviceControls from '../../hooks/useDeviceControls';
+import { 
+  useMonitoring, 
+  useRequests, 
+  useAppToasts, 
+  usePinWithModals 
+} from '../../hooks/App-Controls';
 
 // Common Components
 import PageHeader from '../../components/common/PageHeader/PageHeader';
@@ -23,46 +28,32 @@ import AppControlModals from '../../components/ui/App-Controls/modals/AppControl
 import './AppControls.css';
 
 const AppControls = () => {
+  const appToasts = useAppToasts();
+  
+  // Use refs to pass setters to usePinWithModals to avoid circular dependencies during initialization
+  const monitoringRef = useRef({});
+  const requestsRef = useRef({});
+
   const {
-    isMonitoringActive,
-    logoutMode,
-    requests,
-    toast,
-    isConfirmToggleModalOpen,
-    isPinModalOpen,
-    isVerifyModalOpen,
-    isPinRecommendationModalOpen,
-    isFinalConfirmModalOpen,
-    isPinSet,
-    storedPin,
-    lastChangedDate,
-    pendingModeChange,
-    isPendingMonitoringToggle,
-    pendingRequestId,
-    pendingActionType,
-    handleToggleMonitoring,
-    confirmToggleOff,
-    handleSkipAction,
-    closeConfirmModal,
-    closeVerifyModal,
-    closeRecommendationModal,
-    closeFinalConfirmModal,
-    executePendingRequestAction,
-    handleGoToPinSetup,
-    handleModeChange,
-    handleApproveRequest,
-    handleDenyRequest,
-    openPinModal,
-    closePinModal,
-    handleSetPin,
+    pinManager,
+    modalState,
+    pendingActions,
     handleVerifyPin,
-    handleRemovePin,
-    closeToast,
-    showToast
-  } = useDeviceControls();
+    handleSetPin,
+    handleRemovePin
+  } = usePinWithModals(monitoringRef.current, requestsRef.current, appToasts);
+
+  const monitoring = useMonitoring(pendingActions, pinManager, appToasts.showToast);
+  const requestsState = useRequests(pendingActions, pinManager, appToasts.showToast);
+
+  // Keep refs in sync with latest state/setters
+  useEffect(() => {
+    monitoringRef.current = monitoring;
+    requestsRef.current = requestsState;
+  }, [monitoring, requestsState]);
 
   const handleLockedClick = () => {
-    showToast('Set a Security PIN first to configure logout protection', 'warning');
+    appToasts.showToast('Set a Security PIN first to configure logout protection', 'warning');
   };
 
   return (
@@ -78,34 +69,34 @@ const AppControls = () => {
             {/* Section 1: Security PIN */}
             <ControlSection title="Security & Access">
               <SecurityPIN
-                isPinSet={isPinSet}
-                lastChangedDate={lastChangedDate}
-                onSetPin={openPinModal}
+                isPinSet={pinManager.isPinSet}
+                lastChangedDate={pinManager.lastChangedDate}
+                onSetPin={() => modalState.setIsPinModalOpen(true)}
                 onRemovePin={handleRemovePin}
               />
             </ControlSection>
 
             {/* Section 2 & 3: Monitoring & Logout Protection */}
-            {!isPinSet && <ConfigurationLockedBanner />}
+            {!pinManager.isPinSet && <ConfigurationLockedBanner />}
 
-            <RestrictedAccessZone 
-              isLocked={!isPinSet} 
+            <RestrictedAccessZone
+              isLocked={!pinManager.isPinSet}
               onLockedClick={handleLockedClick}
             >
               <ControlSection title="Monitoring Settings">
                 <MonitoringStatus
-                  isActive={isMonitoringActive}
-                  onToggle={handleToggleMonitoring}
+                  isActive={monitoring.isMonitoringActive}
+                  onToggle={monitoring.handleToggleMonitoring}
                 />
               </ControlSection>
 
               <ControlSection title="Logout Protection">
                 <LogoutProtection
-                  mode={logoutMode}
-                  onModeChange={handleModeChange}
-                  pendingRequests={requests}
-                  onApproveRequest={handleApproveRequest}
-                  onDenyRequest={handleDenyRequest}
+                  mode={monitoring.logoutMode}
+                  onModeChange={monitoring.handleModeChange}
+                  pendingRequests={requestsState.requests}
+                  onApproveRequest={requestsState.handleApproveRequest}
+                  onDenyRequest={requestsState.handleDenyRequest}
                 />
               </ControlSection>
             </RestrictedAccessZone>
@@ -114,52 +105,64 @@ const AppControls = () => {
       </section>
 
       {/* All App Control Modals */}
-      <AppControlModals 
-        confirmToggle={{ 
-          isOpen: isConfirmToggleModalOpen, 
-          onClose: closeConfirmModal, 
-          onConfirm: confirmToggleOff 
+      <AppControlModals
+        confirmToggle={{
+          isOpen: modalState.isConfirmToggleModalOpen,
+          onClose: () => modalState.setIsConfirmToggleModalOpen(false),
+          onConfirm: pendingActions.execute
         }}
-        pinSetup={{ 
-          isOpen: isPinModalOpen, 
-          onClose: closePinModal, 
-          onSave: handleSetPin, 
-          isPinSet, 
-          storedPin 
+        pinSetup={{
+          isOpen: modalState.isPinModalOpen,
+          onClose: () => modalState.setIsPinModalOpen(false),
+          onSave: handleSetPin,
+          isPinSet: pinManager.isPinSet,
+          storedPin: pinManager.storedPin
         }}
-        verifyPin={{ 
-          isOpen: isVerifyModalOpen, 
-          onClose: closeVerifyModal, 
+        verifyPin={{
+          isOpen: modalState.isVerifyModalOpen,
+          onClose: () => {
+            modalState.setIsVerifyModalOpen(false);
+            pendingActions.clearPending();
+          },
           onVerify: handleVerifyPin,
-          isPendingMonitoringToggle,
-          pendingRequestId,
-          pendingModeChange
+          isPendingMonitoringToggle: pendingActions.isPendingMonitoringToggle,
+          pendingRequestId: pendingActions.pendingRequestId,
+          pendingModeChange: pendingActions.pendingModeChange
         }}
-        pinRecommendation={{ 
-          isOpen: isPinRecommendationModalOpen, 
-          onClose: closeRecommendationModal, 
-          onSkip: handleSkipAction, 
-          onSetup: handleGoToPinSetup,
-          isPendingMonitoringToggle,
-          pendingRequestId
+        pinRecommendation={{
+          isOpen: modalState.isPinRecommendationModalOpen,
+          onClose: () => {
+            modalState.setIsPinRecommendationModalOpen(false);
+            pendingActions.clearPending();
+          },
+          onSkip: pendingActions.skip,
+          onSetup: () => {
+            modalState.setIsPinRecommendationModalOpen(false);
+            modalState.setIsPinModalOpen(true);
+          },
+          isPendingMonitoringToggle: pendingActions.isPendingMonitoringToggle,
+          pendingRequestId: pendingActions.pendingRequestId
         }}
-        finalConfirm={{ 
-          isOpen: isFinalConfirmModalOpen, 
-          onClose: closeFinalConfirmModal, 
-          onConfirm: executePendingRequestAction, 
-          actionType: pendingActionType,
-          requestData: requests.find(r => r.id === pendingRequestId)
+        finalConfirm={{
+          isOpen: modalState.isFinalConfirmModalOpen,
+          onClose: () => {
+            modalState.setIsFinalConfirmModalOpen(false);
+            pendingActions.clearPending();
+          },
+          onConfirm: pendingActions.execute,
+          actionType: pendingActions.pendingActionType,
+          requestData: requestsState.requests.find(r => r.id === pendingActions.pendingRequestId)
         }}
       />
 
       {/* Toasts */}
       <AnimatePresence>
-        {toast && (
+        {appToasts.toast && (
           <div className="toast-container">
             <Toast
-              message={toast.message}
-              type={toast.type}
-              onClose={closeToast}
+              message={appToasts.toast.message}
+              type={appToasts.toast.type}
+              onClose={appToasts.closeToast}
             />
           </div>
         )}
