@@ -34,7 +34,7 @@ const ProfileSection = ({ profile, onUpdate, onChangePassword }) => {
           </div>
           <div className="avatar-info">
             <h3>Profile Picture</h3>
-            <p>JPG, GIF or PNG. Max size of 800K</p>
+            <p>JPG or PNG. Max size of 800K</p>
           </div>
         </div>
 
@@ -43,9 +43,9 @@ const ProfileSection = ({ profile, onUpdate, onChangePassword }) => {
             <label>Full Name</label>
             {isEditingName ? (
               <div className="edit-field">
-                <input 
-                  type="text" 
-                  value={tempName} 
+                <input
+                  type="text"
+                  value={tempName}
                   onChange={(e) => setTempName(e.target.value)}
                   autoFocus
                 />
@@ -66,9 +66,9 @@ const ProfileSection = ({ profile, onUpdate, onChangePassword }) => {
             <label>Email Address</label>
             {isEditingEmail ? (
               <div className="edit-field">
-                <input 
-                  type="email" 
-                  value={tempEmail} 
+                <input
+                  type="email"
+                  value={tempEmail}
                   onChange={(e) => setTempEmail(e.target.value)}
                   autoFocus
                 />
@@ -92,7 +92,7 @@ const ProfileSection = ({ profile, onUpdate, onChangePassword }) => {
             )}
           </div>
 
-          <button 
+          <button
             className="btn-outline-primary change-pw-btn"
             onClick={onChangePassword}
           >

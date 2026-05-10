@@ -32,13 +32,21 @@ const ParentAccount = () => {
     const handleToggleNotifications = useCallback(() => {
         setProfile(prev => {
             const newState = !prev.notifications.enabled;
+            let updatedNotifications = { ...prev.notifications, enabled: newState };
+            
+            // If enabling, ensure at least one alert type is selected
+            if (newState) {
+                const hasActiveOption = prev.notifications.harmfulContentAlerts || prev.notifications.dailySummaryReports;
+                if (!hasActiveOption) {
+                    updatedNotifications.harmfulContentAlerts = true;
+                    updatedNotifications.dailySummaryReports = true;
+                }
+            }
+            
             showToast(`Notifications ${newState ? 'enabled' : 'disabled'}`);
             return {
                 ...prev,
-                notifications: {
-                    ...prev.notifications,
-                    enabled: newState
-                }
+                notifications: updatedNotifications
             };
         });
     }, [showToast]);
