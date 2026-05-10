@@ -14,7 +14,7 @@ const useDeviceControls = () => {
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
   const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
   const [isPinRecommendationModalOpen, setIsPinRecommendationModalOpen] = useState(false);
-  const [isScrollHintModalOpen, setIsScrollHintModalOpen] = useState(false);
+  const [isFinalConfirmModalOpen, setIsFinalConfirmModalOpen] = useState(false);
   const [isPinSet, setIsPinSet] = useState(false);
   const [storedPin, setStoredPin] = useState('');
   const [lastChangedDate, setLastChangedDate] = useState('');
@@ -22,6 +22,8 @@ const useDeviceControls = () => {
   // Pending Actions
   const [pendingModeChange, setPendingModeChange] = useState(null);
   const [isPendingMonitoringToggle, setIsPendingMonitoringToggle] = useState(false);
+  const [pendingRequestId, setPendingRequestId] = useState(null);
+  const [pendingActionType, setPendingActionType] = useState(null); // 'approve' or 'deny'
 
   // Derived state
   const selectedModeName = logoutMode.charAt(0).toUpperCase() + logoutMode.slice(1);
@@ -36,7 +38,7 @@ const useDeviceControls = () => {
 
   const handleToggleMonitoring = () => {
     if (isMonitoringActive) {
-      setPendingModeChange(null);
+      clearPendingActions();
       setIsPendingMonitoringToggle(true);
       if (isPinSet) {
         setIsVerifyModalOpen(true);
@@ -61,8 +63,8 @@ const useDeviceControls = () => {
   const handleModeChange = (mode) => {
     if (mode === logoutMode) return;
 
+    clearPendingActions();
     setPendingModeChange(mode);
-    setIsPendingMonitoringToggle(false);
     
     if (isPinSet) {
       setIsVerifyModalOpen(true);
@@ -73,10 +75,42 @@ const useDeviceControls = () => {
 
   const applyModeChange = (mode) => {
     setLogoutMode(mode);
-    setIsScrollHintModalOpen(true);
     const modeName = mode.charAt(0).toUpperCase() + mode.slice(1);
     showToast(`Logout protection set to ${modeName} Mode`);
     setPendingModeChange(null);
+    setIsVerifyModalOpen(false);
+    setIsPinRecommendationModalOpen(false);
+  };
+
+  const handleApproveRequest = (id) => {
+    clearPendingActions();
+    setPendingRequestId(id);
+    setPendingActionType('approve');
+    
+    if (isPinSet) {
+      setIsVerifyModalOpen(true);
+    } else {
+      setIsPinRecommendationModalOpen(true);
+    }
+  };
+
+  const handleDenyRequest = (id) => {
+    clearPendingActions();
+    setPendingRequestId(id);
+    setPendingActionType('deny');
+    setIsFinalConfirmModalOpen(true);
+  };
+
+  const executePendingRequestAction = () => {
+    if (pendingActionType === 'approve') {
+      setRequests(requests.filter(r => r.id !== pendingRequestId));
+      showToast('Logout request approved');
+    } else if (pendingActionType === 'deny') {
+      setRequests(requests.filter(r => r.id !== pendingRequestId));
+      showToast('Logout request denied', 'warning');
+    }
+    clearPendingActions();
+    setIsFinalConfirmModalOpen(false);
     setIsVerifyModalOpen(false);
     setIsPinRecommendationModalOpen(false);
   };
@@ -86,37 +120,36 @@ const useDeviceControls = () => {
       applyMonitoringToggle();
     } else if (pendingModeChange) {
       applyModeChange(pendingModeChange);
+    } else if (pendingRequestId && pendingActionType === 'approve') {
+      setIsPinRecommendationModalOpen(false);
+      setIsFinalConfirmModalOpen(true);
     }
-    setIsPinRecommendationModalOpen(false);
+  };
+
+  const clearPendingActions = () => {
+    setPendingModeChange(null);
+    setIsPendingMonitoringToggle(false);
+    setPendingRequestId(null);
+    setPendingActionType(null);
   };
 
   const closeConfirmModal = () => setIsConfirmToggleModalOpen(false);
   const closeVerifyModal = () => {
     setIsVerifyModalOpen(false);
-    setPendingModeChange(null);
-    setIsPendingMonitoringToggle(false);
+    clearPendingActions();
   };
   const closeRecommendationModal = () => {
     setIsPinRecommendationModalOpen(false);
-    setPendingModeChange(null);
-    setIsPendingMonitoringToggle(false);
+    clearPendingActions();
+  };
+  const closeFinalConfirmModal = () => {
+    setIsFinalConfirmModalOpen(false);
+    clearPendingActions();
   };
 
   const handleGoToPinSetup = () => {
     setIsPinRecommendationModalOpen(false);
     setIsPinModalOpen(true);
-  };
-
-  const closeHintModal = () => setIsScrollHintModalOpen(false);
-
-  const handleApproveRequest = (id) => {
-    setRequests(requests.filter(r => r.id !== id));
-    showToast('Logout request approved');
-  };
-
-  const handleDenyRequest = (id) => {
-    setRequests(requests.filter(r => r.id !== id));
-    showToast('Logout request denied', 'warning');
   };
 
   const openPinModal = () => setIsPinModalOpen(true);
@@ -136,6 +169,9 @@ const useDeviceControls = () => {
         applyMonitoringToggle();
       } else if (pendingModeChange) {
         applyModeChange(pendingModeChange);
+      } else if (pendingRequestId && pendingActionType === 'approve') {
+        setIsVerifyModalOpen(false);
+        setIsFinalConfirmModalOpen(true);
       }
       return true;
     } else {
@@ -161,13 +197,15 @@ const useDeviceControls = () => {
     isPinModalOpen,
     isVerifyModalOpen,
     isPinRecommendationModalOpen,
-    isScrollHintModalOpen,
+    isFinalConfirmModalOpen,
     selectedModeName,
     isPinSet,
     storedPin,
     lastChangedDate,
     pendingModeChange,
     isPendingMonitoringToggle,
+    pendingRequestId,
+    pendingActionType,
     
     // Handlers
     handleToggleMonitoring,
@@ -176,9 +214,10 @@ const useDeviceControls = () => {
     closeConfirmModal,
     closeVerifyModal,
     closeRecommendationModal,
+    closeFinalConfirmModal,
+    executePendingRequestAction,
     handleGoToPinSetup,
     handleModeChange,
-    closeHintModal,
     handleApproveRequest,
     handleDenyRequest,
     openPinModal,

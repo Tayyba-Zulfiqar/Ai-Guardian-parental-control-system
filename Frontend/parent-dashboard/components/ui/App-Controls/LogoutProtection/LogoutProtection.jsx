@@ -8,7 +8,6 @@ import './LogoutProtection.css';
 const LogoutProtection = ({ 
   mode, 
   onModeChange, 
-  onSetPin, 
   pendingRequests,
   onApproveRequest,
   onDenyRequest
@@ -116,15 +115,12 @@ const LogoutProtection = ({
         )}
 
         {mode === 'pin' && (
-          <div className="pin-details">
-            <div className="pin-info">
-              <Lock size={20} />
-              <div>
-                <h4 className="details-title">Security PIN Required</h4>
-                <p>Ensure your child doesn't know this PIN.</p>
-              </div>
+          <div className="pin-details-warning">
+            <Lock size={20} />
+            <div>
+              <h4 className="details-title">Security PIN Required</h4>
+              <p>Your child must enter the parent PIN directly on their device to log out. Ensure they do not know this PIN.</p>
             </div>
-            <Button variant="outline" onClick={onSetPin}>Set Parent PIN</Button>
           </div>
         )}
 

@@ -10,10 +10,10 @@ import SecurityPIN from '../../components/ui/App-Controls/SecurityPIN/SecurityPI
 
 // Extracted Modals
 import ConfirmPauseModal from '../../components/ui/App-Controls/modals/ConfirmPauseModal/ConfirmPauseModal';
-import ModeHintModal from '../../components/ui/App-Controls/modals/ModeHintModal/ModeHintModal';
 import PinSetupModal from '../../components/ui/App-Controls/modals/PinSetupModal/PinSetupModal';
 import SecurityPinVerifyModal from '../../components/ui/App-Controls/modals/SecurityPinVerifyModal/SecurityPinVerifyModal';
 import PinRecommendationModal from '../../components/ui/App-Controls/modals/PinRecommendationModal/PinRecommendationModal';
+import RequestActionModal from '../../components/ui/App-Controls/modals/RequestActionModal/RequestActionModal';
 
 import './AppControls.css';
 
@@ -27,22 +27,25 @@ const AppControls = () => {
     isPinModalOpen,
     isVerifyModalOpen,
     isPinRecommendationModalOpen,
-    isScrollHintModalOpen,
+    isFinalConfirmModalOpen,
     selectedModeName,
     isPinSet,
     storedPin,
     lastChangedDate,
     pendingModeChange,
     isPendingMonitoringToggle,
+    pendingRequestId,
+    pendingActionType,
     handleToggleMonitoring,
     confirmToggleOff,
     handleSkipAction,
     closeConfirmModal,
     closeVerifyModal,
     closeRecommendationModal,
+    closeFinalConfirmModal,
+    executePendingRequestAction,
     handleGoToPinSetup,
     handleModeChange,
-    closeHintModal,
     handleApproveRequest,
     handleDenyRequest,
     openPinModal,
@@ -110,7 +113,6 @@ const AppControls = () => {
                 <LogoutProtection
                   mode={logoutMode}
                   onModeChange={handleModeChange}
-                  onSetPin={openPinModal}
                   pendingRequests={requests}
                   onApproveRequest={handleApproveRequest}
                   onDenyRequest={handleDenyRequest}
@@ -142,13 +144,23 @@ const AppControls = () => {
         isOpen={isVerifyModalOpen}
         onClose={closeVerifyModal}
         onVerify={handleVerifyPin}
-        title={isPendingMonitoringToggle ? "Pause Monitoring" : "Change Protection Mode"}
+        title={
+          isPendingMonitoringToggle ? "Pause Monitoring" : 
+          pendingRequestId ? "Approve Logout Request" : 
+          "Change Protection Mode"
+        }
         description={
           isPendingMonitoringToggle 
             ? "Security PIN required to pause monitoring." 
+            : pendingRequestId
+            ? "Enter Security PIN to approve this logout request."
             : `Enter Security PIN to change to ${pendingModeChange ? pendingModeChange.charAt(0).toUpperCase() + pendingModeChange.slice(1) : ''} Mode.`
         }
-        confirmText={isPendingMonitoringToggle ? "Confirm Pause" : "Apply Change"}
+        confirmText={
+          isPendingMonitoringToggle ? "Confirm Pause" : 
+          pendingRequestId ? "Approve Request" : 
+          "Apply Change"
+        }
       />
 
       {/* PIN Recommendation Modal */}
@@ -157,20 +169,32 @@ const AppControls = () => {
         onClose={closeRecommendationModal}
         onSkip={handleSkipAction}
         onSetup={handleGoToPinSetup}
-        title={isPendingMonitoringToggle ? "Security PIN Recommended" : "Protect Your Settings"}
+        title={
+          isPendingMonitoringToggle ? "Security PIN Recommended" : 
+          pendingRequestId ? "Secure Approval Required" :
+          "Protect Your Settings"
+        }
         description={
           isPendingMonitoringToggle
             ? "You haven't set a Security PIN yet. Without a PIN, anyone can disable monitoring."
+            : pendingRequestId
+            ? "You haven't set a Security PIN. Without a PIN, anyone with access to this device can approve logout requests."
             : "Without a Security PIN, anyone with access to this dashboard can change protection rules."
         }
-        skipText={isPendingMonitoringToggle ? "Skip & Pause" : "Skip & Change"}
+        skipText={
+          isPendingMonitoringToggle ? "Skip & Pause" : 
+          pendingRequestId ? "Skip & Approve" :
+          "Skip & Change"
+        }
       />
 
-      {/* Scroll Hint Modal */}
-      <ModeHintModal
-        isOpen={isScrollHintModalOpen}
-        onClose={closeHintModal}
-        selectedModeName={selectedModeName}
+      {/* Final Request Confirmation Modal (Approve/Reject) */}
+      <RequestActionModal 
+        isOpen={isFinalConfirmModalOpen}
+        onClose={closeFinalConfirmModal}
+        onConfirm={executePendingRequestAction}
+        actionType={pendingActionType}
+        requestData={requests.find(r => r.id === pendingRequestId)}
       />
 
       {/* Toasts */}

@@ -172,60 +172,6 @@
   margin: 0;
 }
 
-/* Scroll Hint Modal Styles */
-.scroll-hint-content {
-  text-align: center;
-  padding: 10px 0;
-}
-
-.scroll-icon-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.scroll-mouse {
-  width: 26px;
-  height: 44px;
-  border: 2px solid #6366f1;
-  border-radius: 14px;
-  position: relative;
-}
-
-.scroll-wheel {
-  width: 4px;
-  height: 8px;
-  background-color: #6366f1;
-  border-radius: 2px;
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: scrollAnim 1.5s infinite;
-}
-
-@keyframes scrollAnim {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 15px);
-  }
-}
-
-.scroll-hint-content p {
-  font-size: 1.1rem;
-  color: #374151;
-  line-height: 1.5;
-}
-
-.scroll-hint-content strong {
-  color: #4f46e5;
-}
-
 /* Toast Container */
 
 .toast-container {

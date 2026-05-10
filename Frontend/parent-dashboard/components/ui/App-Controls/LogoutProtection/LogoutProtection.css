@@ -270,26 +270,26 @@
   gap: 8px;
 }
 
-.pin-details {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.pin-info {
+.pin-details-warning {
   display: flex;
   align-items: center;
   gap: 16px;
+  color: #92400e;
+  background: #fffbeb;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #fef3c7;
 }
 
-.pin-info h4 {
+.pin-details-warning .details-title {
   margin: 0;
+  color: #92400e;
 }
 
-.pin-info p {
+.pin-details-warning p {
   margin: 4px 0 0 0;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #b45309;
 }
 
 .disabled-warning {
