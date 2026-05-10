@@ -1,5 +1,6 @@
 import { Bell, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Toggle from '../../../common/Toggle/Toggle';
 import './NotificationPreferences.css';
 
 const NotificationPreferences = ({ notifications, onToggleMaster, onToggleOption }) => {
@@ -27,14 +28,10 @@ const NotificationPreferences = ({ notifications, onToggleMaster, onToggleOption
             <h3>Enable Notifications</h3>
             <p>Receive alerts and summaries on your devices</p>
           </div>
-          <label className="switch">
-            <input 
-              type="checkbox" 
-              checked={notifications.enabled} 
-              onChange={onToggleMaster}
-            />
-            <span className="slider round"></span>
-          </label>
+          <Toggle 
+            checked={notifications.enabled} 
+            onChange={onToggleMaster}
+          />
         </div>
 
         <div className={`notification-options ${!notifications.enabled ? 'disabled' : ''}`}>
@@ -57,15 +54,12 @@ const NotificationPreferences = ({ notifications, onToggleMaster, onToggleOption
                 <span className="option-title">Only harmful content alerts</span>
                 <span className="option-desc">Get notified immediately when we detect dangerous or inappropriate content.</span>
               </div>
-              <label className="switch small">
-                <input 
-                  type="checkbox" 
-                  checked={notifications.harmfulContentAlerts}
-                  disabled={!notifications.enabled}
-                  onChange={() => handleOptionChange('harmfulContentAlerts')}
-                />
-                <span className="slider round"></span>
-              </label>
+              <Toggle 
+                size="small"
+                checked={notifications.harmfulContentAlerts}
+                disabled={!notifications.enabled}
+                onChange={() => handleOptionChange('harmfulContentAlerts')}
+              />
             </div>
 
             <div className={`option-item ${!notifications.enabled ? 'item-disabled' : ''}`}>
@@ -73,15 +67,12 @@ const NotificationPreferences = ({ notifications, onToggleMaster, onToggleOption
                 <span className="option-title">Daily summary reports</span>
                 <span className="option-desc">Receive a daily digest of your child's online activity and screen time.</span>
               </div>
-              <label className="switch small">
-                <input 
-                  type="checkbox" 
-                  checked={notifications.dailySummaryReports}
-                  disabled={!notifications.enabled}
-                  onChange={() => handleOptionChange('dailySummaryReports')}
-                />
-                <span className="slider round"></span>
-              </label>
+              <Toggle 
+                size="small"
+                checked={notifications.dailySummaryReports}
+                disabled={!notifications.enabled}
+                onChange={() => handleOptionChange('dailySummaryReports')}
+              />
             </div>
           </div>
 
@@ -103,5 +94,6 @@ const NotificationPreferences = ({ notifications, onToggleMaster, onToggleOption
     </section>
   );
 };
+
 
 export default NotificationPreferences;

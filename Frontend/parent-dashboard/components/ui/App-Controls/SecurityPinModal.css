@@ -1,0 +1,131 @@
+
+.security-pin-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 0.5rem;
+}
+
+.pin-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pin-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.pin-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pin-field {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1.25rem;
+  letter-spacing: 0.25em;
+  transition: all 0.2s ease;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.pin-field:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.pin-field::placeholder {
+  color: #cbd5e1;
+  letter-spacing: normal;
+}
+
+.pin-visibility-toggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.pin-visibility-toggle:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.pin-strength-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.strength-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.strength-meter {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  max-width: 100px;
+}
+
+.strength-bar {
+  height: 6px;
+  flex: 1;
+  border-radius: 10px;
+  background: #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.strength-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.pin-error-msg {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ef4444;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #fef2f2;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+.modal-actions-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 0.5rem 0;
+}
+
+.modal-footer-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.modal-footer-btns button {
+  min-width: 120px;
+  font-weight: 700 !important;
+}

@@ -1,83 +1,128 @@
 
+import { AnimatePresence } from 'framer-motion';
+import useDeviceControls from '../../hooks/useDeviceControls';
 
-// parents can enable preventing unathorized logouts :
+import PageHeader from '../../components/common/PageHeader/PageHeader';
+import Toast from '../../components/common/Toast/Toast';
+import MonitoringStatus from '../../components/ui/App-Controls/MonitoringStatus';
+import LogoutProtection from '../../components/ui/App-Controls/LogoutProtection';
+import SecurityPIN from '../../components/ui/App-Controls/SecurityPIN';
 
+// Extracted Modals
+import ConfirmPauseModal from '../../components/ui/App-Controls/modals/ConfirmPauseModal';
+import ModeHintModal from '../../components/ui/App-Controls/modals/ModeHintModal';
+import PinSetupModal from '../../components/ui/App-Controls/modals/PinSetupModal';
 
+import './AppControls.css';
 
-/* 
-   SECURITY COMPONENTS:
-   ---------------------------------------------------------
+const AppControls = () => {
+  const {
+    isMonitoringActive,
+    logoutMode,
+    requests,
+    toast,
+    isConfirmToggleModalOpen,
+    isPinModalOpen,
+    isScrollHintModalOpen,
+    selectedModeName,
+    isPinSet,
+    lastChangedDate,
+    handleToggleMonitoring,
+    confirmToggleOff,
+    closeConfirmModal,
+    handleModeChange,
+    closeHintModal,
+    handleApproveRequest,
+    handleDenyRequest,
+    openPinModal,
+    closePinModal,
+    handleSetPin,
+    handleRemovePin,
+    closeToast
+  } = useDeviceControls();
 
-   ---------------------------------------------------------
-   PARENT LOGOUT FLOW:
-   ---------------------------------------------------------
-   1. PARENT CONTROL PIN (PERSISTENT)
-      - Set once by parent in settings
-      - Used for sensitive actions:
-          • Child logout approval
-          • Disabling monitoring
-          • Removing device access
-      - Never changes frequently
+  return (
+    <div className="app-controls-page">
+      <PageHeader
+        title="Device Controls"
+        subtitle="Manage monitoring and logout protection rules"
+      />
 
-   2. PARENT APPROVAL (OPTIONAL MODE)
-      - Child requests logout
-      - Parent receives notification
-      - Parent approves or denies remotely
+      <section className="dashboard-content">
+        <div className="controls-grid single-column">
+          <div className="controls-main">
+            {/* Section 1: Monitoring Status */}
+            <div className="stats-section">
+              <h2 className="dashboard-section-title">Monitoring Settings</h2>
+              <MonitoringStatus
+                isActive={isMonitoringActive}
+                onToggle={handleToggleMonitoring}
+              />
+            </div>
 
-   ---------------------------------------------------------
-   CHILD LOGOUT FLOW:
-   ---------------------------------------------------------
+            {/* Section 2: Security PIN */}
+            <div className="stats-section">
+              <h2 className="dashboard-section-title">Security & Access</h2>
+              <SecurityPIN 
+                isPinSet={isPinSet}
+                lastChangedDate={lastChangedDate}
+                onSetPin={openPinModal}
+                onRemovePin={handleRemovePin}
+              />
+            </div>
 
-   OPTION 1 (Recommended - Secure Mode):
-      1. Child clicks "Logout"
-      2. App sends logout request to parent dashboard
-      3. Parent approves or denies
-      4. If approved → child session is terminated
+            {/* Section 3: Logout Protection Mode */}
+            <div className="stats-section">
+              <h2 className="dashboard-section-title">Logout Protection</h2>
+              <LogoutProtection
+                mode={logoutMode}
+                onModeChange={handleModeChange}
+                onSetPin={openPinModal}
+                pendingRequests={requests}
+                onApproveRequest={handleApproveRequest}
+                onDenyRequest={handleDenyRequest}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
 
-   OPTION 2 (Strict PIN Mode):
-      1. Child clicks "Logout"
-      2. App asks for Parent Control PIN
-      3. If PIN is correct → logout allowed
-      4. If incorrect → logout blocked
+      {/* Confirmation Modal for Monitoring */}
+      <ConfirmPauseModal 
+        isOpen={isConfirmToggleModalOpen}
+        onClose={closeConfirmModal}
+        onConfirm={confirmToggleOff}
+      />
 
+      {/* PIN Modal */}
+      <PinSetupModal 
+        isOpen={isPinModalOpen}
+        onClose={closePinModal}
+        onSave={handleSetPin}
+        isPinSet={isPinSet}
+      />
 
+      {/* Scroll Hint Modal */}
+      <ModeHintModal 
+        isOpen={isScrollHintModalOpen}
+        onClose={closeHintModal}
+        selectedModeName={selectedModeName}
+      />
 
-ui :
-🚪 In App Control Page (Parent Dashboard view)
-
-Instead of showing 3 options every time, you show:
-
-🔹 Active Mode Badge:
-“Logout Mode: Approval”
-OR
-“Logout Mode: PIN Required”
-🔹 Based on mode:
-🟢 If Approval Mode is selected:
-
-Show:
-
-“Child logout requests pending”
-Approve / Deny buttons
-🔴 If PIN Mode is selected:
-
-Show:
-
-“Child must enter parent PIN to logout”
-(optional) show PIN status/config
-⚪ If Free Mode:
-
-Show:
-
-“Child can logout freely”
-warning label (not recommended)
-*/
-
-const Controls = () => {
-   return (
-      <div>
-         <h1>Controls</h1>
-      </div>
-   );
+      {/* Toasts */}
+      <AnimatePresence>
+        {toast && (
+          <div className="toast-container">
+            <Toast
+              message={toast.message}
+              type={toast.type}
+              onClose={closeToast}
+            />
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 };
 
-export default Controls;
+export default AppControls;
