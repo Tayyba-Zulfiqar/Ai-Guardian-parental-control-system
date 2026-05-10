@@ -5,7 +5,14 @@ import Modal from '../../../../common/Modal/Modal';
 import Button from '../../../../common/Button/Button';
 import './SecurityPinVerifyModal.css';
 
-const SecurityPinVerifyModal = ({ isOpen, onClose, onVerify }) => {
+const SecurityPinVerifyModal = ({ 
+  isOpen, 
+  onClose, 
+  onVerify, 
+  title = "Enter Security PIN", 
+  description = "Security PIN required to proceed.",
+  confirmText = "Confirm"
+}) => {
   const [pin, setPin] = useState('');
   const [showPin, setShowPin] = useState(false);
   const [error, setError] = useState(false);
@@ -31,12 +38,12 @@ const SecurityPinVerifyModal = ({ isOpen, onClose, onVerify }) => {
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title="Enter Security PIN"
+      title={title}
       size="small"
       footer={
         <>
           <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-          <Button variant="danger" onClick={handleVerify}>Confirm Pause</Button>
+          <Button variant="danger" onClick={handleVerify}>{confirmText}</Button>
         </>
       }
     >
@@ -45,7 +52,7 @@ const SecurityPinVerifyModal = ({ isOpen, onClose, onVerify }) => {
           <div className="lock-icon-wrapper">
             <Lock size={24} />
           </div>
-          <p>Security PIN required to pause monitoring.</p>
+          <p>{description}</p>
         </div>
 
         <div className="pin-input-group">

@@ -19,6 +19,10 @@ const useDeviceControls = () => {
   const [storedPin, setStoredPin] = useState('');
   const [lastChangedDate, setLastChangedDate] = useState('');
 
+  // Pending Actions
+  const [pendingModeChange, setPendingModeChange] = useState(null);
+  const [isPendingMonitoringToggle, setIsPendingMonitoringToggle] = useState(false);
+
   // Derived state
   const selectedModeName = logoutMode.charAt(0).toUpperCase() + logoutMode.slice(1);
 
@@ -32,6 +36,8 @@ const useDeviceControls = () => {
 
   const handleToggleMonitoring = () => {
     if (isMonitoringActive) {
+      setPendingModeChange(null);
+      setIsPendingMonitoringToggle(true);
       if (isPinSet) {
         setIsVerifyModalOpen(true);
       } else {
@@ -43,28 +49,62 @@ const useDeviceControls = () => {
     }
   };
 
-  const confirmToggleOff = () => {
+  const applyMonitoringToggle = () => {
     setIsMonitoringActive(false);
     setIsConfirmToggleModalOpen(false);
     setIsVerifyModalOpen(false);
     setIsPinRecommendationModalOpen(false);
+    setIsPendingMonitoringToggle(false);
     showToast('Monitoring paused', 'warning');
   };
 
-  const closeConfirmModal = () => setIsConfirmToggleModalOpen(false);
-  const closeVerifyModal = () => setIsVerifyModalOpen(false);
-  const closeRecommendationModal = () => setIsPinRecommendationModalOpen(false);
+  const handleModeChange = (mode) => {
+    if (mode === logoutMode) return;
 
-  const handleGoToPinSetup = () => {
-    setIsPinRecommendationModalOpen(false);
-    setIsPinModalOpen(true);
+    setPendingModeChange(mode);
+    setIsPendingMonitoringToggle(false);
+    
+    if (isPinSet) {
+      setIsVerifyModalOpen(true);
+    } else {
+      setIsPinRecommendationModalOpen(true);
+    }
   };
 
-  const handleModeChange = (mode) => {
+  const applyModeChange = (mode) => {
     setLogoutMode(mode);
     setIsScrollHintModalOpen(true);
     const modeName = mode.charAt(0).toUpperCase() + mode.slice(1);
     showToast(`Logout protection set to ${modeName} Mode`);
+    setPendingModeChange(null);
+    setIsVerifyModalOpen(false);
+    setIsPinRecommendationModalOpen(false);
+  };
+
+  const handleSkipAction = () => {
+    if (isPendingMonitoringToggle) {
+      applyMonitoringToggle();
+    } else if (pendingModeChange) {
+      applyModeChange(pendingModeChange);
+    }
+    setIsPinRecommendationModalOpen(false);
+  };
+
+  const closeConfirmModal = () => setIsConfirmToggleModalOpen(false);
+  const closeVerifyModal = () => {
+    setIsVerifyModalOpen(false);
+    setPendingModeChange(null);
+    setIsPendingMonitoringToggle(false);
+  };
+  const closeRecommendationModal = () => {
+    setIsPinRecommendationModalOpen(false);
+    setPendingModeChange(null);
+    setIsPendingMonitoringToggle(false);
+  };
+
+  const handleGoToPinSetup = () => {
+    setIsPinRecommendationModalOpen(false);
+    setIsPinModalOpen(true);
   };
 
   const closeHintModal = () => setIsScrollHintModalOpen(false);
@@ -92,7 +132,11 @@ const useDeviceControls = () => {
 
   const handleVerifyPin = (pin) => {
     if (pin === storedPin) {
-      confirmToggleOff();
+      if (isPendingMonitoringToggle) {
+        applyMonitoringToggle();
+      } else if (pendingModeChange) {
+        applyModeChange(pendingModeChange);
+      }
       return true;
     } else {
       showToast('Incorrect Security PIN', 'danger');
@@ -122,10 +166,13 @@ const useDeviceControls = () => {
     isPinSet,
     storedPin,
     lastChangedDate,
+    pendingModeChange,
+    isPendingMonitoringToggle,
     
     // Handlers
     handleToggleMonitoring,
-    confirmToggleOff,
+    confirmToggleOff: applyMonitoringToggle,
+    handleSkipAction,
     closeConfirmModal,
     closeVerifyModal,
     closeRecommendationModal,

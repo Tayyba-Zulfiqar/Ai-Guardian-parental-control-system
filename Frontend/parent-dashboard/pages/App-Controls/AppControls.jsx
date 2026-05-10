@@ -32,8 +32,11 @@ const AppControls = () => {
     isPinSet,
     storedPin,
     lastChangedDate,
+    pendingModeChange,
+    isPendingMonitoringToggle,
     handleToggleMonitoring,
     confirmToggleOff,
+    handleSkipAction,
     closeConfirmModal,
     closeVerifyModal,
     closeRecommendationModal,
@@ -117,14 +120,28 @@ const AppControls = () => {
         isOpen={isVerifyModalOpen}
         onClose={closeVerifyModal}
         onVerify={handleVerifyPin}
+        title={isPendingMonitoringToggle ? "Pause Monitoring" : "Change Protection Mode"}
+        description={
+          isPendingMonitoringToggle 
+            ? "Security PIN required to pause monitoring." 
+            : `Enter Security PIN to change to ${pendingModeChange ? pendingModeChange.charAt(0).toUpperCase() + pendingModeChange.slice(1) : ''} Mode.`
+        }
+        confirmText={isPendingMonitoringToggle ? "Confirm Pause" : "Apply Change"}
       />
 
       {/* PIN Recommendation Modal */}
       <PinRecommendationModal 
         isOpen={isPinRecommendationModalOpen}
         onClose={closeRecommendationModal}
-        onSkip={confirmToggleOff}
+        onSkip={handleSkipAction}
         onSetup={handleGoToPinSetup}
+        title={isPendingMonitoringToggle ? "Security PIN Recommended" : "Protect Your Settings"}
+        description={
+          isPendingMonitoringToggle
+            ? "You haven't set a Security PIN yet. Without a PIN, anyone can disable monitoring."
+            : "Without a Security PIN, anyone with access to this dashboard can change protection rules."
+        }
+        skipText={isPendingMonitoringToggle ? "Skip & Pause" : "Skip & Change"}
       />
 
       {/* Scroll Hint Modal */}
