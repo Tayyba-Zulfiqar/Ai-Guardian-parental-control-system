@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import ScrollToTop from "../components/common/ScrollToTop";
 import MainLayout from "../layouts/MainLayout";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Alerts from "../pages/Alerts/Alerts";
@@ -12,7 +13,9 @@ import ParentAccount from "../pages/Parent-Account/ParentAccount";
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/alerts/:childId" element={<Alerts />} />
@@ -28,5 +31,6 @@ export default function App() {
 
       <Route path="*" element={<NotFound />} />
     </Routes>
+  </>
   );
 }
