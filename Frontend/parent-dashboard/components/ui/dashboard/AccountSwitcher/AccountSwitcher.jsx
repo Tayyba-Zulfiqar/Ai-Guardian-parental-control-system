@@ -46,7 +46,14 @@ const AccountSwitcher = () => {
       {isDropdownOpen && (
         <div className="account-dropdown-menu">
           <div className="dropdown-header">
-            <div className="active-profile-large">
+            <div 
+              className="active-profile-large" 
+              onClick={() => {
+                navigate(`/family-profiles/${activeChild.id}`);
+                setIsDropdownOpen(false);
+              }}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="large-avatar">{activeChild.avatar}</div>
               <div className="active-profile-info">
                 <span className="profile-name">{activeChild.name}</span>
@@ -66,7 +73,15 @@ const AccountSwitcher = () => {
                     <span className="item-avatar">{child.avatar}</span>
                     <span className="item-name">{child.name}</span>
                   </div>
-                  <button className="item-switch-btn">Switch</button>
+                  <button 
+                    className="item-switch-btn"
+                    onClick={() => {
+                      navigate(`/family-profiles/${child.id}`);
+                      setIsDropdownOpen(false);
+                    }}
+                  >
+                    Switch
+                  </button>
                 </div>
               ))
             ) : (
@@ -80,7 +95,7 @@ const AccountSwitcher = () => {
               disabled={isLimitReached}
               onClick={() => {
                 if (!isLimitReached) {
-                  navigate('/child-profile/1');
+                  navigate('/family-profiles/1');
                   setIsDropdownOpen(false);
                 }
               }}
