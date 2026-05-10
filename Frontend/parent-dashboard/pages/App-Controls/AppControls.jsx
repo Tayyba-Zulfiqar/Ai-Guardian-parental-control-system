@@ -12,6 +12,8 @@ import SecurityPIN from '../../components/ui/App-Controls/SecurityPIN/SecurityPI
 import ConfirmPauseModal from '../../components/ui/App-Controls/modals/ConfirmPauseModal/ConfirmPauseModal';
 import ModeHintModal from '../../components/ui/App-Controls/modals/ModeHintModal/ModeHintModal';
 import PinSetupModal from '../../components/ui/App-Controls/modals/PinSetupModal/PinSetupModal';
+import SecurityPinVerifyModal from '../../components/ui/App-Controls/modals/SecurityPinVerifyModal/SecurityPinVerifyModal';
+import PinRecommendationModal from '../../components/ui/App-Controls/modals/PinRecommendationModal/PinRecommendationModal';
 
 import './AppControls.css';
 
@@ -23,13 +25,19 @@ const AppControls = () => {
     toast,
     isConfirmToggleModalOpen,
     isPinModalOpen,
+    isVerifyModalOpen,
+    isPinRecommendationModalOpen,
     isScrollHintModalOpen,
     selectedModeName,
     isPinSet,
+    storedPin,
     lastChangedDate,
     handleToggleMonitoring,
     confirmToggleOff,
     closeConfirmModal,
+    closeVerifyModal,
+    closeRecommendationModal,
+    handleGoToPinSetup,
     handleModeChange,
     closeHintModal,
     handleApproveRequest,
@@ -37,6 +45,7 @@ const AppControls = () => {
     openPinModal,
     closePinModal,
     handleSetPin,
+    handleVerifyPin,
     handleRemovePin,
     closeToast
   } = useDeviceControls();
@@ -100,6 +109,22 @@ const AppControls = () => {
         onClose={closePinModal}
         onSave={handleSetPin}
         isPinSet={isPinSet}
+        storedPin={storedPin}
+      />
+
+      {/* Security PIN Verification Modal */}
+      <SecurityPinVerifyModal 
+        isOpen={isVerifyModalOpen}
+        onClose={closeVerifyModal}
+        onVerify={handleVerifyPin}
+      />
+
+      {/* PIN Recommendation Modal */}
+      <PinRecommendationModal 
+        isOpen={isPinRecommendationModalOpen}
+        onClose={closeRecommendationModal}
+        onSkip={confirmToggleOff}
+        onSetup={handleGoToPinSetup}
       />
 
       {/* Scroll Hint Modal */}

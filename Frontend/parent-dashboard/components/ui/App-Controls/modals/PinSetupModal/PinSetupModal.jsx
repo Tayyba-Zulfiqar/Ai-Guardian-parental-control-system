@@ -2,7 +2,7 @@
 import Modal from '../../../../common/Modal/Modal';
 import SecurityPinModal from '../SecurityPinModal/SecurityPinModal';
 
-const PinSetupModal = ({ isOpen, onClose, onSave, isPinSet }) => {
+const PinSetupModal = ({ isOpen, onClose, onSave, isPinSet, storedPin }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -13,6 +13,8 @@ const PinSetupModal = ({ isOpen, onClose, onSave, isPinSet }) => {
       <SecurityPinModal 
         onSave={onSave}
         onCancel={onClose}
+        isPinSet={isPinSet}
+        storedPin={storedPin}
       />
     </Modal>
   );

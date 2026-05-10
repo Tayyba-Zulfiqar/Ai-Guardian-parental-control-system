@@ -12,8 +12,11 @@ const useDeviceControls = () => {
   // Modal States
   const [isConfirmToggleModalOpen, setIsConfirmToggleModalOpen] = useState(false);
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
+  const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
+  const [isPinRecommendationModalOpen, setIsPinRecommendationModalOpen] = useState(false);
   const [isScrollHintModalOpen, setIsScrollHintModalOpen] = useState(false);
   const [isPinSet, setIsPinSet] = useState(false);
+  const [storedPin, setStoredPin] = useState('');
   const [lastChangedDate, setLastChangedDate] = useState('');
 
   // Derived state
@@ -29,7 +32,11 @@ const useDeviceControls = () => {
 
   const handleToggleMonitoring = () => {
     if (isMonitoringActive) {
-      setIsConfirmToggleModalOpen(true);
+      if (isPinSet) {
+        setIsVerifyModalOpen(true);
+      } else {
+        setIsPinRecommendationModalOpen(true);
+      }
     } else {
       setIsMonitoringActive(true);
       showToast('Monitoring resumed successfully');
@@ -39,10 +46,19 @@ const useDeviceControls = () => {
   const confirmToggleOff = () => {
     setIsMonitoringActive(false);
     setIsConfirmToggleModalOpen(false);
+    setIsVerifyModalOpen(false);
+    setIsPinRecommendationModalOpen(false);
     showToast('Monitoring paused', 'warning');
   };
 
   const closeConfirmModal = () => setIsConfirmToggleModalOpen(false);
+  const closeVerifyModal = () => setIsVerifyModalOpen(false);
+  const closeRecommendationModal = () => setIsPinRecommendationModalOpen(false);
+
+  const handleGoToPinSetup = () => {
+    setIsPinRecommendationModalOpen(false);
+    setIsPinModalOpen(true);
+  };
 
   const handleModeChange = (mode) => {
     setLogoutMode(mode);
@@ -68,13 +84,25 @@ const useDeviceControls = () => {
 
   const handleSetPin = (newPin) => {
     setIsPinSet(true);
+    setStoredPin(newPin);
     setLastChangedDate(new Date().toLocaleDateString());
     setIsPinModalOpen(false);
     showToast('Security PIN updated successfully');
   };
 
+  const handleVerifyPin = (pin) => {
+    if (pin === storedPin) {
+      confirmToggleOff();
+      return true;
+    } else {
+      showToast('Incorrect Security PIN', 'danger');
+      return false;
+    }
+  };
+
   const handleRemovePin = () => {
     setIsPinSet(false);
+    setStoredPin('');
     setLastChangedDate('');
     showToast('Security PIN removed', 'warning');
   };
@@ -87,15 +115,21 @@ const useDeviceControls = () => {
     toast,
     isConfirmToggleModalOpen,
     isPinModalOpen,
+    isVerifyModalOpen,
+    isPinRecommendationModalOpen,
     isScrollHintModalOpen,
     selectedModeName,
     isPinSet,
+    storedPin,
     lastChangedDate,
     
     // Handlers
     handleToggleMonitoring,
     confirmToggleOff,
     closeConfirmModal,
+    closeVerifyModal,
+    closeRecommendationModal,
+    handleGoToPinSetup,
     handleModeChange,
     closeHintModal,
     handleApproveRequest,
@@ -103,6 +137,7 @@ const useDeviceControls = () => {
     openPinModal,
     closePinModal,
     handleSetPin,
+    handleVerifyPin,
     handleRemovePin,
     showToast,
     closeToast

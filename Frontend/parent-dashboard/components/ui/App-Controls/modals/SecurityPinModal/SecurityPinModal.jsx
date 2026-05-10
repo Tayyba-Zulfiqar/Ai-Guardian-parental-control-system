@@ -4,10 +4,12 @@ import { Eye, EyeOff, CheckCircle2, AlertCircle, X } from 'lucide-react';
 import Button from '../../../../common/Button/Button';
 import './SecurityPinModal.css';
 
-const SecurityPinModal = ({ onSave, onCancel, initialPin = '' }) => {
+const SecurityPinModal = ({ onSave, onCancel, isPinSet, storedPin, initialPin = '' }) => {
+  const [oldPin, setOldPin] = useState('');
   const [pin, setPin] = useState(initialPin);
   const [confirmPin, setConfirmPin] = useState('');
   const [showPin, setShowPin] = useState(false);
+  const [showOldPin, setShowOldPin] = useState(false);
   const [strength, setStrength] = useState({ score: 0, label: 'Weak', color: '#ef4444' });
   const [error, setError] = useState('');
 
@@ -42,12 +44,16 @@ const SecurityPinModal = ({ onSave, onCancel, initialPin = '' }) => {
   };
 
   const handleSave = () => {
+    if (isPinSet && oldPin !== storedPin) {
+      setError('Current PIN is incorrect');
+      return;
+    }
     if (pin.length < 4) {
-      setError('PIN must be 4-6 digits');
+      setError('New PIN must be 4-6 digits');
       return;
     }
     if (pin !== confirmPin) {
-      setError('PINs do not match');
+      setError('New PINs do not match');
       return;
     }
     onSave(pin);
@@ -55,8 +61,35 @@ const SecurityPinModal = ({ onSave, onCancel, initialPin = '' }) => {
 
   return (
     <div className="security-pin-modal-content">
+      {isPinSet && (
+        <div className="pin-input-section">
+          <label className="pin-label">Current PIN</label>
+          <div className="pin-input-wrapper">
+            <input
+              type={showOldPin ? "text" : "password"}
+              maxLength="6"
+              value={oldPin}
+              onChange={(e) => {
+                setOldPin(e.target.value.replace(/\D/g, ''));
+                setError('');
+              }}
+              placeholder="●●●●"
+              className="pin-field"
+              autoFocus
+            />
+            <button 
+              className="pin-visibility-toggle"
+              onClick={() => setShowOldPin(!showOldPin)}
+              type="button"
+            >
+              {showOldPin ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="pin-input-section">
-        <label className="pin-label">Enter new PIN (4-6 digits)</label>
+        <label className="pin-label">{isPinSet ? "New PIN (4-6 digits)" : "Enter new PIN (4-6 digits)"}</label>
         <div className="pin-input-wrapper">
           <input
             type={showPin ? "text" : "password"}
@@ -69,7 +102,7 @@ const SecurityPinModal = ({ onSave, onCancel, initialPin = '' }) => {
             }}
             placeholder="●●●●"
             className="pin-field"
-            autoFocus
+            autoFocus={!isPinSet}
           />
           <button 
             className="pin-visibility-toggle"
@@ -82,7 +115,7 @@ const SecurityPinModal = ({ onSave, onCancel, initialPin = '' }) => {
       </div>
 
       <div className="pin-input-section">
-        <label className="pin-label">Confirm PIN</label>
+        <label className="pin-label">Confirm {isPinSet ? "New PIN" : "PIN"}</label>
         <div className="pin-input-wrapper">
           <input
             type="password"
