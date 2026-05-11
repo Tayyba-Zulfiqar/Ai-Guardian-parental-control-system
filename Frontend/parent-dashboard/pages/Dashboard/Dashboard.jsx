@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useChild } from '../../context/ChildContext';
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import ChildStatusCard from '../../components/ui/dashboard/ChildStatusCard/ChildStatusCard';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
@@ -8,8 +11,21 @@ import { childrenData, parentData, dashboardInsightsData } from '../../data/Dash
 import './Dashboard.css';
 
 const Dashboard = () => {
+  const { childrenList, loading } = useChild();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && childrenList.length === 0) {
+      navigate('/connect-child', { replace: true });
+    }
+  }, [childrenList, loading, navigate]);
+
   // Temporary active child mock (first child in the list)
   const activeChild = childrenData[0];
+
+  if (loading || childrenList.length === 0) {
+    return null; // Return null while redirecting
+  }
 
   return (
     <div className="dashboard-page">
