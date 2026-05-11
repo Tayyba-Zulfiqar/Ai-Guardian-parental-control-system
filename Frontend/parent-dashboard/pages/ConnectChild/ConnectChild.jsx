@@ -47,8 +47,8 @@ const ConnectChild = () => {
 
       <div style={{ margin: 'auto', width: '100%', maxWidth: '1000px', padding: '40px' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <h1 style={{ color: 'var(--sidebar-bg)', fontSize: '2.5rem', marginBottom: '12px' }}>Connect New Device</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Link your child's device to start monitoring.</p>
+          <h1 style={{ color: 'var(--sidebar-bg)', fontSize: '2.5rem', marginBottom: '12px' }}>Welcome to AI Guardian</h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Let's connect your child's device to start monitoring.</p>
         </div>
 
         <PairingCard
