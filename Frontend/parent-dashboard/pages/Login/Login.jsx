@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,19 +10,26 @@ import './Login.css';
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [serverError, setServerError] = useState('');
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(loginSchema),
-    mode: 'onBlur', // Validate on blur for better UX
+    mode: 'onBlur',
   });
 
-  const onSubmit = (data) => {
-    login(data.email, data.password);
-    navigate('/');
+  const onSubmit = async (data) => {
+    setServerError('');
+    const result = login(data.email, data.password);
+
+    if (result.success) {
+      navigate('/dashboard');
+    } else {
+      setServerError(result.error || 'Login failed. Please try again.');
+    }
   };
 
   return (
@@ -70,11 +78,15 @@ const Login = () => {
                 {errors.password && <span className="error-text">{errors.password.message}</span>}
               </div>
 
+              {serverError && <div className="error-text server-error">{serverError}</div>}
+
               <div className="form-options">
-                <a href="#" className="forgot-password">Forgot Password?</a>
+                <Link to="/forgot-password" className="forgot-password">Forgot Password?</Link>
               </div>
 
-              <button type="submit" className="auth-submit-btn">Sign In</button>
+              <button type="submit" className="auth-submit-btn" disabled={isSubmitting}>
+                {isSubmitting ? 'Signing in...' : 'Sign In'}
+              </button>
             </form>
 
             <p className="auth-redirect">

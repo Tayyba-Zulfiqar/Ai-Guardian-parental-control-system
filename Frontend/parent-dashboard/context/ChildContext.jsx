@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { STORAGE_KEYS } from '../utils/storageKeys';
 
 const ChildContext = createContext();
 
@@ -10,8 +11,13 @@ export const ChildProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedChildren = localStorage.getItem('ai_guardian_children');
-    const storedActiveChildId = localStorage.getItem('ai_guardian_active_child');
+    console.log("Refreshed, loading from storage (ChildContext)");
+    
+    const storedChildren = localStorage.getItem(STORAGE_KEYS.CHILDREN);
+    console.log("Loaded (Children): " + storedChildren);
+    
+    const storedActiveChildId = localStorage.getItem(STORAGE_KEYS.ACTIVE_CHILD_ID);
+    console.log("Loaded (Active Child ID): " + storedActiveChildId);
     
     if (storedChildren) {
       setChildrenList(JSON.parse(storedChildren));
@@ -34,8 +40,12 @@ export const ChildProvider = ({ children }) => {
     setChildrenList(updatedChildren);
     setActiveChildId(newChild.id);
     
-    localStorage.setItem('ai_guardian_children', JSON.stringify(updatedChildren));
-    localStorage.setItem('ai_guardian_active_child', newChild.id);
+    const childrenToSave = JSON.stringify(updatedChildren);
+    localStorage.setItem(STORAGE_KEYS.CHILDREN, childrenToSave);
+    console.log("Saved (Children): " + childrenToSave);
+    
+    localStorage.setItem(STORAGE_KEYS.ACTIVE_CHILD_ID, newChild.id);
+    console.log("Saved (Active Child ID): " + newChild.id);
     
     return newChild;
   };
@@ -43,22 +53,28 @@ export const ChildProvider = ({ children }) => {
   const removeChild = (id) => {
     const updatedChildren = childrenList.filter(child => child.id !== id);
     setChildrenList(updatedChildren);
-    localStorage.setItem('ai_guardian_children', JSON.stringify(updatedChildren));
+    
+    const childrenToSave = JSON.stringify(updatedChildren);
+    localStorage.setItem(STORAGE_KEYS.CHILDREN, childrenToSave);
+    console.log("Saved (Children after removal): " + childrenToSave);
     
     if (activeChildId === id) {
       const newActiveId = updatedChildren.length > 0 ? updatedChildren[0].id : null;
       setActiveChildId(newActiveId);
       if (newActiveId) {
-        localStorage.setItem('ai_guardian_active_child', newActiveId);
+        localStorage.setItem(STORAGE_KEYS.ACTIVE_CHILD_ID, newActiveId);
+        console.log("Saved (New Active Child ID after removal): " + newActiveId);
       } else {
-        localStorage.removeItem('ai_guardian_active_child');
+        localStorage.removeItem(STORAGE_KEYS.ACTIVE_CHILD_ID);
+        console.log("Removed (Active Child ID after last child removal)");
       }
     }
   };
 
   const setActiveChild = (id) => {
     setActiveChildId(id);
-    localStorage.setItem('ai_guardian_active_child', id);
+    localStorage.setItem(STORAGE_KEYS.ACTIVE_CHILD_ID, id);
+    console.log("Saved (Active Child ID switch): " + id);
   };
 
   const value = {
@@ -76,3 +92,4 @@ export const ChildProvider = ({ children }) => {
     </ChildContext.Provider>
   );
 };
+
