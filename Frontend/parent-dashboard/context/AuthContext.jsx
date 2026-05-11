@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
       return { success: false, error: 'User already exists' };
     }
 
-    const newUser = { id: 'usr_' + Date.now(), name, email, password };
+    const newUser = { id: 'usr_' + Date.now(), name, email };
     users.push(newUser);
     localStorage.setItem(STORAGE_KEYS.ALL_USERS, JSON.stringify(users));
 

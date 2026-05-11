@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,19 +10,28 @@ import '../Login/Login.css';
 const Signup = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
+  const [serverError, setServerError] = useState('');
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(signupSchema),
     mode: 'onBlur',
   });
 
-  const onSubmit = (data) => {
-    signup(data.name, data.email, data.password);
-    navigate('/connect-child');
+  const onSubmit = async (data) => {
+    setServerError('');
+
+    const result = signup(data.name, data.email, data.password);
+
+    if (result.success) {
+
+      navigate('/connect-child');
+    } else {
+      setServerError(result.error || 'Signup failed. Please try again.');
+    }
   };
 
   return (
@@ -36,12 +46,14 @@ const Signup = () => {
             <p>Empowering Parents in the Digital Age</p>
           </div>
         </div>
+
         <div className="auth-right-pane">
           <div className="auth-form-container">
             <h2>Create an Account</h2>
             <p className="auth-subtitle">Join us to keep your child safe.</p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
+
               <div className="form-group">
                 <label htmlFor="name">Full Name</label>
                 <div className="input-wrapper">
@@ -95,10 +107,19 @@ const Signup = () => {
                     className={errors.confirmPassword ? 'error-input' : ''}
                   />
                 </div>
-                {errors.confirmPassword && <span className="error-text">{errors.confirmPassword.message}</span>}
+                {errors.confirmPassword && (
+                  <span className="error-text">{errors.confirmPassword.message}</span>
+                )}
               </div>
 
-              <button type="submit" className="auth-submit-btn">Sign Up</button>
+              {serverError && (
+                <div className="error-text server-error">{serverError}</div>
+              )}
+
+              <button type="submit" className="auth-submit-btn" disabled={isSubmitting}>
+                {isSubmitting ? 'Creating account...' : 'Sign Up'}
+              </button>
+
             </form>
 
             <p className="auth-redirect">

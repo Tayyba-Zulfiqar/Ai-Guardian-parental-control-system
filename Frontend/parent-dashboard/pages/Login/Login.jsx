@@ -23,9 +23,11 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     setServerError('');
+
     const result = login(data.email, data.password);
 
     if (result.success) {
+
       navigate('/dashboard');
     } else {
       setServerError(result.error || 'Login failed. Please try again.');
@@ -44,12 +46,14 @@ const Login = () => {
             <p>Empowering Parents in the Digital Age</p>
           </div>
         </div>
+
         <div className="auth-right-pane">
           <div className="auth-form-container">
             <h2>Welcome Back</h2>
             <p className="auth-subtitle">Please enter your details to sign in.</p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
+
               <div className="form-group">
                 <label htmlFor="email">Email Address</label>
                 <div className="input-wrapper">
@@ -78,10 +82,14 @@ const Login = () => {
                 {errors.password && <span className="error-text">{errors.password.message}</span>}
               </div>
 
-              {serverError && <div className="error-text server-error">{serverError}</div>}
+              {serverError && (
+                <div className="error-text server-error">{serverError}</div>
+              )}
 
               <div className="form-options">
-                <Link to="/forgot-password" className="forgot-password">Forgot Password?</Link>
+                <Link to="/forgot-password" className="forgot-password">
+                  Forgot Password?
+                </Link>
               </div>
 
               <button type="submit" className="auth-submit-btn" disabled={isSubmitting}>
