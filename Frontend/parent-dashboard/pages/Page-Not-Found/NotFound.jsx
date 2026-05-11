@@ -52,7 +52,7 @@ const NotFound = () => {
                         icon={Home}
                         onClick={() => navigate('/')}
                     >
-                        Back to Dashboard
+                        Back to Main WebPage
                     </Button>
                 </div>
             </motion.div>
