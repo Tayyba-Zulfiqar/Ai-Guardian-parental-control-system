@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
-// helper: safe JSON parse
+// helper
 const safeParse = (value, fallback) => {
   try {
     return value ? JSON.parse(value) : fallback;
@@ -16,22 +16,16 @@ const safeParse = (value, fallback) => {
 
 export const AuthProvider = ({ children }) => {
 
-  //  Load session user on refresh
+  // session user (ONLY for login state)
   const [user, setUser] = useState(() => {
-    return safeParse(
-      localStorage.getItem(STORAGE_KEYS.USER),
-      null
-    );
+    return safeParse(localStorage.getItem(STORAGE_KEYS.USER), null);
   });
 
-
+  // ======================
   // LOGIN
-
+  // ======================
   const login = (email, password) => {
-    const users = safeParse(
-      localStorage.getItem(STORAGE_KEYS.USERS),
-      []
-    );
+    const users = safeParse(localStorage.getItem(STORAGE_KEYS.USERS), []);
 
     const foundUser = users.find(
       u => u.email === email && u.password === password
@@ -48,24 +42,17 @@ export const AuthProvider = ({ children }) => {
       isAuthenticated: true,
     };
 
-    localStorage.setItem(
-      STORAGE_KEYS.USER,
-      JSON.stringify(sessionUser)
-    );
-
+    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(sessionUser));
     setUser(sessionUser);
 
     return { success: true };
   };
 
-
-  // SIGNUP
-
+  // ======================
+  // SIGNUP (FIXED)
+  // ======================
   const signup = (name, email, password) => {
-    const users = safeParse(
-      localStorage.getItem(STORAGE_KEYS.USERS),
-      []
-    );
+    const users = safeParse(localStorage.getItem(STORAGE_KEYS.USERS), []);
 
     const existingUser = users.find(u => u.email === email);
 
@@ -78,6 +65,7 @@ export const AuthProvider = ({ children }) => {
       name,
       email,
       password,
+      hasChildConnected: false, // IMPORTANT for your flow
     };
 
     users.push(newUser);
@@ -87,32 +75,48 @@ export const AuthProvider = ({ children }) => {
       JSON.stringify(users)
     );
 
-    const { password: _, ...safeUser } = newUser;
-
-    const sessionUser = {
-      ...safeUser,
-      isAuthenticated: true,
-    };
-
-    localStorage.setItem(
-      STORAGE_KEYS.USER,
-      JSON.stringify(sessionUser)
-    );
-
-    setUser(sessionUser);
+    // ❌ IMPORTANT FIX:
+    // DO NOT auto login
+    // DO NOT set user state
 
     return { success: true };
   };
 
-  //  LOGOUT
+  // ======================
+  // CONNECT CHILD (NEW IDEA)
+  // ======================
+  const connectChild = () => {
+    if (!user) return;
 
+    const updatedUser = {
+      ...user,
+      hasChildConnected: true,
+    };
+
+    localStorage.setItem(
+      STORAGE_KEYS.USER,
+      JSON.stringify(updatedUser)
+    );
+
+    setUser(updatedUser);
+  };
+
+  // ======================
+  // LOGOUT
+  // ======================
   const logout = () => {
     localStorage.removeItem(STORAGE_KEYS.USER);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout }}>
+    <AuthContext.Provider value={{
+      user,
+      login,
+      signup,
+      logout,
+      connectChild
+    }}>
       {children}
     </AuthContext.Provider>
   );

@@ -28,7 +28,7 @@ const ConnectChild = () => {
     addChild(childInfo.name || "Child Name");
     setIsModalOpen(false);
     setShowToast(true);
-    
+
     // Redirect to dashboard after a short delay
     setTimeout(() => {
       setShowToast(false);
@@ -44,7 +44,7 @@ const ConnectChild = () => {
           <span>Child profile added successfully!</span>
         </div>
       )}
-      
+
       <div style={{ margin: 'auto', width: '100%', maxWidth: '1000px', padding: '40px' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <h1 style={{ color: 'var(--sidebar-bg)', fontSize: '2.5rem', marginBottom: '12px' }}>Connect New Device</h1>
@@ -70,3 +70,4 @@ const ConnectChild = () => {
 };
 
 export default ConnectChild;
+
