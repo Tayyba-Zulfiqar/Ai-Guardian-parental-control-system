@@ -15,41 +15,59 @@ export const AuthProvider = ({ children }) => {
     }
   });
 
+  // ✅ LOGIN (single-user system)
   const login = (email, password) => {
-    // Only business logic here - NO format validation
-    const users = JSON.parse(localStorage.getItem(STORAGE_KEYS.ALL_USERS) || '[]');
-    const foundUser = users.find(u => u.email === email && u.password === password);
+    const storedUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER));
 
-    if (foundUser) {
-      const { password: _, ...userWithoutPassword } = foundUser;
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userWithoutPassword));
-      setUser(userWithoutPassword);
+    if (
+      storedUser &&
+      storedUser.email === email &&
+      storedUser.password === password
+    ) {
+      const { password: _, ...safeUser } = storedUser;
+
+      localStorage.setItem(
+        STORAGE_KEYS.USER,
+        JSON.stringify({
+          ...safeUser,
+          isAuthenticated: true,
+        })
+      );
+
+      setUser({ ...safeUser, isAuthenticated: true });
+
       return { success: true };
     }
 
     return { success: false, error: 'Invalid email or password' };
   };
 
+
   const signup = (name, email, password) => {
-    // Only business logic here - NO format validation
-    const users = JSON.parse(localStorage.getItem(STORAGE_KEYS.ALL_USERS) || '[]');
-    const existingUser = users.find(u => u.email === email);
+    const newUser = {
+      id: 'usr_' + Date.now(),
+      name,
+      email,
+      password, // only used internally for login check
+    };
 
-    if (existingUser) {
-      return { success: false, error: 'User already exists' };
-    }
+    const { password: _, ...safeUser } = newUser;
 
-    const newUser = { id: 'usr_' + Date.now(), name, email };
-    users.push(newUser);
-    localStorage.setItem(STORAGE_KEYS.ALL_USERS, JSON.stringify(users));
+    localStorage.setItem(
+      STORAGE_KEYS.USER,
+      JSON.stringify({
+        ...safeUser,
+        password, // keep for login validation (frontend only)
+        isAuthenticated: true,
+      })
+    );
 
-    const { password: _, ...userWithoutPassword } = newUser;
-    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userWithoutPassword));
-    setUser(userWithoutPassword);
+    setUser({ ...safeUser, isAuthenticated: true });
 
     return { success: true };
   };
 
+  // ✅ LOGOUT
   const logout = () => {
     localStorage.removeItem(STORAGE_KEYS.USER);
     setUser(null);
