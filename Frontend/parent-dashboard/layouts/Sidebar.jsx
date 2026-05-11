@@ -5,9 +5,18 @@ import {
 } from 'lucide-react';
 import './Sidebar.css';
 import { NAV_ITEMS } from '../data/Layout/navItems';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <aside className={`sidebar-container ${isCollapsed ? 'collapsed' : ''}`}>
@@ -50,7 +59,7 @@ const Sidebar = () => {
 
       {/* Footer */}
       <div className="sidebar-footer">
-        <button className="logout-button">
+        <button className="logout-button" onClick={handleLogout}>
           <LogOut size={20} className="nav-icon" />
           {!isCollapsed && <span className="nav-label">Logout</span>}
         </button>
