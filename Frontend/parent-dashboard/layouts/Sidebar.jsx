@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-  ShieldCheck, LogOut, ChevronLeft, ChevronRight
+  ShieldCheck, LogOut, ChevronLeft, ChevronRight, AlertCircle
 } from 'lucide-react';
 import './Sidebar.css';
 import { NAV_ITEMS } from '../data/Layout/navItems';
@@ -76,20 +76,77 @@ const Sidebar = () => {
       <Modal
         isOpen={showLogoutModal}
         onClose={() => setShowLogoutModal(false)}
-        title="Confirm Logout"
+        title={null} // We'll handle the header inside the body for a more modern centered look
         size="small"
-        footer={
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', width: '100%' }}>
-            <Button variant="ghost" onClick={() => setShowLogoutModal(false)}>
-              Cancel
+        footer={null} // We'll handle buttons inside the body for better centering
+      >
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          textAlign: 'center',
+          padding: '10px 0 20px 0'
+        }}>
+          {/* Professional Icon Container */}
+          <div style={{ 
+            background: 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)', 
+            color: '#dc2626', 
+            width: '64px',
+            height: '64px',
+            borderRadius: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '24px',
+            boxShadow: '0 8px 16px -4px rgba(220, 38, 38, 0.15)'
+          }}>
+            <LogOut size={32} />
+          </div>
+
+          <h2 style={{ 
+            fontSize: '1.5rem', 
+            fontWeight: 800, 
+            color: '#111827', 
+            margin: '0 0 12px 0',
+            letterSpacing: '-0.025em'
+          }}>
+            Confirm Sign Out
+          </h2>
+          
+          <p style={{ 
+            color: '#6b7280', 
+            fontSize: '1rem', 
+            lineHeight: '1.5',
+            margin: '0 0 32px 0',
+            maxWidth: '280px'
+          }}>
+            Are you sure you want to log out? You'll need your credentials to sign back in.
+          </p>
+
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column',
+            gap: '12px', 
+            width: '100%' 
+          }}>
+            <Button 
+              variant="danger" 
+              size="large"
+              onClick={confirmLogout}
+              style={{ width: '100%', borderRadius: '14px', fontWeight: 700 }}
+            >
+              Log Out
             </Button>
-            <Button variant="danger" onClick={confirmLogout}>
-              Logout
+            <Button 
+              variant="ghost" 
+              size="large"
+              onClick={() => setShowLogoutModal(false)}
+              style={{ width: '100%', borderRadius: '14px', fontWeight: 600, color: '#6b7280' }}
+            >
+              Go Back
             </Button>
           </div>
-        }
-      >
-        <p>Are you sure you want to log out of your account?</p>
+        </div>
       </Modal>
 
     </aside>

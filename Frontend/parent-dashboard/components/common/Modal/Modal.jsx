@@ -39,20 +39,37 @@ const Modal = ({
             transition={{ duration: 0.2, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="modal-header">
-              <h3 className="modal-title">{title}</h3>
-              <button 
-                className="modal-close-btn" 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onClose();
-                }}
-                type="button"
-                aria-label="Close modal"
-              >
-                <X size={20} />
-              </button>
-            </div>
+            {title && (
+              <div className="modal-header">
+                <h3 className="modal-title">{title}</h3>
+                <button 
+                  className="modal-close-btn" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClose();
+                  }}
+                  type="button"
+                  aria-label="Close modal"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            )}
+            
+            {!title && (
+               <button 
+               className="modal-close-btn absolute" 
+               onClick={(e) => {
+                 e.stopPropagation();
+                 onClose();
+               }}
+               style={{ position: 'absolute', top: '16px', right: '16px', zIndex: 10 }}
+               type="button"
+               aria-label="Close modal"
+             >
+               <X size={20} />
+             </button>
+            )}
             
             <div className="modal-body">
               {children}
