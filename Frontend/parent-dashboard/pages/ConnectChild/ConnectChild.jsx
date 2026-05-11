@@ -5,6 +5,7 @@ import PairingCard from '../../components/ui/Family-Profiles/PairingCard';
 import AddChildModal from '../../components/ui/Family-Profiles/AddChildModal';
 import { usePairingCode } from '../../hooks/usePairingCode';
 import { useChild } from '../../context/ChildContext';
+import { useAuth } from '../../context/AuthContext';
 import '../Login/Login.css'; // Reuse full screen auth styles
 
 const ConnectChild = () => {
@@ -12,6 +13,7 @@ const ConnectChild = () => {
   const [showToast, setShowToast] = useState(false);
   const navigate = useNavigate();
   const { addChild } = useChild();
+  const { connectChild } = useAuth();
 
   const {
     pairingCode,
@@ -26,6 +28,7 @@ const ConnectChild = () => {
 
   const handleConfirmAddChild = (childInfo) => {
     addChild(childInfo.name || "Child Name");
+    connectChild(); // Mark onboarding as complete in AuthContext
     setIsModalOpen(false);
     setShowToast(true);
 

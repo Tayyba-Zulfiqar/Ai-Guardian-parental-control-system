@@ -5,12 +5,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { signupSchema } from '../../src/validations/auth/signupSchema';
 import splashScreen from '../../src/assets/images/SplashScreen.png';
+import Modal from '../../components/common/Modal/Modal';
+import Button from '../../components/common/Button/Button';
+import { CheckCircle2 } from 'lucide-react';
 import '../Login/Login.css';
 
 const Signup = () => {
-  const { signup } = useAuth();
+  const { signup, login } = useAuth();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const {
     register,
@@ -27,8 +31,9 @@ const Signup = () => {
     const result = signup(data.name, data.email, data.password);
 
     if (result.success) {
-
-      navigate('/connect-child');
+      // Auto login so they can access protected routes like /connect-child
+      login(data.email, data.password);
+      setShowSuccessModal(true);
     } else {
       setServerError(result.error || 'Signup failed. Please try again.');
     }
@@ -128,6 +133,27 @@ const Signup = () => {
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={showSuccessModal}
+        onClose={() => navigate('/connect-child')}
+        title="Account Created"
+      >
+        <div className="success-modal-content">
+          <div className="success-icon-wrapper">
+            <CheckCircle2 size={48} className="success-icon" />
+          </div>
+          <p>Your account has been created successfully! You can now proceed to connect your child's device.</p>
+          <Button 
+            variant="primary" 
+            size="large" 
+            onClick={() => navigate('/connect-child')}
+            className="w-full"
+          >
+            Continue
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };

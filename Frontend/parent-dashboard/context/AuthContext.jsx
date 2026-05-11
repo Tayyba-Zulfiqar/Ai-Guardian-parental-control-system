@@ -93,10 +93,19 @@ export const AuthProvider = ({ children }) => {
       hasChildConnected: true,
     };
 
+    // Update session user
     localStorage.setItem(
       STORAGE_KEYS.USER,
       JSON.stringify(updatedUser)
     );
+
+    // Also update the persistent users list
+    const users = safeParse(localStorage.getItem(STORAGE_KEYS.USERS), []);
+    const userIndex = users.findIndex(u => u.email === user.email);
+    if (userIndex !== -1) {
+      users[userIndex].hasChildConnected = true;
+      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+    }
 
     setUser(updatedUser);
   };
