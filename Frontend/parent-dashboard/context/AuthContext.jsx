@@ -5,69 +5,107 @@ const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
+// helper: safe JSON parse
+const safeParse = (value, fallback) => {
+  try {
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
 export const AuthProvider = ({ children }) => {
+
+  //  Load session user on refresh
   const [user, setUser] = useState(() => {
-    try {
-      const storedUser = localStorage.getItem(STORAGE_KEYS.USER);
-      return storedUser ? JSON.parse(storedUser) : null;
-    } catch (e) {
-      return null;
-    }
+    return safeParse(
+      localStorage.getItem(STORAGE_KEYS.USER),
+      null
+    );
   });
 
-  // ✅ LOGIN (single-user system)
+
+  // LOGIN
+
   const login = (email, password) => {
-    const storedUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER));
+    const users = safeParse(
+      localStorage.getItem(STORAGE_KEYS.USERS),
+      []
+    );
 
-    if (
-      storedUser &&
-      storedUser.email === email &&
-      storedUser.password === password
-    ) {
-      const { password: _, ...safeUser } = storedUser;
+    const foundUser = users.find(
+      u => u.email === email && u.password === password
+    );
 
-      localStorage.setItem(
-        STORAGE_KEYS.USER,
-        JSON.stringify({
-          ...safeUser,
-          isAuthenticated: true,
-        })
-      );
-
-      setUser({ ...safeUser, isAuthenticated: true });
-
-      return { success: true };
+    if (!foundUser) {
+      return { success: false, error: 'Invalid email or password' };
     }
 
-    return { success: false, error: 'Invalid email or password' };
-  };
+    const { password: _, ...safeUser } = foundUser;
 
-
-  const signup = (name, email, password) => {
-    const newUser = {
-      id: 'usr_' + Date.now(),
-      name,
-      email,
-      password, // only used internally for login check
+    const sessionUser = {
+      ...safeUser,
+      isAuthenticated: true,
     };
-
-    const { password: _, ...safeUser } = newUser;
 
     localStorage.setItem(
       STORAGE_KEYS.USER,
-      JSON.stringify({
-        ...safeUser,
-        password, // keep for login validation (frontend only)
-        isAuthenticated: true,
-      })
+      JSON.stringify(sessionUser)
     );
 
-    setUser({ ...safeUser, isAuthenticated: true });
+    setUser(sessionUser);
 
     return { success: true };
   };
 
-  // ✅ LOGOUT
+
+  // SIGNUP
+
+  const signup = (name, email, password) => {
+    const users = safeParse(
+      localStorage.getItem(STORAGE_KEYS.USERS),
+      []
+    );
+
+    const existingUser = users.find(u => u.email === email);
+
+    if (existingUser) {
+      return { success: false, error: 'User already exists' };
+    }
+
+    const newUser = {
+      id: 'usr_' + Date.now(),
+      name,
+      email,
+      password,
+    };
+
+    users.push(newUser);
+
+    localStorage.setItem(
+      STORAGE_KEYS.USERS,
+      JSON.stringify(users)
+    );
+
+    const { password: _, ...safeUser } = newUser;
+
+    const sessionUser = {
+      ...safeUser,
+      isAuthenticated: true,
+    };
+
+    localStorage.setItem(
+      STORAGE_KEYS.USER,
+      JSON.stringify(sessionUser)
+    );
+
+    setUser(sessionUser);
+
+    return { success: true };
+  };
+
+  //  LOGOUT
+
   const logout = () => {
     localStorage.removeItem(STORAGE_KEYS.USER);
     setUser(null);

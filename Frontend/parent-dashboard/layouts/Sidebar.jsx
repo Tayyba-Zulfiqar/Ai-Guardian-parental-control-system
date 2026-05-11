@@ -7,15 +7,23 @@ import './Sidebar.css';
 import { NAV_ITEMS } from '../data/Layout/navItems';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Modal from '../components/common/Modal/Modal';
+import Button from '../components/common/Button/Button';
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
     logout();
     navigate('/login');
+    setShowLogoutModal(false);
   };
 
   return (
@@ -59,11 +67,30 @@ const Sidebar = () => {
 
       {/* Footer */}
       <div className="sidebar-footer">
-        <button className="logout-button" onClick={handleLogout}>
+        <button className="logout-button" onClick={handleLogoutClick}>
           <LogOut size={20} className="nav-icon" />
           {!isCollapsed && <span className="nav-label">Logout</span>}
         </button>
       </div>
+
+      <Modal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        title="Confirm Logout"
+        size="small"
+        footer={
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', width: '100%' }}>
+            <Button variant="ghost" onClick={() => setShowLogoutModal(false)}>
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={confirmLogout}>
+              Logout
+            </Button>
+          </div>
+        }
+      >
+        <p>Are you sure you want to log out of your account?</p>
+      </Modal>
 
     </aside>
   );
