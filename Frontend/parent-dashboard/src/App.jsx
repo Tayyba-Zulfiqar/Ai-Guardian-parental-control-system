@@ -56,13 +56,13 @@ export default function App() {
             <Route element={<DashboardLayout />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/alerts/:childId" element={<Alerts />} />
-              <Route path="/child-activity/:childId" element={<ChildActivity />} />
-              <Route path="/app-controls/:childId" element={<AppControls />} />
-              <Route path="/screen-time/:childId" element={<ScreenTime />} />
-              <Route path="/family-profiles/:childId" element={<FamilyProfile />} />
+              <Route path="/alerts" element={<Alerts />} />
+              <Route path="/child-activity" element={<ChildActivity />} />
+              <Route path="/app-controls" element={<AppControls />} />
+              <Route path="/screen-time" element={<ScreenTime />} />
+              <Route path="/family-profiles" element={<FamilyProfile />} />
               <Route path="/content-reports" element={<ContentReports />} />
-              <Route path="/content-reports/:childId" element={<ContentReports />} />
+              <Route path="/content-reports" element={<ContentReports />} />
               <Route path="/parent-account" element={<ParentAccount />} />
             </Route>
 
