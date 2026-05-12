@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './ChildActivity.css';
 import { LayoutGrid, TrendingUp, Sparkles } from 'lucide-react';
+
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
 import AppsUsedToday from '../../components/ui/Child-Activity/AppsUsedToday/AppsUsedToday';
@@ -14,11 +15,15 @@ import {
   aiInsightsData
 } from '../../data/Child-Activity';
 
-import { childrenData } from '../../data/Dashboard/childrenData';
+import { useChild } from '../../context/ChildContext';
 
 const ChildActivity = () => {
   const [timeframe, setTimeframe] = useState('daily');
-  const activeChild = childrenData[0];
+
+  const { getActiveChild } = useChild();
+  const activeChild = getActiveChild();
+
+  if (!activeChild) return null;
 
   return (
     <div className="child-activity-page">
@@ -28,7 +33,10 @@ const ChildActivity = () => {
       />
 
       <div className="stats-section">
-        <h2 className="dashboard-section-title">Activity Detail of {activeChild.name}:</h2>
+        <h2 className="dashboard-section-title">
+          Activity Detail of {activeChild.name}:
+        </h2>
+
         <div className="activity-stats-row">
           <StatsCard
             title="Total Apps Used Today"
@@ -36,12 +44,14 @@ const ChildActivity = () => {
             Icon={LayoutGrid}
             trend={childActivityStats.totalAppsToday.trend}
           />
+
           <StatsCard
             title="Most Used App Today"
             value={childActivityStats.mostUsedAppToday.value}
             Icon={Sparkles}
             trend={childActivityStats.mostUsedAppToday.trend}
           />
+
           <StatsCard
             title="Most Used Category"
             value={childActivityStats.mostUsedCategoryToday.value}
@@ -53,18 +63,21 @@ const ChildActivity = () => {
 
       <div className="activity-main-grid">
         <div className="activity-left-column">
-          <h2 className="dashboard-section-title">All Apps Used Today:</h2>
+          <h2 className="dashboard-section-title">
+            All Apps Used Today:
+          </h2>
+
           <AppsUsedToday data={appsUsedToday} />
         </div>
 
         <div className="activity-right-column">
-          <CommonPieChart 
+          <CommonPieChart
             title="App Usage Distribution"
             subtitle="Time spent per category"
-            data={appUsageDistribution} 
+            data={appUsageDistribution}
             showToggle={true}
-            timeframe={timeframe} 
-            setTimeframe={setTimeframe} 
+            timeframe={timeframe}
+            setTimeframe={setTimeframe}
             centerLabel="Total Used"
             valueFormatter={(mins) => {
               const h = Math.floor(mins / 60);
