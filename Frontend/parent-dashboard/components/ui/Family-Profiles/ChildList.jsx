@@ -2,18 +2,18 @@ import React from 'react';
 import { User } from 'lucide-react';
 import './ChildList.css';
 
-const ChildList = ({ children }) => {
+const ChildList = ({ childrenList }) => {
   return (
     <div className="child-list-container">
       <div className="list-header">
         <h2 className="dashboard-section-title">Added Children</h2>
-        <span className="count-badge">{children.length} devices linked</span>
+        <span className="count-badge">{childrenList.length} devices linked</span>
       </div>
 
       <div className="child-grid">
-        {children.map((child) => {
+        {childrenList.map((child) => {
           const isCurrentlyActive = child.status === 'Currently Active' || child.status.toLowerCase() === 'online';
-          
+
           return (
             <div key={child.id} className="child-item-card">
               <div className="item-main">

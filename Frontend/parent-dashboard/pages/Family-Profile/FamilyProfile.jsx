@@ -116,7 +116,7 @@ const FamilyProfile = () => {
 
         <div className="profile-section">
 
-          <ChildList children={formattedChildren} />
+          <ChildList childrenList={formattedChildren} />
 
         </div>
 
