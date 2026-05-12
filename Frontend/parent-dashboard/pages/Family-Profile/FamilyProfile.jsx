@@ -9,6 +9,7 @@ import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/Accou
 import PairingCard from '../../components/ui/Family-Profiles/PairingCard';
 import ChildList from '../../components/ui/Family-Profiles/ChildList';
 import AddChildModal from '../../components/ui/Family-Profiles/AddChildModal';
+import SwitchChildModal from '../../components/ui/Family-Profiles/SwitchChildModal';
 
 import { usePairingCode } from '../../hooks/usePairingCode';
 
@@ -20,12 +21,15 @@ const FamilyProfile = () => {
   const [showToast, setShowToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [showMinChildError, setShowMinChildError] = useState(false);
+  const [isSwitchModalOpen, setIsSwitchModalOpen] = useState(false);
+  const [childIdToRemove, setChildIdToRemove] = useState(null);
 
   const {
     childrenList,
     addChild,
     removeChild,
     activeChildId,
+    setActiveChild,
   } = useChild();
 
   const {
@@ -90,7 +94,25 @@ const FamilyProfile = () => {
       setTimeout(() => setShowMinChildError(false), 3000);
       return;
     }
+
+    // Special case: Removing active child when there are 3 children
+    // (Meaning 2 will remain, so user needs to pick which one becomes active)
+    if (childrenList.length === 3 && id === activeChildId) {
+      setChildIdToRemove(id);
+      setIsSwitchModalOpen(true);
+      return;
+    }
+
     removeChild(id);
+  };
+
+  const handleConfirmSwitch = (newActiveId) => {
+    setActiveChild(newActiveId);
+    if (childIdToRemove) {
+      removeChild(childIdToRemove);
+    }
+    setIsSwitchModalOpen(false);
+    setChildIdToRemove(null);
   };
 
   return (
@@ -154,6 +176,14 @@ const FamilyProfile = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirmAddChild}
+      />
+
+      <SwitchChildModal
+        isOpen={isSwitchModalOpen}
+        onClose={() => setIsSwitchModalOpen(false)}
+        children={formattedChildren}
+        activeChildId={activeChildId}
+        onConfirm={handleConfirmSwitch}
       />
 
     </div>
