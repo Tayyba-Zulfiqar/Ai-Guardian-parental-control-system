@@ -1,11 +1,10 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { STORAGE_KEYS } from '../utils/storageKeys';
 
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
-// helper
 const safeParse = (value, fallback) => {
   try {
     return value ? JSON.parse(value) : fallback;
@@ -16,23 +15,40 @@ const safeParse = (value, fallback) => {
 
 export const AuthProvider = ({ children }) => {
 
-  // session user (ONLY for login state)
-  const [user, setUser] = useState(() => {
-    return safeParse(localStorage.getItem(STORAGE_KEYS.USER), null);
-  });
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // ======================
+  // LOAD SESSION
+  // ======================
+  useEffect(() => {
+    const storedUser = safeParse(
+      localStorage.getItem(STORAGE_KEYS.USER),
+      null
+    );
+
+    setUser(storedUser);
+    setLoading(false);
+  }, []);
 
   // ======================
   // LOGIN
   // ======================
   const login = (email, password) => {
-    const users = safeParse(localStorage.getItem(STORAGE_KEYS.USERS), []);
+    const users = safeParse(
+      localStorage.getItem(STORAGE_KEYS.USERS),
+      []
+    );
 
     const foundUser = users.find(
       u => u.email === email && u.password === password
     );
 
     if (!foundUser) {
-      return { success: false, error: 'Invalid email or password' };
+      return {
+        success: false,
+        error: 'Invalid email or password',
+      };
     }
 
     const { password: _, ...safeUser } = foundUser;
@@ -42,22 +58,34 @@ export const AuthProvider = ({ children }) => {
       isAuthenticated: true,
     };
 
-    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(sessionUser));
+    localStorage.setItem(
+      STORAGE_KEYS.USER,
+      JSON.stringify(sessionUser)
+    );
+
     setUser(sessionUser);
 
     return { success: true };
   };
 
   // ======================
-  // SIGNUP (FIXED)
+  // SIGNUP
   // ======================
   const signup = (name, email, password) => {
-    const users = safeParse(localStorage.getItem(STORAGE_KEYS.USERS), []);
+    const users = safeParse(
+      localStorage.getItem(STORAGE_KEYS.USERS),
+      []
+    );
 
-    const existingUser = users.find(u => u.email === email);
+    const existingUser = users.find(
+      u => u.email === email
+    );
 
     if (existingUser) {
-      return { success: false, error: 'User already exists' };
+      return {
+        success: false,
+        error: 'User already exists',
+      };
     }
 
     const newUser = {
@@ -65,7 +93,6 @@ export const AuthProvider = ({ children }) => {
       name,
       email,
       password,
-      hasChildConnected: false, // IMPORTANT for your flow
     };
 
     users.push(newUser);
@@ -75,39 +102,7 @@ export const AuthProvider = ({ children }) => {
       JSON.stringify(users)
     );
 
-    // ❌ IMPORTANT FIX:
-    // DO NOT auto login
-    // DO NOT set user state
-
     return { success: true };
-  };
-
-  // ======================
-  // CONNECT CHILD (NEW IDEA)
-  // ======================
-  const connectChild = () => {
-    if (!user) return;
-
-    const updatedUser = {
-      ...user,
-      hasChildConnected: true,
-    };
-
-    // Update session user
-    localStorage.setItem(
-      STORAGE_KEYS.USER,
-      JSON.stringify(updatedUser)
-    );
-
-    // Also update the persistent users list
-    const users = safeParse(localStorage.getItem(STORAGE_KEYS.USERS), []);
-    const userIndex = users.findIndex(u => u.email === user.email);
-    if (userIndex !== -1) {
-      users[userIndex].hasChildConnected = true;
-      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
-    }
-
-    setUser(updatedUser);
   };
 
   // ======================
@@ -119,13 +114,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      login,
-      signup,
-      logout,
-      connectChild
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        signup,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

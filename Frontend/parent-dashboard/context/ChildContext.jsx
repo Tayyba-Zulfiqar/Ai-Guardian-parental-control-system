@@ -6,7 +6,7 @@ import {
 } from 'react';
 
 import { STORAGE_KEYS } from '../utils/storageKeys';
-
+import { useAuth } from './AuthContext';
 
 // CONTEXT
 export const ChildContext = createContext();
@@ -14,72 +14,82 @@ export const ChildContext = createContext();
 // PROVIDER
 export const ChildProvider = ({ children }) => {
 
-  // CHILDREN STATE
+  const { user } = useAuth();
 
-  const [childrenList, setChildrenList] = useState(() => {
-    const savedChildren = localStorage.getItem(STORAGE_KEYS.CHILDREN);
+  const [childrenList, setChildrenList] = useState([]);
+  const [activeChildId, setActiveChildId] = useState(null);
+  const [pendingRequests, setPendingRequests] = useState({});
 
-    return savedChildren ? JSON.parse(savedChildren) : [];
-  });
-
-
-  // ACTIVE CHILD
-
-  const [activeChildId, setActiveChildId] = useState(() => {
-    return localStorage.getItem(STORAGE_KEYS.ACTIVE_CHILD_ID) || null;
-  });
-
-
-  // PENDING REQUESTS
-
-  const [pendingRequests, setPendingRequests] = useState(() => {
-    const savedRequests = localStorage.getItem(
-      STORAGE_KEYS.PENDING_REQUESTS
-    );
-
-    return savedRequests ? JSON.parse(savedRequests) : {};
-  });
-
-
-  // SAVE CHILDREN
-
+  // ======================
+  // LOAD DATA ONLY WHEN USER EXISTS
+  // ======================
   useEffect(() => {
+
+    // ❌ IMPORTANT: do nothing if not logged in
+    if (!user) {
+      setChildrenList([]);
+      setActiveChildId(null);
+      setPendingRequests({});
+      return;
+    }
+
+    const savedChildren = localStorage.getItem(`${STORAGE_KEYS.CHILDREN}_${user.id}`);
+    const savedActiveChild = localStorage.getItem(`${STORAGE_KEYS.ACTIVE_CHILD_ID}_${user.id}`);
+    const savedRequests = localStorage.getItem(`${STORAGE_KEYS.PENDING_REQUESTS}_${user.id}`);
+
+    setChildrenList(savedChildren ? JSON.parse(savedChildren) : []);
+    setActiveChildId(savedActiveChild || null);
+    setPendingRequests(savedRequests ? JSON.parse(savedRequests) : {});
+
+  }, [user]);
+
+  // ======================
+  // SAVE CHILDREN (ONLY IF USER EXISTS)
+  // ======================
+  useEffect(() => {
+    if (!user) return;
+
     localStorage.setItem(
-      STORAGE_KEYS.CHILDREN,
+      `${STORAGE_KEYS.CHILDREN}_${user.id}`,
       JSON.stringify(childrenList)
     );
-  }, [childrenList]);
+  }, [childrenList, user]);
 
+  // ======================
   // SAVE ACTIVE CHILD
-
+  // ======================
   useEffect(() => {
+    if (!user) return;
+
     if (activeChildId) {
       localStorage.setItem(
-        STORAGE_KEYS.ACTIVE_CHILD_ID,
+        `${STORAGE_KEYS.ACTIVE_CHILD_ID}_${user.id}`,
         activeChildId
       );
     } else {
-      localStorage.removeItem(STORAGE_KEYS.ACTIVE_CHILD_ID);
+      localStorage.removeItem(`${STORAGE_KEYS.ACTIVE_CHILD_ID}_${user.id}`);
     }
-  }, [activeChildId]);
+  }, [activeChildId, user]);
 
-
+  // ======================
   // SAVE PENDING REQUESTS
-
+  // ======================
   useEffect(() => {
+    if (!user) return;
+
     localStorage.setItem(
-      STORAGE_KEYS.PENDING_REQUESTS,
+      `${STORAGE_KEYS.PENDING_REQUESTS}_${user.id}`,
       JSON.stringify(pendingRequests)
     );
-  }, [pendingRequests]);
+  }, [pendingRequests, user]);
 
-
+  // ======================
   // ADD CHILD
-
+  // ======================
   const addChild = (name, deviceType = 'Mobile') => {
+
     const newChild = {
       id: crypto.randomUUID(),
-
       name,
       deviceType,
 
@@ -103,94 +113,67 @@ export const ChildProvider = ({ children }) => {
     };
 
     setChildrenList(prev => [...prev, newChild]);
-
-    // automatically switch to newly added child
     setActiveChildId(newChild.id);
 
     return newChild;
   };
 
-
+  // ======================
   // REMOVE CHILD
+  // ======================
+  const removeChild = (id) => {
 
-  const removeChild = id => {
     setChildrenList(prev => {
-      const updatedChildren = prev.filter(
-        child => child.id !== id
-      );
+      const updated = prev.filter(child => child.id !== id);
 
-      // if removed child was active
       if (activeChildId === id) {
-        setActiveChildId(updatedChildren[0]?.id || null);
+        setActiveChildId(updated[0]?.id || null);
       }
 
-      return updatedChildren;
+      return updated;
     });
 
-    // also remove pending requests
     setPendingRequests(prev => {
-      const updatedRequests = { ...prev };
-
-      delete updatedRequests[id];
-
-      return updatedRequests;
+      const updated = { ...prev };
+      delete updated[id];
+      return updated;
     });
   };
 
-
+  // ======================
   // UPDATE CHILD
-
+  // ======================
   const updateChild = (id, updatedData) => {
     setChildrenList(prev =>
       prev.map(child =>
-        child.id === id
-          ? {
-            ...child,
-            ...updatedData,
-          }
-          : child
+        child.id === id ? { ...child, ...updatedData } : child
       )
     );
   };
 
-
+  // ======================
   // SET ACTIVE CHILD
-
-  const setActiveChild = id => {
-    const childExists = childrenList.some(
-      child => child.id === id
-    );
-
-    if (childExists) {
-      setActiveChildId(id);
-    }
+  // ======================
+  const setActiveChild = (id) => {
+    const exists = childrenList.some(child => child.id === id);
+    if (exists) setActiveChildId(id);
   };
 
-
+  // ======================
   // GET ACTIVE CHILD
-
+  // ======================
   const getActiveChild = () => {
-    return (
-      childrenList.find(
-        child => child.id === activeChildId
-      ) || null
-    );
+    return childrenList.find(c => c.id === activeChildId) || null;
   };
 
-
-  // ADD PENDING REQUEST
-
-  const addPendingRequest = (
-    childId,
-    requestId,
-    type = 'logout'
-  ) => {
+  // ======================
+  // PENDING REQUESTS
+  // ======================
+  const addPendingRequest = (childId, requestId, type = 'logout') => {
     setPendingRequests(prev => ({
       ...prev,
-
       [childId]: [
         ...(prev[childId] || []),
-
         {
           id: requestId,
           type,
@@ -200,53 +183,29 @@ export const ChildProvider = ({ children }) => {
     }));
   };
 
-
-  // APPROVE REQUEST
-
-  const approveRequest = (
-    childId,
-    requestId
-  ) => {
+  const approveRequest = (childId, requestId) => {
     setPendingRequests(prev => ({
       ...prev,
-
       [childId]:
-        prev[childId]?.filter(
-          request => request.id !== requestId
-        ) || [],
+        prev[childId]?.filter(r => r.id !== requestId) || [],
     }));
   };
 
-
-  // DENY REQUEST
-
-  const denyRequest = (
-    childId,
-    requestId
-  ) => {
+  const denyRequest = (childId, requestId) => {
     setPendingRequests(prev => ({
       ...prev,
-
       [childId]:
-        prev[childId]?.filter(
-          request => request.id !== requestId
-        ) || [],
+        prev[childId]?.filter(r => r.id !== requestId) || [],
     }));
   };
 
+  const getPendingRequestsForActiveChild = () => {
+    return pendingRequests[activeChildId] || [];
+  };
 
-  // GET ACTIVE CHILD REQUESTS
-
-  const getPendingRequestsForActiveChild =
-    () => {
-      return (
-        pendingRequests[activeChildId] || []
-      );
-    };
-
-
+  // ======================
   // CONTEXT VALUE
-
+  // ======================
   const value = {
     childrenList,
     activeChildId,
@@ -272,7 +231,6 @@ export const ChildProvider = ({ children }) => {
     </ChildContext.Provider>
   );
 };
-
 
 // CUSTOM HOOK
 export const useChild = () => {

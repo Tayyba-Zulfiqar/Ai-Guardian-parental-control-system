@@ -1,17 +1,27 @@
 import { useState } from 'react';
+
 import { Smartphone, CheckCircle2 } from 'lucide-react';
+
+import { useChild } from '../../context/ChildContext';
+
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import PairingCard from '../../components/ui/Family-Profiles/PairingCard';
 import ChildList from '../../components/ui/Family-Profiles/ChildList';
 import AddChildModal from '../../components/ui/Family-Profiles/AddChildModal';
-import { childrenList } from '../../data/Family-Profiles/profileData';
+
 import { usePairingCode } from '../../hooks/usePairingCode';
+
 import './FamilyProfile.css';
 
 const FamilyProfile = () => {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [localChildren, setLocalChildren] = useState(childrenList);
   const [showToast, setShowToast] = useState(false);
+
+  const {
+    childrenList,
+    addChild,
+  } = useChild();
 
   const {
     pairingCode,
@@ -20,49 +30,64 @@ const FamilyProfile = () => {
     handleRegenerateCode
   } = usePairingCode();
 
+  // ======================
+  // FORMAT CHILDREN (ONLY CONTEXT DATA)
+  // ======================
+  const formattedChildren = childrenList.map((child) => ({
+    id: child.id,
+    name: child.name,
+    age: child.profile?.age || 'N/A',
+    device: child.deviceType,
+    deviceType: Smartphone,
+    status: 'Online',
+    lastActive: 'Just now',
+    avatar: '👦',
+  }));
+
+  // ======================
+  // SIMULATE CONNECT
+  // ======================
   const handleSimulateConnect = () => {
-    // This simulates the 'pairing success' event from the child app
     setIsModalOpen(true);
   };
 
+  // ======================
+  // ADD CHILD (FIXED)
+  // ======================
   const handleConfirmAddChild = (childInfo) => {
-    const newChild = {
-      id: Date.now(),
-      name: childInfo.name,
-      age: childInfo.age,
-      device: childInfo.deviceName,
-      deviceType: Smartphone,
-      status: "Online",
-      lastActive: "Just now",
-      avatar: childInfo.gender === 'male' ? "👦" : "👧"
-    };
 
-    setLocalChildren((prev) => [...prev, newChild]);
+    addChild(
+      childInfo.name,
+      childInfo.deviceName
+    );
+
     setIsModalOpen(false);
-
-    // Show success feedback
     setShowToast(true);
+
     setTimeout(() => setShowToast(false), 3000);
 
-    // Force regenerate the code for the next child and reset the regeneration option (cooldown = 0)
     handleRegenerateCode(true, 0);
   };
 
   return (
     <div className="dashboard-page child-profile-page">
+
       {showToast && (
         <div className="success-toast">
           <CheckCircle2 size={18} />
           <span>Child profile added successfully!</span>
         </div>
       )}
+
       <PageHeader
         title="Family Profiles"
         subtitle="Manage and link your children's devices here"
       />
 
       <section className="dashboard-content">
+
         <div className="profile-section">
+
           <PairingCard
             pairingCode={pairingCode}
             expiryTime={expiryTime}
@@ -70,11 +95,15 @@ const FamilyProfile = () => {
             onSimulateConnect={handleSimulateConnect}
             cooldown={cooldown}
           />
+
         </div>
 
         <div className="profile-section">
-          <ChildList children={localChildren} />
+
+          <ChildList children={formattedChildren} />
+
         </div>
+
       </section>
 
       <AddChildModal
@@ -82,6 +111,7 @@ const FamilyProfile = () => {
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirmAddChild}
       />
+
     </div>
   );
 };
@@ -92,12 +122,12 @@ export default FamilyProfile;
 //tIME BASED BEHAVIOR TRACKING
 
 //use selectedChildId and change it using react context/redux
-/* 
+/*
 
 1- ADD / LINK CHILD SECTION:
 Generate unique pairing code / QR code
 Pairing code expiry time
-child name 
+child name
 child age
 regrenate code option
 

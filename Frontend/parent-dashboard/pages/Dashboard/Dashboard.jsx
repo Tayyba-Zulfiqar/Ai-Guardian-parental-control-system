@@ -1,31 +1,51 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { useChild } from '../../context/ChildContext';
+
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import ChildStatusCard from '../../components/ui/dashboard/ChildStatusCard/ChildStatusCard';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
 import TopApps from '../../components/ui/dashboard/TopApps/TopApps';
 import ActivityInsights from '../../components/common/ActivityInsights/ActivityInsights';
-import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/AccountSwitcher'; // New Component
-import { childrenData, parentData, dashboardInsightsData } from '../../data/Dashboard';
+import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/AccountSwitcher';
+
+import {
+  childrenData,
+  parentData,
+  dashboardInsightsData
+} from '../../data/Dashboard';
+
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { childrenList, loading } = useChild();
+  const {
+    childrenList,
+    getActiveChild,
+  } = useChild();
+
   const navigate = useNavigate();
 
+  // Redirect if no child connected
   useEffect(() => {
-    if (!loading && childrenList.length === 0) {
-      navigate('/connect-child', { replace: true });
+    if (childrenList.length === 0) {
+      navigate('/connect-child', {
+        replace: true,
+      });
     }
-  }, [childrenList, loading, navigate]);
+  }, [childrenList, navigate]);
 
-  // Temporary active child mock (first child in the list)
-  const activeChild = childrenData[0];
+  // Active child from context
+  const activeChild = getActiveChild();
 
-  if (loading || childrenList.length === 0) {
-    return null; // Return null while redirecting
+  // Prevent crash while redirecting
+  if (!activeChild) {
+    return null;
   }
+
+  // Temporary dummy UI data
+  // (frontend phase only)
+  const activeChildMockData = childrenData[0];
 
   return (
     <div className="dashboard-page">
@@ -39,12 +59,23 @@ const Dashboard = () => {
       </div>
 
       <section className="dashboard-content">
-        <ChildStatusCard child={activeChild} />
+
+        {/* REAL selected child identity */}
+        <ChildStatusCard
+          child={{
+            ...activeChildMockData,
+            name: activeChild.name,
+            deviceType: activeChild.deviceType,
+          }}
+        />
 
         <div className="stats-section">
-          <h2 className="dashboard-section-title">Today's Overview for {activeChild.name}:</h2>
+          <h2 className="dashboard-section-title">
+            Today's Overview for {activeChild.name}:
+          </h2>
+
           <div className="stats-overview-grid">
-            {activeChild.stats.map((stat, index) => (
+            {activeChildMockData.stats.map((stat, index) => (
               <StatsCard
                 key={index}
                 title={stat.title}
@@ -58,39 +89,28 @@ const Dashboard = () => {
         </div>
 
         <div className="stats-section">
-          <h2 className="dashboard-section-title">Top Apps Used Today:</h2>
-          <TopApps child={activeChild} />
+          <h2 className="dashboard-section-title">
+            Top Apps Used Today:
+          </h2>
+
+          <TopApps
+            child={{
+              ...activeChildMockData,
+              name: activeChild.name,
+              deviceType: activeChild.deviceType,
+            }}
+          />
         </div>
 
         <div className="dashboard-insights-section">
-          <ActivityInsights data={dashboardInsightsData} />
+          <ActivityInsights
+            data={dashboardInsightsData}
+          />
         </div>
+
       </section>
     </div>
   );
 };
 
 export default Dashboard;
-
-
-
-//intelligence and summary page
-/* 
-
-
-STATUS OVERVIEW:
-1- show total screen time 
-2- risk level (high/med /low)
-3- total alerts count (no lists)
-
-BEHAVIOR INSIGHTS:
-4- top apps used (only 3 top)
-5- ai short summary of 3-4 lines
-
-
-QUICK ACTIONS:
-lock device / 
-
-
-*/
-

@@ -1,6 +1,14 @@
 import { useState } from 'react';
+
 import './ScreenTime.css';
-import { Clock, Calendar, CalendarDays } from 'lucide-react';
+
+import {
+  Clock,
+  Calendar,
+  CalendarDays
+} from 'lucide-react';
+
+import { useChild } from '../../context/ChildContext';
 
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
@@ -11,13 +19,18 @@ import {
   screenTimeTrendData
 } from '../../data/Screen-Time';
 
-import { childrenData } from '../../data/Dashboard/childrenData';
-
 const ScreenTime = () => {
-  const [chartView, setChartView] = useState('daily');
+  const [chartView, setChartView] =
+    useState('daily');
 
-  // Use the first child as active for now
-  const activeChild = childrenData[0];
+  const { getActiveChild } = useChild();
+
+  const activeChild = getActiveChild();
+
+  // Prevent crashes if no child exists
+  if (!activeChild) {
+    return null;
+  }
 
   return (
     <div className="screen-time-page">
@@ -71,22 +84,37 @@ const ScreenTime = () => {
             <div className="trend-view-toggle">
 
               <button
-                className={`toggle-btn ${chartView === 'daily' ? 'active' : ''}`}
-                onClick={() => setChartView('daily')}
+                className={`toggle-btn ${chartView === 'daily'
+                    ? 'active'
+                    : ''
+                  }`}
+                onClick={() =>
+                  setChartView('daily')
+                }
               >
                 Daily
               </button>
 
               <button
-                className={`toggle-btn ${chartView === 'weekly' ? 'active' : ''}`}
-                onClick={() => setChartView('weekly')}
+                className={`toggle-btn ${chartView === 'weekly'
+                    ? 'active'
+                    : ''
+                  }`}
+                onClick={() =>
+                  setChartView('weekly')
+                }
               >
                 Weekly
               </button>
 
               <button
-                className={`toggle-btn ${chartView === 'monthly' ? 'active' : ''}`}
-                onClick={() => setChartView('monthly')}
+                className={`toggle-btn ${chartView === 'monthly'
+                    ? 'active'
+                    : ''
+                  }`}
+                onClick={() =>
+                  setChartView('monthly')
+                }
               >
                 Monthly
               </button>
@@ -99,7 +127,9 @@ const ScreenTime = () => {
             xKey="day"
             yKey="time"
             color="#8b5cf6"
-            yAxisFormatter={(value) => `${Math.floor(value / 60)}h`}
+            yAxisFormatter={(value) =>
+              `${Math.floor(value / 60)}h`
+            }
           />
 
         </div>

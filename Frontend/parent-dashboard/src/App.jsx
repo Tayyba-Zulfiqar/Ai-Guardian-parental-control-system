@@ -32,8 +32,7 @@ export default function App() {
 
         <Routes>
 
-          {/*  PUBLIC ROUTES
-              (only for NOT logged-in users) */}
+          {/* PUBLIC ROUTES */}
           <Route element={<PublicRoute />}>
             <Route element={<AuthLayout />}>
               <Route path="/login" element={<Login />} />
@@ -41,18 +40,20 @@ export default function App() {
             </Route>
           </Route>
 
-          {/*PROTECTED ROUTES */}
+          {/* ✅ CONNECT CHILD MUST BE OUTSIDE CHILD-CHECK PROTECTION */}
           <Route element={<ProtectedRoute />}>
-
-            {/* Layout-less protected page */}
             <Route path="/no-child" element={<NoChild />} />
+          </Route>
 
-            {/* Auth layout protected route */}
+          {/* CONNECT CHILD ROUTE (NO CHILD CHECK HERE) */}
+          <Route element={<ProtectedRoute allowNoChild />}>
             <Route element={<AuthLayout />}>
               <Route path="/connect-child" element={<ConnectChild />} />
             </Route>
+          </Route>
 
-            {/* Dashboard layout protected routes */}
+          {/* DASHBOARD ROUTES (FULL PROTECTION) */}
+          <Route element={<ProtectedRoute requireChild />}>
             <Route element={<DashboardLayout />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
@@ -62,10 +63,8 @@ export default function App() {
               <Route path="/screen-time" element={<ScreenTime />} />
               <Route path="/family-profiles" element={<FamilyProfile />} />
               <Route path="/content-reports" element={<ContentReports />} />
-              <Route path="/content-reports" element={<ContentReports />} />
               <Route path="/parent-account" element={<ParentAccount />} />
             </Route>
-
           </Route>
 
           <Route path="*" element={<NotFound />} />

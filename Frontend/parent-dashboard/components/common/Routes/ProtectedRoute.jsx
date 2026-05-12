@@ -1,18 +1,28 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
+import { useChild } from '../../../context/ChildContext';
 
-const ProtectedRoute = () => {
-  const { user } = useAuth();
+const ProtectedRoute = ({
+  requireChild = false,
+  allowNoChild = false,
+}) => {
 
-  const location = useLocation();
+  const { user, loading } = useAuth();
+  const { childrenList } = useChild();
+
+  if (loading) return null;
 
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // If user is logged in but hasn't connected a child,
-  // redirect them to /connect-child unless they are already there
-  if (!user.hasChildConnected && location.pathname !== '/connect-child') {
+  if (allowNoChild) {
+    return <Outlet />;
+  }
+
+  const hasChildren = childrenList?.length > 0;
+
+  if (requireChild && !hasChildren) {
     return <Navigate to="/connect-child" replace />;
   }
 
