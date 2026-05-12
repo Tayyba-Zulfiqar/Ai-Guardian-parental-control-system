@@ -18,10 +18,12 @@ const FamilyProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
+  const [showMinChildError, setShowMinChildError] = useState(false);
 
   const {
     childrenList,
     addChild,
+    removeChild,
     activeChildId,
   } = useChild();
 
@@ -78,6 +80,18 @@ const FamilyProfile = () => {
     handleRegenerateCode(true, 0);
   };
 
+  // ======================
+  // REMOVE CHILD
+  // ======================
+  const handleRemoveChild = (id) => {
+    if (childrenList.length <= 1) {
+      setShowMinChildError(true);
+      setTimeout(() => setShowMinChildError(false), 3000);
+      return;
+    }
+    removeChild(id);
+  };
+
   return (
     <div className="dashboard-page child-profile-page">
 
@@ -92,6 +106,13 @@ const FamilyProfile = () => {
         <div className="success-toast" style={{ background: 'var(--danger, #ef4444)', color: 'white', border: 'none' }}>
           <AlertCircle size={18} color="white" />
           <span>Maximum limit of 3 children reached!</span>
+        </div>
+      )}
+
+      {showMinChildError && (
+        <div className="success-toast" style={{ background: 'var(--danger, #ef4444)', color: 'white', border: 'none' }}>
+          <AlertCircle size={18} color="white" />
+          <span>Cannot remove: At least one child is required for proper functioning of app.</span>
         </div>
       )}
 
@@ -116,7 +137,10 @@ const FamilyProfile = () => {
 
         <div className="profile-section">
 
-          <ChildList childrenList={formattedChildren} />
+          <ChildList 
+            childrenList={formattedChildren} 
+            onRemoveChild={handleRemoveChild}
+          />
 
         </div>
 

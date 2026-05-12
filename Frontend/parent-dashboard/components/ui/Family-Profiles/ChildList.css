@@ -95,6 +95,36 @@
     color: var(--error);
 }
 
+.remove-child-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.85rem;
+    background: #fff1f2;
+    border: 1px solid #fee2e2;
+    color: #ef4444;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: auto;
+}
+
+.remove-child-btn:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-text {
+    display: inline-block;
+}
+
 .item-details {
     display: grid;
     grid-template-columns: 1fr 1fr;

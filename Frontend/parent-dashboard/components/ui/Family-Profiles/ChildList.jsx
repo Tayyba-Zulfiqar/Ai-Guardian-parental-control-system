@@ -1,8 +1,8 @@
 import React from 'react';
-import { User } from 'lucide-react';
+import { User, Trash2 } from 'lucide-react';
 import './ChildList.css';
 
-const ChildList = ({ childrenList }) => {
+const ChildList = ({ childrenList, onRemoveChild }) => {
   return (
     <div className="child-list-container">
       <div className="list-header">
@@ -25,6 +25,17 @@ const ChildList = ({ childrenList }) => {
                 <div className={`status-pill ${isCurrentlyActive ? 'online' : 'offline'}`}>
                   {child.status}
                 </div>
+                <button 
+                  className="remove-child-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRemoveChild && onRemoveChild(child.id);
+                  }}
+                  title="Remove Child Profile"
+                >
+                  <Trash2 size={14} />
+                  <span className="btn-text">Remove</span>
+                </button>
               </div>
 
               <div className="item-details">
