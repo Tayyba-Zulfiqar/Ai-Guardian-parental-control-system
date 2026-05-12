@@ -86,16 +86,15 @@ export const ChildProvider = ({ children }) => {
   // ======================
   // ADD CHILD
   // ======================
-  const addChild = (name, deviceType = 'Mobile') => {
-
+  const addChild = (name, deviceType = 'Mobile', age = null, gender = null) => {
     const newChild = {
       id: crypto.randomUUID(),
       name,
       deviceType,
-
+      gender,
       profile: {
-        avatar: '',
-        age: null,
+        avatar: gender === 'male' ? '👦' : (gender === 'female' ? '👧' : '🧒'),
+        age: age ? parseInt(age) : null,
       },
 
       monitoring: {

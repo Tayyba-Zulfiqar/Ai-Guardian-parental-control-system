@@ -66,6 +66,7 @@ const Dashboard = () => {
             ...activeChildMockData,
             name: activeChild.name,
             deviceType: activeChild.deviceType,
+            status: 'Currently Active',
           }}
         />
 

@@ -22,6 +22,7 @@ const FamilyProfile = () => {
   const {
     childrenList,
     addChild,
+    activeChildId,
   } = useChild();
 
   const {
@@ -38,11 +39,11 @@ const FamilyProfile = () => {
     id: child.id,
     name: child.name,
     age: child.profile?.age || 'N/A',
+    gender: child.gender || 'Not specified',
     device: child.deviceType,
     deviceType: Smartphone,
-    status: 'Online',
-    lastActive: 'Just now',
-    avatar: '👦',
+    status: child.id === activeChildId ? 'Currently Active' : 'Not Active',
+    avatar: child.profile?.avatar || '🧒',
   }));
 
   // ======================
@@ -64,7 +65,9 @@ const FamilyProfile = () => {
 
     addChild(
       childInfo.name,
-      childInfo.deviceName
+      childInfo.deviceName,
+      childInfo.age,
+      childInfo.gender
     );
 
     setIsModalOpen(false);

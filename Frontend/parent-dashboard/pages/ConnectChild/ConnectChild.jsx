@@ -46,7 +46,12 @@ const ConnectChild = () => {
     if (!childInfo?.name) return;
 
     // 1. Add child to context (SOURCE OF TRUTH)
-    addChild(childInfo.name, childInfo.deviceType || 'Mobile');
+    addChild(
+      childInfo.name,
+      childInfo.deviceName,
+      childInfo.age,
+      childInfo.gender
+    );
 
     // 2. Show success UI
     setIsModalOpen(false);

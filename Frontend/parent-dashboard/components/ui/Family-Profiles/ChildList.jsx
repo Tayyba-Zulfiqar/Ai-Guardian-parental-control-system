@@ -1,4 +1,5 @@
 import React from 'react';
+import { User } from 'lucide-react';
 import './ChildList.css';
 
 const ChildList = ({ children }) => {
@@ -10,44 +11,46 @@ const ChildList = ({ children }) => {
       </div>
 
       <div className="child-grid">
-        {children.map((child) => (
-          <div key={child.id} className="child-item-card">
-            <div className="item-main">
-              <div className="avatar-circle">{child.avatar}</div>
-              <div className="item-info">
-                <h3 className="item-name">{child.name}</h3>
-                <p className="item-meta">{child.age} years old</p>
+        {children.map((child) => {
+          const isCurrentlyActive = child.status === 'Currently Active' || child.status.toLowerCase() === 'online';
+          
+          return (
+            <div key={child.id} className="child-item-card">
+              <div className="item-main">
+                <div className="avatar-circle">{child.avatar}</div>
+                <div className="item-info">
+                  <h3 className="item-name">{child.name}</h3>
+                  <p className="item-meta">{child.age} years old</p>
+                </div>
+                <div className={`status-pill ${isCurrentlyActive ? 'online' : 'offline'}`}>
+                  {child.status}
+                </div>
               </div>
-              <div className={`status-pill ${child.status.toLowerCase()}`}>
-                {child.status}
+
+              <div className="item-details">
+                <div className="detail-row">
+                  <div className="detail-icon">
+                    {React.createElement(child.deviceType, { size: 16 })}
+                  </div>
+                  <div className="detail-content">
+                    <span className="detail-label">Device</span>
+                    <span className="detail-value">{child.device}</span>
+                  </div>
+                </div>
+
+                <div className="detail-row">
+                  <div className="detail-icon">
+                    <User size={16} />
+                  </div>
+                  <div className="detail-content">
+                    <span className="detail-label">Gender</span>
+                    <span className="detail-value" style={{ textTransform: 'capitalize' }}>{child.gender}</span>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div className="item-details">
-              <div className="detail-row">
-                <div className="detail-icon">
-                  {React.createElement(child.deviceType, { size: 16 })}
-                </div>
-                <div className="detail-content">
-                  <span className="detail-label">Device</span>
-                  <span className="detail-value">{child.device}</span>
-                </div>
-              </div>
-
-              <div className="detail-row">
-                <div className="detail-icon">
-                  <div className={`active-dot ${child.status.toLowerCase()}`}></div>
-                </div>
-                <div className="detail-content">
-                  <span className="detail-label">Last Active</span>
-                  <span className="detail-value">{child.lastActive}</span>
-                </div>
-              </div>
-            </div>
-
-
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

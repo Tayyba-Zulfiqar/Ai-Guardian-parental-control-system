@@ -9,7 +9,7 @@ const ChildStatusCard = ({ child }) => {
     lastActive = "Not seen recently" 
   } = child || {};
 
-  const isOnline = status.toLowerCase() === 'online';
+  const isOnline = status.toLowerCase() === 'online' || status.toLowerCase() === 'currently active';
 
   return (
     <div className="child-status-card">
