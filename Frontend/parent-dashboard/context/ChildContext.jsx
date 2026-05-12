@@ -119,7 +119,11 @@ export const ChildProvider = ({ children }) => {
     };
 
     setChildrenList(prev => [...prev, newChild]);
-    setActiveChildId(newChild.id);
+    
+    // Only set as active if it's the first child being added
+    if (childrenList.length === 0) {
+      setActiveChildId(newChild.id);
+    }
 
     return newChild;
   };

@@ -1,5 +1,6 @@
 import './ContentReports.css';
 import PageHeader from '../../components/common/PageHeader/PageHeader';
+import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/AccountSwitcher';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
 import ActivityInsights from '../../components/common/ActivityInsights/ActivityInsights';
 import CommonPieChart from '../../components/charts/common/CommonPieChart';
@@ -19,10 +20,13 @@ const ContentReports = () => {
 
   return (
     <div className="content-reports-page">
-      <PageHeader
-        title="Content Reports"
-        subtitle="Pattern Analysis & Threat Intelligence Dashboard"
-      />
+      <div className="page-header-row">
+        <PageHeader
+          title="Content Reports"
+          subtitle="Pattern Analysis & Threat Intelligence Dashboard"
+        />
+        <AccountSwitcher />
+      </div>
 
       <section className="reports-section">
         <div className="section-title-wrapper">

@@ -3,6 +3,7 @@ import './ChildActivity.css';
 import { LayoutGrid, TrendingUp, Sparkles } from 'lucide-react';
 
 import PageHeader from '../../components/common/PageHeader/PageHeader';
+import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/AccountSwitcher';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
 import AppsUsedToday from '../../components/ui/Child-Activity/AppsUsedToday/AppsUsedToday';
 import CommonPieChart from '../../components/charts/common/CommonPieChart';
@@ -27,10 +28,13 @@ const ChildActivity = () => {
 
   return (
     <div className="child-activity-page">
-      <PageHeader
-        title="Child Activity"
-        subtitle="Monitor app usage and digital behavior"
-      />
+      <div className="page-header-row">
+        <PageHeader
+          title="Child Activity"
+          subtitle="Monitor app usage and digital behavior"
+        />
+        <AccountSwitcher />
+      </div>
 
       <div className="stats-section">
         <h2 className="dashboard-section-title">

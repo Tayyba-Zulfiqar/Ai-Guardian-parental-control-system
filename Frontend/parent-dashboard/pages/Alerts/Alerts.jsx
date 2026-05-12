@@ -1,6 +1,7 @@
 import './Alerts.css';
 
 import PageHeader from '../../components/common/PageHeader/PageHeader';
+import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/AccountSwitcher';
 import { AlertsStats, AlertsFeed } from '../../components/ui/Alerts';
 import { useChild } from '../../context/ChildContext';
 
@@ -13,10 +14,13 @@ const Alerts = () => {
 
   return (
     <div className="alerts-page">
-      <PageHeader
-        title="Alerts"
-        subtitle="Live harmful activity monitoring and security events"
-      />
+      <div className="page-header-row">
+        <PageHeader
+          title="Recent Alerts"
+          subtitle="Real-time notifications for potential risks"
+        />
+        <AccountSwitcher />
+      </div>
 
       <div className="alerts-page-content">
         <AlertsStats />

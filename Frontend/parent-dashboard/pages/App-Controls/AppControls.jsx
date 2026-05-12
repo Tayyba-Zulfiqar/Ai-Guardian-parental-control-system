@@ -5,6 +5,7 @@ import useDeviceControls from '../../hooks/App-Controls/useDeviceControls';
 
 // Common Components
 import PageHeader from '../../components/common/PageHeader/PageHeader';
+import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/AccountSwitcher';
 import Toast from '../../components/common/Toast/Toast';
 
 // Shared App Control Components
@@ -37,10 +38,13 @@ const AppControls = () => {
 
   return (
     <div className="app-controls-page">
-      <PageHeader
-        title="Device Controls"
-        subtitle="Manage monitoring and logout protection rules"
-      />
+      <div className="page-header-row">
+        <PageHeader
+          title="Device Controls"
+          subtitle="Manage monitoring and logout protection rules"
+        />
+        <AccountSwitcher />
+      </div>
 
       <section className="dashboard-content">
         <div className="controls-grid single-column">

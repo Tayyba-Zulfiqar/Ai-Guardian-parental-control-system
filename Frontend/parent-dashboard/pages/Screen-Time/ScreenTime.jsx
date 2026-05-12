@@ -11,6 +11,7 @@ import {
 import { useChild } from '../../context/ChildContext';
 
 import PageHeader from '../../components/common/PageHeader/PageHeader';
+import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/AccountSwitcher';
 import StatsCard from '../../components/common/StatsCard/StatsCard';
 import CommonAreaChart from '../../components/charts/common/CommonAreaChart';
 
@@ -35,10 +36,13 @@ const ScreenTime = () => {
   return (
     <div className="screen-time-page">
 
-      <PageHeader
-        title="Screen Time"
-        subtitle="Monitor and analyze daily screen time habits"
-      />
+      <div className="page-header-row">
+        <PageHeader
+          title="Screen Time"
+          subtitle="Visualize and manage your child's screen time usage"
+        />
+        <AccountSwitcher />
+      </div>
 
       <div className="stats-section">
         <h2 className="dashboard-section-title">

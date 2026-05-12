@@ -5,6 +5,7 @@ import { Smartphone, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useChild } from '../../context/ChildContext';
 
 import PageHeader from '../../components/common/PageHeader/PageHeader';
+import AccountSwitcher from '../../components/ui/dashboard/AccountSwitcher/AccountSwitcher';
 import PairingCard from '../../components/ui/Family-Profiles/PairingCard';
 import ChildList from '../../components/ui/Family-Profiles/ChildList';
 import AddChildModal from '../../components/ui/Family-Profiles/AddChildModal';
@@ -116,10 +117,13 @@ const FamilyProfile = () => {
         </div>
       )}
 
-      <PageHeader
-        title="Family Profiles"
-        subtitle="Manage and link your children's devices here"
-      />
+      <div className="page-header-row">
+        <PageHeader
+          title="Family Profiles"
+          subtitle="Manage and link your children's devices here"
+        />
+        <AccountSwitcher />
+      </div>
 
       <section className="dashboard-content">
 
