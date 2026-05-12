@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 
 import PairingCard from '../../components/ui/Family-Profiles/PairingCard';
 import AddChildModal from '../../components/ui/Family-Profiles/AddChildModal';
@@ -14,9 +14,10 @@ const ConnectChild = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const navigate = useNavigate();
-  const { addChild } = useChild();
+  const { addChild, childrenList } = useChild();
 
   const {
     pairingCode,
@@ -29,6 +30,11 @@ const ConnectChild = () => {
   // OPEN MODAL
   // ======================
   const handleSimulateConnect = () => {
+    if (childrenList.length >= 3) {
+      setShowErrorToast(true);
+      setTimeout(() => setShowErrorToast(false), 3000);
+      return;
+    }
     setIsModalOpen(true);
   };
 
@@ -79,6 +85,29 @@ const ConnectChild = () => {
         >
           <CheckCircle2 size={18} />
           <span>Child profile added successfully!</span>
+        </div>
+      )}
+
+      {/* ERROR TOAST */}
+      {showErrorToast && (
+        <div
+          className="success-toast"
+          style={{
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            zIndex: 1000,
+            background: 'var(--danger, #ef4444)',
+            color: 'white',
+            padding: '12px 24px',
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+        >
+          <AlertCircle size={18} color="white" />
+          <span>Maximum limit of 3 children reached!</span>
         </div>
       )}
 

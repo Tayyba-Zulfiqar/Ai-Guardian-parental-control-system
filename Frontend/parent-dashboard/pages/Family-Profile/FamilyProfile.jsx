@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Smartphone, CheckCircle2 } from 'lucide-react';
+import { Smartphone, CheckCircle2, AlertCircle } from 'lucide-react';
 
 import { useChild } from '../../context/ChildContext';
 
@@ -17,6 +17,7 @@ const FamilyProfile = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const {
     childrenList,
@@ -48,6 +49,11 @@ const FamilyProfile = () => {
   // SIMULATE CONNECT
   // ======================
   const handleSimulateConnect = () => {
+    if (childrenList.length >= 3) {
+      setShowErrorToast(true);
+      setTimeout(() => setShowErrorToast(false), 3000);
+      return;
+    }
     setIsModalOpen(true);
   };
 
@@ -76,6 +82,13 @@ const FamilyProfile = () => {
         <div className="success-toast">
           <CheckCircle2 size={18} />
           <span>Child profile added successfully!</span>
+        </div>
+      )}
+
+      {showErrorToast && (
+        <div className="success-toast" style={{ background: 'var(--danger, #ef4444)', color: 'white', border: 'none' }}>
+          <AlertCircle size={18} color="white" />
+          <span>Maximum limit of 3 children reached!</span>
         </div>
       )}
 

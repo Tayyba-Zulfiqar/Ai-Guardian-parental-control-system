@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'; // Added useNavigate
 import { Users, Plus } from 'lucide-react';
 import { childrenData } from '../../../../data/Dashboard/childrenData';
+import { useChild } from '../../../../context/ChildContext';
 import './AccountSwitcher.css';
 
 const AccountSwitcher = () => {
@@ -26,11 +27,27 @@ const AccountSwitcher = () => {
     };
   }, [isDropdownOpen]);
 
-  // Temporary active child mock (first child in the list)
-  const activeChild = childrenData[0];
-  const otherChildren = childrenData.filter(child => child.id !== activeChild.id);
+  const { childrenList, getActiveChild, setActiveChild } = useChild();
 
-  const isLimitReached = childrenData.length >= 3;
+  const activeChildContext = getActiveChild();
+
+  if (!activeChildContext) return null;
+
+  const activeChild = {
+    id: activeChildContext.id,
+    name: activeChildContext.name,
+    avatar: activeChildContext.profile?.avatar || '👦'
+  };
+
+  const otherChildren = childrenList
+    .filter(child => child.id !== activeChild.id)
+    .map(child => ({
+      id: child.id,
+      name: child.name,
+      avatar: child.profile?.avatar || '👦'
+    }));
+
+  const isLimitReached = childrenList.length >= 3;
 
   return (
     <div className="account-switcher-container" ref={switcherRef}>
@@ -76,7 +93,7 @@ const AccountSwitcher = () => {
                   <button 
                     className="item-switch-btn"
                     onClick={() => {
-                      navigate(`/family-profiles/${child.id}`);
+                      setActiveChild(child.id);
                       setIsDropdownOpen(false);
                     }}
                   >
@@ -91,21 +108,14 @@ const AccountSwitcher = () => {
 
           <div className="dropdown-footer">
             <button
-              className={`add-child-menu-btn ${isLimitReached ? 'disabled' : ''}`}
-              disabled={isLimitReached}
+              className="add-child-menu-btn"
               onClick={() => {
-                if (!isLimitReached) {
-                  navigate('/family-profiles/1');
-                  setIsDropdownOpen(false);
-                }
+                navigate('/family-profiles');
+                setIsDropdownOpen(false);
               }}
             >
-              {isLimitReached ? (
-                <Users size={16} />
-              ) : (
-                <Plus size={16} />
-              )}
-              <span>{isLimitReached ? 'Limit reached (3/3 children)' : 'Add another child'}</span>
+              <Plus size={16} />
+              <span>Add another child</span>
             </button>
           </div>
         </div>
