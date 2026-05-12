@@ -98,19 +98,21 @@
 .remove-child-btn {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    padding: 0.5rem 0.85rem;
+    padding: 0.75rem 1rem;
     background: #fff1f2;
     border: 1px solid #fee2e2;
     color: #ef4444;
     cursor: pointer;
-    border-radius: 10px;
-    font-size: 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.025em;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-left: auto;
+    width: 100%;
+    margin-top: 0.25rem;
 }
 
 .remove-child-btn:hover {

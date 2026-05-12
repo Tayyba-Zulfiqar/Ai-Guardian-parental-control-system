@@ -25,17 +25,6 @@ const ChildList = ({ childrenList, onRemoveChild }) => {
                 <div className={`status-pill ${isCurrentlyActive ? 'online' : 'offline'}`}>
                   {child.status}
                 </div>
-                <button 
-                  className="remove-child-btn"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onRemoveChild && onRemoveChild(child.id);
-                  }}
-                  title="Remove Child Profile"
-                >
-                  <Trash2 size={14} />
-                  <span className="btn-text">Remove</span>
-                </button>
               </div>
 
               <div className="item-details">
@@ -59,6 +48,18 @@ const ChildList = ({ childrenList, onRemoveChild }) => {
                   </div>
                 </div>
               </div>
+
+              <button 
+                className="remove-child-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemoveChild && onRemoveChild(child.id);
+                }}
+                title="Remove Child Profile"
+              >
+                <Trash2 size={14} />
+                <span className="btn-text">Remove Child Profile</span>
+              </button>
             </div>
           );
         })}

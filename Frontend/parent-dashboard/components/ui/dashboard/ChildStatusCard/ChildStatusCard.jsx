@@ -2,11 +2,11 @@ import './ChildStatusCard.css';
 
 const ChildStatusCard = ({ child }) => {
   // Destructure with fallbacks to avoid crashes
-  const { 
-    name = "Child", 
-    age = "--", 
-    status = "Unknown", 
-    lastActive = "Not seen recently" 
+  const {
+    name = "Child",
+    age = "--",
+    status = "Unknown",
+    lastActive = "Not seen recently"
   } = child || {};
 
   const isOnline = status.toLowerCase() === 'online' || status.toLowerCase() === 'currently active';
