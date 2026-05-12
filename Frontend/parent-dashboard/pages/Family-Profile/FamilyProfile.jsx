@@ -10,6 +10,8 @@ import PairingCard from '../../components/ui/Family-Profiles/PairingCard';
 import ChildList from '../../components/ui/Family-Profiles/ChildList';
 import AddChildModal from '../../components/ui/Family-Profiles/AddChildModal';
 import SwitchChildModal from '../../components/ui/Family-Profiles/SwitchChildModal';
+import Modal from '../../components/common/Modal/Modal';
+import { AlertTriangle, Trash2 } from 'lucide-react';
 
 import { usePairingCode } from '../../hooks/usePairingCode';
 
@@ -23,6 +25,11 @@ const FamilyProfile = () => {
   const [showMinChildError, setShowMinChildError] = useState(false);
   const [isSwitchModalOpen, setIsSwitchModalOpen] = useState(false);
   const [childIdToRemove, setChildIdToRemove] = useState(null);
+  const [showRemovalToast, setShowRemovalToast] = useState(false);
+  const [removedChildName, setRemovedChildName] = useState('');
+  const [newActiveChildName, setNewActiveChildName] = useState('');
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [childIdToConfirm, setChildIdToConfirm] = useState(null);
 
   const {
     childrenList,
@@ -95,6 +102,16 @@ const FamilyProfile = () => {
       return;
     }
 
+    const child = childrenList.find(c => c.id === id);
+    if (child) setRemovedChildName(child.name);
+
+    // If there are exactly 2 children, show confirmation modal
+    if (childrenList.length === 2) {
+      setChildIdToConfirm(id);
+      setIsConfirmModalOpen(true);
+      return;
+    }
+
     // Special case: Removing active child when there are 3 children
     // (Meaning 2 will remain, so user needs to pick which one becomes active)
     if (childrenList.length === 3 && id === activeChildId) {
@@ -103,13 +120,51 @@ const FamilyProfile = () => {
       return;
     }
 
+    // Capture who will be active
+    const remaining = childrenList.filter(c => c.id !== id);
+    if (id === activeChildId && remaining.length > 0) {
+      setNewActiveChildName(remaining[0].name);
+    } else {
+      const currentActive = childrenList.find(c => c.id === activeChildId);
+      if (currentActive) setNewActiveChildName(currentActive.name);
+    }
+
     removeChild(id);
+    setShowRemovalToast(true);
+    setTimeout(() => setShowRemovalToast(false), 3000);
+  };
+
+  const handleConfirmDelete = () => {
+    if (childIdToConfirm) {
+      const remaining = childrenList.filter(c => c.id !== childIdToConfirm);
+      if (childIdToConfirm === activeChildId && remaining.length > 0) {
+        setNewActiveChildName(remaining[0].name);
+      } else {
+        const currentActive = childrenList.find(c => c.id === activeChildId);
+        if (currentActive) setNewActiveChildName(currentActive.name);
+      }
+
+      removeChild(childIdToConfirm);
+      setShowRemovalToast(true);
+      setTimeout(() => setShowRemovalToast(false), 3000);
+    }
+    setIsConfirmModalOpen(false);
+    setChildIdToConfirm(null);
   };
 
   const handleConfirmSwitch = (newActiveId) => {
     setActiveChild(newActiveId);
+    
+    const newActiveChild = childrenList.find(c => c.id === newActiveId);
+    if (newActiveChild) setNewActiveChildName(newActiveChild.name);
+
     if (childIdToRemove) {
+      const child = childrenList.find(c => c.id === childIdToRemove);
+      if (child) setRemovedChildName(child.name);
+      
       removeChild(childIdToRemove);
+      setShowRemovalToast(true);
+      setTimeout(() => setShowRemovalToast(false), 3000);
     }
     setIsSwitchModalOpen(false);
     setChildIdToRemove(null);
@@ -122,6 +177,13 @@ const FamilyProfile = () => {
         <div className="success-toast">
           <CheckCircle2 size={18} />
           <span>Child profile added successfully!</span>
+        </div>
+      )}
+
+      {showRemovalToast && (
+        <div className="success-toast">
+          <CheckCircle2 size={18} />
+          <span>{removedChildName} removed successfully and switched to {newActiveChildName}</span>
         </div>
       )}
 
@@ -185,6 +247,38 @@ const FamilyProfile = () => {
         activeChildId={activeChildId}
         onConfirm={handleConfirmSwitch}
       />
+
+      <Modal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        title="Confirm Removal"
+        size="small"
+        footer={
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', width: '100%' }}>
+            <button className="btn-secondary" onClick={() => setIsConfirmModalOpen(false)}>Cancel</button>
+            <button 
+              className="btn-primary-pro" 
+              style={{ background: '#ef4444', display: 'flex', alignItems: 'center', gap: '8px' }}
+              onClick={handleConfirmDelete}
+            >
+              <Trash2 size={16} />
+              Remove Child
+            </button>
+          </div>
+        }
+      >
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+          <div style={{ background: '#fef2f2', padding: '0.75rem', borderRadius: '12px', color: '#ef4444' }}>
+            <AlertTriangle size={24} />
+          </div>
+          <div>
+            <p style={{ margin: 0, fontWeight: 600, color: '#0f172a' }}>Are you sure you want to remove this child?</p>
+            <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#64748b', lineHeight: 1.5 }}>
+              This action cannot be undone. All monitoring data and history for <strong>{removedChildName}</strong> will be permanently deleted.
+            </p>
+          </div>
+        </div>
+      </Modal>
 
     </div>
   );
