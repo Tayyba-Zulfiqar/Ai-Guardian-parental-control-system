@@ -22,18 +22,21 @@ const Dashboard = () => {
   const {
     childrenList,
     getActiveChild,
+    isLoading,
   } = useChild();
 
   const navigate = useNavigate();
 
-  // Redirect if no child connected
+  // Redirect if no child connected (skip if loading)
   useEffect(() => {
+    if (isLoading) return;
+
     if (childrenList.length === 0) {
       navigate('/connect-child', {
         replace: true,
       });
     }
-  }, [childrenList, navigate]);
+  }, [childrenList, navigate, isLoading]);
 
   // Active child from context
   const activeChild = getActiveChild();

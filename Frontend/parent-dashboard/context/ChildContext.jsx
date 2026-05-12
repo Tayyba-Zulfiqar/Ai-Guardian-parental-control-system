@@ -14,22 +14,27 @@ export const ChildContext = createContext();
 // PROVIDER
 export const ChildProvider = ({ children }) => {
 
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   const [childrenList, setChildrenList] = useState([]);
   const [activeChildId, setActiveChildId] = useState(null);
   const [pendingRequests, setPendingRequests] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   // ======================
   // LOAD DATA ONLY WHEN USER EXISTS
   // ======================
   useEffect(() => {
 
+    // Wait for auth to finish hydrating before evaluating children
+    if (authLoading) return;
+
     // ❌ IMPORTANT: do nothing if not logged in
     if (!user) {
       setChildrenList([]);
       setActiveChildId(null);
       setPendingRequests({});
+      setIsLoading(false);
       return;
     }
 
@@ -41,7 +46,9 @@ export const ChildProvider = ({ children }) => {
     setActiveChildId(savedActiveChild || null);
     setPendingRequests(savedRequests ? JSON.parse(savedRequests) : {});
 
-  }, [user]);
+    setIsLoading(false);
+
+  }, [user, authLoading]);
 
   // ======================
   // SAVE CHILDREN (ONLY IF USER EXISTS)
@@ -209,6 +216,7 @@ export const ChildProvider = ({ children }) => {
     childrenList,
     activeChildId,
     pendingRequests,
+    isLoading,
 
     addChild,
     removeChild,
