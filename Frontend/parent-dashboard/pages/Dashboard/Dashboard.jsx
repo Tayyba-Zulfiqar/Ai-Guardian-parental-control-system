@@ -109,6 +109,8 @@ const Dashboard = () => {
         <div className="dashboard-insights-section">
           <ActivityInsights
             data={dashboardInsightsData}
+            childName={activeChild.name}
+            gender={activeChild.gender}
           />
         </div>
 

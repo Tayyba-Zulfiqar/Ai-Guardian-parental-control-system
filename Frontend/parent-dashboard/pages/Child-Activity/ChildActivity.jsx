@@ -91,7 +91,11 @@ const ChildActivity = () => {
 
       <div className="activity-secondary-grid">
         <div className="activity-insights-container">
-          <ActivityInsights data={aiInsightsData} />
+          <ActivityInsights 
+            data={aiInsightsData} 
+            childName={activeChild.name}
+            gender={activeChild.gender}
+          />
         </div>
       </div>
     </div>

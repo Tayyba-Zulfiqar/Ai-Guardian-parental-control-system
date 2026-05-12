@@ -6,9 +6,15 @@ import CommonPieChart from '../../components/charts/common/CommonPieChart';
 import CommonAreaChart from '../../components/charts/common/CommonAreaChart';
 import { contentReportsData } from '../../data/Content-Reports/contentReportsData';
 import { ShieldAlert } from 'lucide-react';
+import { useChild } from '../../context/ChildContext';
 
 const ContentReports = () => {
+  const { getActiveChild } = useChild();
+  const activeChild = getActiveChild();
+  
   const { threatTimeline, categoryAnalysis, riskScoreTrend, aiInsights } = contentReportsData;
+
+  if (!activeChild) return null;
   const totalThreats = categoryAnalysis.reduce((acc, curr) => acc + curr.value, 0);
 
   return (
@@ -59,7 +65,11 @@ const ContentReports = () => {
       </div>
 
       <section className="insights-section">
-        <ActivityInsights data={aiInsights} />
+        <ActivityInsights 
+          data={aiInsights} 
+          childName={activeChild.name}
+          gender={activeChild.gender}
+        />
       </section>
     </div>
   );
