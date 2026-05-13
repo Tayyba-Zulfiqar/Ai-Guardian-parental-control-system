@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     View,
     StyleSheet,
@@ -6,6 +6,8 @@ import {
     ScrollView,
     TouchableOpacity,
     Text,
+    Linking,
+    Platform,
 } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import PermissionCard from "../components/UI/PermissionCard";
@@ -18,32 +20,52 @@ import { Fonts } from "../../constants/Fonts";
 
 const PermissionsScreen = ({ navigation }) => {
     const [alertVisible, setAlertVisible] = useState(false);
+    const [missingPermissionsAlert, setMissingPermissionsAlert] = useState(false);
     const [learnMoreVisible, setLearnMoreVisible] = useState(false);
+    const [missingPermissionsList, setMissingPermissionsList] = useState([]);
 
     const [permissionStates, setPermissionStates] = useState(
         permissions.reduce((acc, p) => ({ ...acc, [p.title]: false }), {})
     );
 
+    // Check if all permissions are enabled
+    const allPermissionsEnabled = Object.values(permissionStates).every(state => state === true);
+
+    // Track which permissions are missing
+    useEffect(() => {
+        const missing = permissions
+            .filter(p => !permissionStates[p.title])
+            .map(p => p.title);
+        setMissingPermissionsList(missing);
+    }, [permissionStates]);
+
     const handleContinue = () => {
-        setAlertVisible(true);
+        if (allPermissionsEnabled) {
+            setAlertVisible(true);
+        } else {
+            setMissingPermissionsAlert(true);
+        }
     };
 
     const handleConfirmAll = () => {
-        // ✅ Turn ALL permissions ON
-        const allEnabled = permissions.reduce(
-            (acc, p) => ({ ...acc, [p.title]: true }),
-            {}
-        );
-
-        setPermissionStates(allEnabled);
         setAlertVisible(false);
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "Home" }],
+        });
+    };
 
-        setTimeout(() => {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "Home" }],
-            });
-        }, 250);
+    const openSystemSettings = () => {
+        Linking.openSettings();
+    };
+
+    // Professional subtitle text
+    const getSubtitleText = () => {
+        if (allPermissionsEnabled) {
+            return "All permissions granted. Ready to proceed.";
+        }
+        const remainingCount = missingPermissionsList.length;
+        return `Please enable all ${permissions.length} permissions (${remainingCount} remaining) to continue with full protection.`;
     };
 
     return (
@@ -56,7 +78,7 @@ const PermissionsScreen = ({ navigation }) => {
                 >
                     <ScreenTitle
                         title="Enable Protection Features"
-                        subtitle="These permissions help AI-Guardian keep you safe."
+                        subtitle={getSubtitleText()}
                         titleStyle={styles.headerTitle}
                         subtitleStyle={styles.headerSubtitle}
                         containerStyle={styles.headerContainer}
@@ -84,8 +106,10 @@ const PermissionsScreen = ({ navigation }) => {
                         style={styles.buttonContainer}
                     >
                         <PrimaryButton
-                            title="Enable All & Continue"
+                            title="Continue"
                             onPress={handleContinue}
+                            disabled={!allPermissionsEnabled}
+                            style={!allPermissionsEnabled && styles.disabledButton}
                         />
 
                         <TouchableOpacity
@@ -108,6 +132,19 @@ const PermissionsScreen = ({ navigation }) => {
                 cancelText="Not Now"
                 onConfirm={handleConfirmAll}
                 onCancel={() => setAlertVisible(false)}
+            />
+
+            <CustomAlert
+                visible={missingPermissionsAlert}
+                title="Permissions Required"
+                message={`Please enable the following permissions to continue:\n\n${missingPermissionsList.map(p => `• ${p}`).join('\n')}\n\nSome permissions need to be enabled in system settings.`}
+                confirmText="Open Settings"
+                cancelText="Cancel"
+                onConfirm={() => {
+                    setMissingPermissionsAlert(false);
+                    openSystemSettings();
+                }}
+                onCancel={() => setMissingPermissionsAlert(false)}
             />
 
             <CustomAlert
@@ -166,6 +203,9 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.regular,
         color: Colors.Subtitles,
         textDecorationLine: "underline",
+    },
+    disabledButton: {
+        opacity: 0.5,
     },
 });
 
