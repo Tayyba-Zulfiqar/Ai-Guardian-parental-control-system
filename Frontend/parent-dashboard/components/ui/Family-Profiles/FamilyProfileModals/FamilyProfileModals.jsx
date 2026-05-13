@@ -1,6 +1,6 @@
 import AddChildModal from '../AddChildModal/AddChildModal';
 import SwitchChildModal from '../SwitchChildModal/SwitchChildModal';
-import Modal from '../../common/Modal/Modal';
+import Modal from '../../../common/Modal/Modal';
 import { AlertTriangle, Trash2 } from 'lucide-react';
 
 const FamilyProfileModals = ({
