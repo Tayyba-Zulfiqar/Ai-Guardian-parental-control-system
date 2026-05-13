@@ -1,16 +1,44 @@
 
-import { useState } from 'react';
-import { pendingRequests as initialRequests } from '../../data/App-Controls/AppControlsData';
+import { useState, useMemo } from 'react';
+import { useChild } from '../../context/ChildContext';
 import usePinManagement from './usePinManagement';
 import useModalState from './useModalState';
 import usePendingActions from './usePendingActions';
 
 const useDeviceControls = () => {
+  // Pull real children data from context
+  const {
+    childrenList,
+    pendingRequests: contextPendingRequests,
+    approveRequest: contextApproveRequest,
+    denyRequest: contextDenyRequest,
+  } = useChild();
+
   // Core Domain State
   const [isMonitoringActive, setIsMonitoringActive] = useState(true);
   const [logoutMode, setLogoutMode] = useState('approval');
-  const [requests, setRequests] = useState(initialRequests);
   const [toast, setToast] = useState(null);
+
+  // Derive a flat requests list from context (keyed by childId), enriched with child info
+  const requests = useMemo(() => {
+    const flat = [];
+    Object.entries(contextPendingRequests).forEach(([childId, reqs]) => {
+      const child = childrenList.find(c => c.id === childId);
+      if (!child || !reqs?.length) return;
+      reqs.forEach(req => {
+        flat.push({
+          id: req.id,
+          childId,
+          childName: child.name,
+          deviceName: child.deviceType || 'Unknown Device',
+          time: req.timestamp
+            ? new Date(req.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : 'Just now',
+        });
+      });
+    });
+    return flat;
+  }, [contextPendingRequests, childrenList]);
 
   // Helpers
   const showToast = (message, type = 'success') => {
@@ -29,11 +57,13 @@ const useDeviceControls = () => {
     openFinalConfirm: () => modalState.setIsFinalConfirmModalOpen(true),
     onCloseModals: () => modalState.closeAll(),
     onApprove: (id) => {
-      setRequests(prev => prev.filter(r => r.id !== id));
+      const req = requests.find(r => r.id === id);
+      if (req) contextApproveRequest(req.childId, id);
       showToast('Logout request approved');
     },
     onDeny: (id) => {
-      setRequests(prev => prev.filter(r => r.id !== id));
+      const req = requests.find(r => r.id === id);
+      if (req) contextDenyRequest(req.childId, id);
       showToast('Logout request denied', 'warning');
     },
     onToggleMonitoring: () => {

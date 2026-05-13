@@ -1,8 +1,9 @@
 
-import { CheckCircle2, Lock, Unlock, AlertCircle, Clock, Settings } from 'lucide-react';
+import { CheckCircle2, Lock, Unlock, AlertCircle, Clock, Settings, Users, Smartphone, Bell } from 'lucide-react';
 
 import Card from '../../../../common/Card/Card';
 import Button from '../../../../common/Button/Button';
+import { useChild } from '../../../../../context/ChildContext';
 import './LogoutProtection.css';
 
 const LogoutProtection = ({ 
@@ -12,6 +13,9 @@ const LogoutProtection = ({
   onApproveRequest,
   onDenyRequest
 }) => {
+
+  // Pull real children from context
+  const { childrenList, pendingRequests: contextPendingRequests } = useChild();
 
   const modes = [
     {
@@ -74,7 +78,7 @@ const LogoutProtection = ({
           <div className="banner-text">
             <h2 className="dashboard-section-title">
               <Settings size={20} />
-              {modes.find(m => m.id === mode)?.title} Details & Actions
+              {modes.find(m => m.id === mode)?.title} Details &amp; Actions
             </h2>
             <p className="mode-details-subtitle">Configure specific rules for your selected protection mode below.</p>
           </div>
@@ -88,7 +92,44 @@ const LogoutProtection = ({
 
         {mode === 'approval' && (
           <div className="approval-details">
+
+            {/* Connected Children in Approval Mode */}
             <h4 className="details-title">
+              <Users size={18} />
+              Connected Children
+            </h4>
+
+            {childrenList.length === 0 ? (
+              <p className="no-requests">No children connected yet. Connect a child first to use Approval Mode.</p>
+            ) : (
+              <div className="approval-children-list">
+                {childrenList.map((child) => {
+                  const childPending = contextPendingRequests[child.id] || [];
+                  const pendingCount = childPending.length;
+                  return (
+                    <div key={child.id} className="approval-child-item">
+                      <div className="approval-child-avatar">
+                        {child.profile?.avatar || '🧒'}
+                      </div>
+                      <div className="approval-child-info">
+                        <span className="approval-child-name">{child.name}</span>
+                        <span className="approval-child-device">
+                          <Smartphone size={12} />
+                          {child.deviceType || 'Unknown Device'}
+                        </span>
+                      </div>
+                      <div className={`approval-child-badge ${pendingCount > 0 ? 'has-pending' : 'no-pending'}`}>
+                        <Bell size={13} />
+                        {pendingCount > 0 ? `${pendingCount} pending` : 'No requests'}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Pending Logout Requests */}
+            <h4 className="details-title" style={{ marginTop: '1.5rem' }}>
               <Clock size={18} />
               Pending Logout Requests
             </h4>
