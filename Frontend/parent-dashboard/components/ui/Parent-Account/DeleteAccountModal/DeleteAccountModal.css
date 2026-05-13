@@ -144,7 +144,8 @@
 }
 
 .checkbox-confirm {
-    margin-top: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .checkbox-item {
@@ -156,7 +157,7 @@
 .checkbox-custom {
     min-width: 18px;
     height: 18px;
-    border: 2px solid var(--border-light);
+    border: 2px solid var(--text-muted);
     border-radius: 4px;
     position: relative;
     transition: all 0.2s ease;
@@ -185,7 +186,8 @@ input[type="checkbox"]:checked + .checkbox-custom::after {
 
 .checkbox-label {
     font-size: 0.875rem;
-    color: var(--text-muted);
+    color: var(--bg-dark);
+    font-weight: 500;
     line-height: 1.4;
 }
 

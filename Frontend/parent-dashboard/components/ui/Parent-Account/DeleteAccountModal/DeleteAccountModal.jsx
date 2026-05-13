@@ -52,31 +52,6 @@ const DeleteAccountModal = ({ onClose, onConfirm, passwordError, isDeleting = fa
       }
     >
       <div className="delete-modal-body">
-        {/* Warning banner */}
-        <div className="warning-box">
-          <AlertTriangle size={20} className="warning-icon" />
-          <p>
-            <strong>Warning:</strong> This action is permanent and cannot be
-            reversed. You will lose all child profiles, history, and settings.
-          </p>
-        </div>
-
-        {/* Acknowledgement checkbox */}
-        <div className="form-group checkbox-confirm">
-          <label className="checkbox-item">
-            <input
-              type="checkbox"
-              checked={hasConfirmed}
-              onChange={() => setHasConfirmed(prev => !prev)}
-              disabled={isDeleting}
-            />
-            <span className="checkbox-custom" />
-            <span className="checkbox-label">
-              I understand the consequences of deleting my account.
-            </span>
-          </label>
-        </div>
-
         {/* Type DELETE to confirm */}
         <div className="form-group">
           <label>
@@ -98,7 +73,7 @@ const DeleteAccountModal = ({ onClose, onConfirm, passwordError, isDeleting = fa
           <div className="password-input-wrapper">
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Enter your current password"
+              placeholder="Enter your password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               disabled={isDeleting}
@@ -120,6 +95,31 @@ const DeleteAccountModal = ({ onClose, onConfirm, passwordError, isDeleting = fa
           {passwordError && (
             <span className="delete-error-text">{passwordError}</span>
           )}
+        </div>
+
+        {/* Acknowledgement checkbox */}
+        <div className="form-group checkbox-confirm">
+          <label className="checkbox-item">
+            <input
+              type="checkbox"
+              checked={hasConfirmed}
+              onChange={() => setHasConfirmed(prev => !prev)}
+              disabled={isDeleting}
+            />
+            <span className="checkbox-custom" />
+            <span className="checkbox-label">
+              I understand the consequences of deleting my account.
+            </span>
+          </label>
+        </div>
+
+        {/* Warning banner */}
+        <div className="warning-box">
+          <AlertTriangle size={20} className="warning-icon" />
+          <p>
+            <strong>Warning:</strong> This action is permanent and cannot be
+            reversed. You will lose all child profiles, history, and settings.
+          </p>
         </div>
       </div>
     </Modal>
