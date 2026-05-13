@@ -11,6 +11,12 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
   });
   const [errors, setErrors] = useState({});
 
+  const handleClose = () => {
+    setFormData({ name: '', age: '', deviceName: '', gender: '' });
+    setErrors({});
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   const validate = () => {
@@ -18,7 +24,7 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
     if (!formData.name.trim()) newErrors.name = 'Please enter your child\'s full name';
     if (!formData.deviceName.trim()) newErrors.deviceName = 'Please give this device a recognizable name';
     if (!formData.age) newErrors.age = 'Child\'s age is required';
-    else if (formData.age < 2 || formData.age > 18) newErrors.age = 'Age must be between 2 and 18 years';
+    else if (formData.age < 2 || formData.age > 13) newErrors.age = 'Age must be between 2 and 13 years';
     if (!formData.gender) newErrors.gender = 'Please select a gender';
 
     setErrors(newErrors);
@@ -46,7 +52,7 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
               <p className="modal-subtitle">Complete the profile to start protecting</p>
             </div>
           </div>
-          <button className="modal-close-btn" onClick={onClose}>
+          <button className="modal-close-btn" onClick={handleClose}>
             <X size={20} />
           </button>
         </div>
@@ -63,7 +69,10 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
                   type="text"
                   placeholder="e.g. Sarah Ahmed"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => {
+                    const capitalizedValue = e.target.value.replace(/\b\w/g, (char) => char.toUpperCase());
+                    setFormData({ ...formData, name: capitalizedValue });
+                  }}
                   className="modal-input"
                 />
               </div>
@@ -81,7 +90,10 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
                     type="text"
                     placeholder="e.g. Sarah's iPhone"
                     value={formData.deviceName}
-                    onChange={(e) => setFormData({ ...formData, deviceName: e.target.value })}
+                    onChange={(e) => {
+                      const capitalizedValue = e.target.value.replace(/\b\w/g, (char) => char.toUpperCase());
+                      setFormData({ ...formData, deviceName: capitalizedValue });
+                    }}
                     className="modal-input"
                   />
                 </div>
@@ -96,13 +108,16 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
                   <span>Age <span className="required-star">*</span></span>
                 </label>
                 <div className={`input-wrapper ${errors.age ? 'error' : ''}`}>
-                  <input
-                    type="number"
-                    placeholder="12"
+                  <select
                     value={formData.age}
                     onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                    className="modal-input"
-                  />
+                    className="modal-input modal-select"
+                  >
+                    <option value="" disabled>Select</option>
+                    {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((age) => (
+                      <option key={age} value={age}>{age}</option>
+                    ))}
+                  </select>
                 </div>
                 {errors.age && <span className="error-message">{errors.age}</span>}
               </div>
@@ -134,7 +149,7 @@ const AddChildModal = ({ isOpen, onClose, onConfirm }) => {
           </div>
 
           <div className="modal-footer">
-            <button type="button" className="btn-cancel" onClick={onClose}>Cancel</button>
+            <button type="button" className="btn-cancel" onClick={handleClose}>Cancel</button>
             <button type="submit" className="btn-confirm">
               Confirm & Add Child
             </button>
