@@ -22,6 +22,7 @@ export const useFamilyProfileActions = () => {
     removeChild,
     activeChildId,
     setActiveChild,
+    requestSwitchChild,
   } = useChild();
 
   const {
@@ -89,33 +90,16 @@ export const useFamilyProfileActions = () => {
     const child = childrenList.find(c => c.id === id);
     if (child) setRemovedChildName(child.name);
 
-    // If there are exactly 2 children, show confirmation modal
-    if (childrenList.length === 2) {
-      setChildIdToConfirm(id);
-      setIsConfirmModalOpen(true);
-      return;
-    }
-
-    // Special case: Removing active child when there are 3 children
-    // (Meaning 2 will remain, so user needs to pick which one becomes active)
+    // Case 1: 3 children, removing active -> Show Switch Selector Modal (handles both switch and confirmation)
     if (childrenList.length === 3 && id === activeChildId) {
       setChildIdToRemove(id);
       setIsSwitchModalOpen(true);
       return;
     }
 
-    // Capture who will be active
-    const remaining = childrenList.filter(c => c.id !== id);
-    if (id === activeChildId && remaining.length > 0) {
-      setNewActiveChildName(remaining[0].name);
-    } else {
-      const currentActive = childrenList.find(c => c.id === activeChildId);
-      if (currentActive) setNewActiveChildName(currentActive.name);
-    }
-
-    removeChild(id);
-    setShowRemovalToast(true);
-    setTimeout(() => setShowRemovalToast(false), 3000);
+    // Case 2: All other removals -> Always show Confirmation Modal
+    setChildIdToConfirm(id);
+    setIsConfirmModalOpen(true);
   };
 
   const handleConfirmDelete = () => {
@@ -137,8 +121,6 @@ export const useFamilyProfileActions = () => {
   };
 
   const handleConfirmSwitch = (newActiveId) => {
-    setActiveChild(newActiveId);
-
     const newActiveChild = childrenList.find(c => c.id === newActiveId);
     if (newActiveChild) setNewActiveChildName(newActiveChild.name);
 
@@ -146,16 +128,12 @@ export const useFamilyProfileActions = () => {
       const child = childrenList.find(c => c.id === childIdToRemove);
       if (child) setRemovedChildName(child.name);
 
-      removeChild(childIdToRemove);
+      removeChild(childIdToRemove, newActiveId);
       setShowRemovalToast(true);
       setTimeout(() => setShowRemovalToast(false), 3000);
     }
     setIsSwitchModalOpen(false);
     setChildIdToRemove(null);
-  };
-
-  const handleSwitchActiveChild = (id) => {
-    setActiveChild(id);
   };
 
   return {
@@ -187,7 +165,7 @@ export const useFamilyProfileActions = () => {
       handleConfirmDelete,
       handleConfirmSwitch,
       handleRegenerateCode,
-      handleSwitchActiveChild
+      handleSwitchActiveChild: requestSwitchChild
     }
   };
 };

@@ -27,7 +27,7 @@ const AccountSwitcher = () => {
     };
   }, [isDropdownOpen]);
 
-  const { childrenList, getActiveChild, setActiveChild } = useChild();
+  const { childrenList, getActiveChild, requestSwitchChild } = useChild();
 
   const activeChildContext = getActiveChild();
 
@@ -93,7 +93,7 @@ const AccountSwitcher = () => {
                   <button 
                     className="item-switch-btn"
                     onClick={() => {
-                      setActiveChild(child.id);
+                      requestSwitchChild(child.id);
                       setIsDropdownOpen(false);
                     }}
                   >

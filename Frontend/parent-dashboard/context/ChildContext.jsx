@@ -7,6 +7,8 @@ import {
 
 import { STORAGE_KEYS } from '../utils/storageKeys';
 import { useAuth } from './AuthContext';
+import Modal from '../components/common/Modal/Modal';
+import { AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 // CONTEXT
 export const ChildContext = createContext();
@@ -20,6 +22,39 @@ export const ChildProvider = ({ children }) => {
   const [activeChildId, setActiveChildId] = useState(null);
   const [pendingRequests, setPendingRequests] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+
+  // Switch Request State
+  const [isSwitchConfirmOpen, setIsSwitchConfirmOpen] = useState(false);
+  const [childIdToSwitch, setChildIdToSwitch] = useState(null);
+  const [targetChildName, setTargetChildName] = useState('');
+  const [showSwitchToast, setShowSwitchToast] = useState(false);
+
+  // ======================
+  // SWITCH CHILD LOGIC
+  // ======================
+  const requestSwitchChild = (id) => {
+    const child = childrenList.find(c => c.id === id);
+    if (child) {
+      setTargetChildName(child.name);
+      setChildIdToSwitch(id);
+      setIsSwitchConfirmOpen(true);
+    }
+  };
+
+  const confirmSwitchChild = () => {
+    if (childIdToSwitch) {
+      setActiveChildId(childIdToSwitch);
+      setShowSwitchToast(true);
+      setTimeout(() => setShowSwitchToast(false), 3000);
+    }
+    setIsSwitchConfirmOpen(false);
+    setChildIdToSwitch(null);
+  };
+
+  const cancelSwitchChild = () => {
+    setIsSwitchConfirmOpen(false);
+    setChildIdToSwitch(null);
+  };
 
   // ======================
   // LOAD DATA ONLY WHEN USER EXISTS
@@ -131,13 +166,13 @@ export const ChildProvider = ({ children }) => {
   // ======================
   // REMOVE CHILD
   // ======================
-  const removeChild = (id) => {
+  const removeChild = (id, fallbackActiveId = null) => {
 
     setChildrenList(prev => {
       const updated = prev.filter(child => child.id !== id);
 
       if (activeChildId === id) {
-        setActiveChildId(updated[0]?.id || null);
+        setActiveChildId(fallbackActiveId || updated[0]?.id || null);
       }
 
       return updated;
@@ -234,11 +269,57 @@ export const ChildProvider = ({ children }) => {
     denyRequest,
 
     getPendingRequestsForActiveChild,
+    requestSwitchChild,
   };
 
   return (
     <ChildContext.Provider value={value}>
       {children}
+      
+      {/* Global Switch Confirmation Modal */}
+      <Modal
+        isOpen={isSwitchConfirmOpen}
+        onClose={cancelSwitchChild}
+        title="Confirm Switch"
+        size="small"
+        footer={
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', width: '100%' }}>
+            <button className="btn-secondary" onClick={cancelSwitchChild}>Cancel</button>
+            <button 
+              className="btn-primary-pro" 
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#3b82f6' }}
+              onClick={confirmSwitchChild}
+            >
+              Confirm Switch
+            </button>
+          </div>
+        }
+      >
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+          <div style={{ background: '#eff6ff', padding: '0.75rem', borderRadius: '12px', color: '#3b82f6' }}>
+            <AlertTriangle size={24} />
+          </div>
+          <div>
+            <p style={{ margin: 0, fontWeight: 600, color: '#0f172a' }}>Switch active profile?</p>
+            <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#64748b', lineHeight: 1.5 }}>
+              You are about to switch the active monitoring profile to <strong>{targetChildName}</strong>.
+            </p>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Global Switch Success Toast */}
+      {showSwitchToast && (
+        <div className="success-toast" style={{
+          position: 'fixed', top: '2rem', right: '2rem', background: '#ecfdf5', color: '#065f46', 
+          padding: '1rem 1.5rem', borderRadius: '20px', display: 'flex', alignItems: 'center', 
+          gap: '0.8rem', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)', zIndex: 10000, 
+          border: '1px solid #d1fae5', fontWeight: 600, animation: 'slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+        }}>
+          <CheckCircle2 size={18} />
+          <span>Switched to {targetChildName} successfully!</span>
+        </div>
+      )}
     </ChildContext.Provider>
   );
 };
