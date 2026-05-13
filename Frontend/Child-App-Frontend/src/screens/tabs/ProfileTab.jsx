@@ -16,11 +16,56 @@ import { Fonts } from "../../../constants/Fonts";
 import InfoCard from "../../components/UI/InfoCard";
 import CustomSwitch from "../../components/UI/CustomSwitch";
 import CustomAlert from "../../components/UI/CustomAlert";
+// Fix: Ensure these imports exist or provide fallback data
 import { profileSections } from "../../../constants/ProfileData";
 import { permissions } from "../../../constants/Permissions";
+import OTPInput from "../../components/UI/OTPInput";
 
 const { width } = Dimensions.get("window");
 const PARENT_PIN = "1234"; // TODO: fetch from backend/storage
+
+// Fallback data if imports don't exist
+const fallbackProfileSections = [
+    {
+        title: "Profile",
+        data: [
+            {
+                id: "notifications",
+                title: "Notifications",
+                description: "Receive alerts and updates",
+                type: "switch",
+                icon: null,
+                iconBgColor: Colors.purpleIconBg,
+                iconColor: Colors.purpleIcon,
+            }
+        ]
+    },
+    {
+        title: "SECURITY",
+        data: [
+            {
+                id: "permissions",
+                title: "Permissions",
+                description: "Manage app permissions",
+                type: "link",
+                icon: ShieldCheck,
+                iconBgColor: Colors.greenIconBg,
+                iconColor: Colors.greenIcon,
+            }
+        ]
+    }
+];
+
+const fallbackPermissions = [
+    { title: "Accessibility Monitoring", icon: ShieldCheck },
+    { title: "App Usage Access", icon: Key },
+    { title: "Screen Monitoring", icon: Fingerprint },
+    { title: "Notification Access", icon: HelpCircle },
+];
+
+// Use actual imports if they exist, otherwise use fallbacks
+const actualProfileSections = profileSections || fallbackProfileSections;
+const actualPermissions = permissions || fallbackPermissions;
 
 // ─── Small reusable sub-components ─────────────────────────────────────────
 
@@ -66,7 +111,13 @@ const PermissionsModal = ({ visible, onClose }) => {
     const anyMissing = Object.values(permissionStatus).some(v => !v);
 
     return (
-        <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
+        <Modal
+            visible={visible}
+            animationType="slide"
+            presentationStyle="pageSheet"
+            onRequestClose={onClose}
+            statusBarTranslucent={true}
+        >
             <SafeAreaView style={styles.modalSafeArea} edges={['top', 'bottom']}>
                 <ModalHeader title="Permissions" onClose={onClose} />
                 <ScrollView contentContainerStyle={styles.modalScroll} showsVerticalScrollIndicator={false}>
@@ -76,7 +127,7 @@ const PermissionsModal = ({ visible, onClose }) => {
                             <Text style={styles.warningText}>Some permissions are missing. Protection may be incomplete.</Text>
                         </View>
                     )}
-                    {permissions.map((perm) => {
+                    {actualPermissions.map((perm) => {
                         const granted = permissionStatus[perm.title];
                         return (
                             <View key={perm.title} style={styles.permissionRow}>
@@ -110,7 +161,13 @@ const PermissionsModal = ({ visible, onClose }) => {
 // ─── Privacy Modal ───────────────────────────────────────────────────────────
 
 const PrivacyModal = ({ visible, onClose }) => (
-    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
+    <Modal
+        visible={visible}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={onClose}
+        statusBarTranslucent={true}
+    >
         <SafeAreaView style={styles.modalSafeArea} edges={['top', 'bottom']}>
             <ModalHeader title="Privacy & Data" onClose={onClose} />
             <ScrollView contentContainerStyle={styles.modalScroll} showsVerticalScrollIndicator={false}>
@@ -145,7 +202,13 @@ const FAQModal = ({ visible, onClose }) => {
     const [openIndex, setOpenIndex] = useState(null);
 
     return (
-        <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
+        <Modal
+            visible={visible}
+            animationType="slide"
+            presentationStyle="pageSheet"
+            onRequestClose={onClose}
+            statusBarTranslucent={true}
+        >
             <SafeAreaView style={styles.modalSafeArea} edges={['top', 'bottom']}>
                 <ModalHeader title="Help & FAQ" onClose={onClose} />
                 <ScrollView contentContainerStyle={styles.modalScroll} showsVerticalScrollIndicator={false}>
@@ -185,24 +248,25 @@ const FAQModal = ({ visible, onClose }) => {
 // ─── Delete Account PIN Modal ────────────────────────────────────────────────
 
 const DeleteAccountModal = ({ visible, onClose }) => {
-    const [pin, setPin] = useState("");
+    const [pin, setPin] = useState(["", "", "", ""]);
     const [error, setError] = useState("");
     const [successAlert, setSuccessAlert] = useState(false);
     const [failAlert, setFailAlert] = useState(false);
 
     const handleConfirm = () => {
-        if (pin === PARENT_PIN) {
+        const pinString = pin.join("");
+        if (pinString === PARENT_PIN) {
             setError("");
-            setPin("");
+            setPin(["", "", "", ""]);
             setSuccessAlert(true);
         } else {
-            setPin("");
+            setPin(["", "", "", ""]);
             setFailAlert(true);
         }
     };
 
     const handleClose = () => {
-        setPin("");
+        setPin(["", "", "", ""]);
         setError("");
         onClose();
     };
@@ -213,58 +277,47 @@ const DeleteAccountModal = ({ visible, onClose }) => {
                 visible={visible}
                 animationType="fade"
                 transparent={true}
-                statusBarTranslucent={false}
+                statusBarTranslucent={true}
                 onRequestClose={handleClose}
             >
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    style={{ flex: 1 }}
-                >
-                    <View style={styles.modalOverlay}>
+                <View style={styles.modalOverlay}>
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "padding" : "height"}
+                        style={styles.keyboardView}
+                        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
+                    >
                         <View style={styles.deleteModalCard}>
-                            <View style={styles.deleteModalHeader}>
-                                <Text style={styles.deleteModalTitle}>Delete Account</Text>
-                                <TouchableOpacity onPress={handleClose} style={styles.deleteCloseBtn}>
-                                    <XCircle size={22} color={Colors.textGray} />
-                                </TouchableOpacity>
+                            <View style={styles.deleteCardIconCircle}>
+                                <Trash2 size={28} color={Colors.logoutText} />
                             </View>
 
-                            <View style={styles.deleteCardContent}>
-                                <View style={[styles.permIconCircle, { backgroundColor: Colors.logoutBg, width: 56, height: 56, borderRadius: 28, alignSelf: "center", marginBottom: 14 }]}>
-                                    <Trash2 size={24} color={Colors.logoutText} />
-                                </View>
-                                <Text style={styles.deleteTitle}>Are you sure?</Text>
-                                <Text style={styles.deleteSubtitle}>
-                                    Deleting your account requires parent approval. Enter the security PIN set by your parent to send a deletion request.
-                                </Text>
+                            <Text style={styles.deleteTitle}>Security Verification</Text>
+                            <Text style={styles.deleteSubtitle}>
+                                Please enter your parent's 4-digit security PIN to confirm account deletion.
+                            </Text>
 
-                                <View style={styles.pinContainer}>
-                                    <Key size={16} color={Colors.buttonDarkPurple} style={{ marginRight: 8 }} />
-                                    <TextInput
-                                        style={styles.pinInput}
-                                        value={pin}
-                                        onChangeText={t => { setPin(t); setError(""); }}
-                                        placeholder="Enter parent PIN"
-                                        placeholderTextColor={Colors.textSecondary}
-                                        secureTextEntry
-                                        keyboardType="number-pad"
-                                        maxLength={6}
-                                        autoFocus={false}
-                                    />
-                                </View>
+                            <View style={styles.otpWrapper}>
+                                <OTPInput
+                                    code={pin}
+                                    setCode={(newCode) => { setPin(newCode); setError(""); }}
+                                    length={4}
+                                />
+                            </View>
 
-                                {error ? <Text style={styles.pinError}>{error}</Text> : null}
+                            {error ? <Text style={styles.pinError}>{error}</Text> : null}
 
-                                <TouchableOpacity style={styles.deleteConfirmBtn} onPress={handleConfirm} activeOpacity={0.8}>
-                                    <Text style={styles.deleteConfirmText}>Send Deletion Request</Text>
-                                </TouchableOpacity>
+                            <View style={styles.deleteButtonRow}>
                                 <TouchableOpacity style={styles.deleteCancelBtn} onPress={handleClose}>
                                     <Text style={styles.deleteCancelText}>Cancel</Text>
                                 </TouchableOpacity>
+
+                                <TouchableOpacity style={styles.deleteConfirmBtn} onPress={handleConfirm} activeOpacity={0.8}>
+                                    <Text style={styles.deleteConfirmText}>Delete</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
-                    </View>
-                </KeyboardAvoidingView>
+                    </KeyboardAvoidingView>
+                </View>
             </Modal>
 
             {/* Success */}
@@ -330,19 +383,22 @@ const ProfileTab = () => {
         }
     };
 
+    // Safety check for profileSections
+    const sections = actualProfileSections || [];
+
     return (
         <SafeAreaView style={styles.safeArea} edges={['top']}>
-            <StatusBar translucent={false} barStyle="dark-content" backgroundColor={Colors.backgroundLight} />
+            <StatusBar barStyle="dark-content" backgroundColor={Colors.backgroundLight} />
 
             <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <Text style={styles.headerTitle}>Profile</Text>
 
                 {/* ── Dynamic sections from ProfileData ── */}
-                {profileSections.map((section, index) => (
+                {sections.map((section, index) => (
                     <View key={index}>
                         {section.title !== "Profile" && <SectionHeader title={section.title} />}
                         <View style={styles.cardGroup}>
-                            {section.data.map((item) => (
+                            {section.data && section.data.map((item) => (
                                 <InfoCard
                                     key={item.id}
                                     icon={item.icon}
@@ -369,7 +425,7 @@ const ProfileTab = () => {
                         description="Ask your parent to approve an action"
                         iconBgColor={Colors.purpleIconBg}
                         iconColor={Colors.purpleIcon}
-                        showChevron
+                        showChevron={true}
                         onPress={() => setRequestSentAlert(true)}
                     />
                     {/* Delete Account */}
@@ -379,7 +435,7 @@ const ProfileTab = () => {
                         description="Requires parent PIN approval"
                         iconBgColor={Colors.logoutBg}
                         iconColor={Colors.logoutText}
-                        showChevron
+                        showChevron={true}
                         onPress={() => setDeleteModal(true)}
                     />
                 </View>
@@ -437,6 +493,7 @@ const styles = StyleSheet.create({
     badgeText: { fontSize: 12, fontFamily: Fonts.bold, color: Colors.badgeGreenText },
     logoutButton: { flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.buttonLightPurple, borderRadius: 24, paddingVertical: 16, marginTop: 24, gap: 8 },
     logoutText: { fontSize: 16, fontFamily: Fonts.bold, color: Colors.BackgroundColor },
+    keyboardView: { width: '100%', alignItems: 'center' },
 
     // ── Modal shared ──
     modalSafeArea: { flex: 1, backgroundColor: Colors.BackgroundColor },
@@ -473,50 +530,40 @@ const styles = StyleSheet.create({
     // ── Delete Modal ──
     modalOverlay: {
         flex: 1,
-        backgroundColor: "rgba(0,0,0,0.5)",
+        backgroundColor: "rgba(0,0,0,0.65)",
         justifyContent: "center",
         alignItems: "center",
-        padding: 20,
+        padding: 24,
     },
     deleteModalCard: {
-        width: "100%",
+        width: width * 0.88,
         maxWidth: 400,
         backgroundColor: Colors.BackgroundColor,
         borderRadius: 28,
-        overflow: "hidden",
+        padding: 24,
+        alignItems: "center",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.1,
+        shadowOpacity: 0.2,
         shadowRadius: 20,
         elevation: 10,
     },
-    deleteModalHeader: {
-        flexDirection: "row",
+    deleteCardIconCircle: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: Colors.logoutBg,
         alignItems: "center",
-        justifyContent: "space-between",
-        paddingHorizontal: 20,
-        paddingVertical: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: "#F0F0F5",
-    },
-    deleteModalTitle: {
-        fontSize: 18,
-        fontFamily: Fonts.bold,
-        color: Colors.Titles,
-    },
-    deleteCloseBtn: {
-        padding: 4,
-    },
-    deleteCardContent: {
-        padding: 24,
+        justifyContent: "center",
+        marginBottom: 16,
     },
     deleteTitle: { fontSize: 20, fontFamily: Fonts.bold, color: Colors.Titles, textAlign: "center", marginBottom: 8 },
     deleteSubtitle: { fontSize: 13, fontFamily: Fonts.regular, color: Colors.Subtitles, textAlign: "center", lineHeight: 18, marginBottom: 20 },
-    pinContainer: { flexDirection: "row", alignItems: "center", borderWidth: 1.5, borderColor: Colors.buttonDarkPurple, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10, marginBottom: 8 },
-    pinInput: { flex: 1, fontSize: 16, fontFamily: Fonts.regular, color: Colors.textMain, letterSpacing: 4 },
+    otpWrapper: { width: '100%', marginBottom: 12, alignItems: 'center' },
     pinError: { fontSize: 12, fontFamily: Fonts.regular, color: Colors.pinkIcon, marginBottom: 8, textAlign: "center" },
-    deleteConfirmBtn: { backgroundColor: Colors.logoutText, borderRadius: 16, paddingVertical: 14, alignItems: "center", marginTop: 8 },
+    deleteButtonRow: { flexDirection: 'row', width: '100%', gap: 12, marginTop: 12 },
+    deleteConfirmBtn: { flex: 1, backgroundColor: Colors.logoutText, borderRadius: 16, paddingVertical: 14, alignItems: "center" },
     deleteConfirmText: { fontSize: 15, fontFamily: Fonts.bold, color: Colors.BackgroundColor },
-    deleteCancelBtn: { paddingVertical: 12, alignItems: "center", marginTop: 4 },
-    deleteCancelText: { fontSize: 14, fontFamily: Fonts.regular, color: Colors.textGray },
+    deleteCancelBtn: { flex: 1, paddingVertical: 14, alignItems: "center", borderRadius: 16, backgroundColor: '#F3F4F6' },
+    deleteCancelText: { fontSize: 15, fontFamily: Fonts.bold, color: Colors.textGray },
 });
