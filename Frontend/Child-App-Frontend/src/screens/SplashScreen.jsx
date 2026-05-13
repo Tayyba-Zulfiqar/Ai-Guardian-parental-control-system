@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import { StyleSheet, View, Animated } from "react-native";
+import { StyleSheet, View, Animated, StatusBar } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import ScreenTitle from "../components/UI/ScreenTitle";
 import { Colors } from "../../constants/Colors";
 import { Fonts } from "../../constants/Fonts";
@@ -33,7 +34,8 @@ const SplashScreen = ({ navigation }) => {
     }, []);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <StatusBar translucent={false} barStyle="light-content" backgroundColor={Colors.primaryPurple} />
             {/* Animated Image */}
             <Animated.Image
                 source={require("../../assets/images/SplashScreen.png")}
@@ -50,7 +52,7 @@ const SplashScreen = ({ navigation }) => {
                     containerStyle={{ marginBottom: 40 }}
                 />
             </Animated.View>
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -79,5 +81,9 @@ const styles = StyleSheet.create({
         marginTop: 6,
         color: "#ecececff",
         fontFamily: Fonts.regular
+    },
+    safeArea: {
+        flex: 1,
+        backgroundColor: Colors.primaryPurple,
     },
 });

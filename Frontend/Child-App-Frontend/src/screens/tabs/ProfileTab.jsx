@@ -1,9 +1,10 @@
 import { useState } from "react";
 import {
     View, Text, ScrollView, TouchableOpacity,
-    SafeAreaView, StatusBar, StyleSheet, Modal,
-    Linking, TextInput, Dimensions,
+    StatusBar, StyleSheet, Modal,
+    Linking, TextInput, Dimensions, KeyboardAvoidingView, Platform,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
     LogOut, Fingerprint, ShieldCheck, HelpCircle,
     ChevronDown, ChevronUp, ExternalLink, AlertTriangle,
@@ -66,7 +67,7 @@ const PermissionsModal = ({ visible, onClose }) => {
 
     return (
         <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
-            <SafeAreaView style={styles.modalSafeArea}>
+            <SafeAreaView style={styles.modalSafeArea} edges={['top', 'bottom']}>
                 <ModalHeader title="Permissions" onClose={onClose} />
                 <ScrollView contentContainerStyle={styles.modalScroll} showsVerticalScrollIndicator={false}>
                     {anyMissing && (
@@ -110,7 +111,7 @@ const PermissionsModal = ({ visible, onClose }) => {
 
 const PrivacyModal = ({ visible, onClose }) => (
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
-        <SafeAreaView style={styles.modalSafeArea}>
+        <SafeAreaView style={styles.modalSafeArea} edges={['top', 'bottom']}>
             <ModalHeader title="Privacy & Data" onClose={onClose} />
             <ScrollView contentContainerStyle={styles.modalScroll} showsVerticalScrollIndicator={false}>
                 {[
@@ -145,7 +146,7 @@ const FAQModal = ({ visible, onClose }) => {
 
     return (
         <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
-            <SafeAreaView style={styles.modalSafeArea}>
+            <SafeAreaView style={styles.modalSafeArea} edges={['top', 'bottom']}>
                 <ModalHeader title="Help & FAQ" onClose={onClose} />
                 <ScrollView contentContainerStyle={styles.modalScroll} showsVerticalScrollIndicator={false}>
                     {FAQ_ITEMS.map((item, idx) => {
@@ -208,42 +209,62 @@ const DeleteAccountModal = ({ visible, onClose }) => {
 
     return (
         <>
-            <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={handleClose}>
-                <SafeAreaView style={styles.modalSafeArea}>
-                    <ModalHeader title="Delete Account" onClose={handleClose} />
-                    <View style={styles.deleteModalBody}>
-                        <View style={[styles.permIconCircle, { backgroundColor: Colors.logoutBg, width: 64, height: 64, borderRadius: 32, alignSelf: "center", marginBottom: 16 }]}>
-                            <Trash2 size={28} color={Colors.logoutText} />
+            <Modal
+                visible={visible}
+                animationType="fade"
+                transparent={true}
+                statusBarTranslucent={false}
+                onRequestClose={handleClose}
+            >
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={{ flex: 1 }}
+                >
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.deleteModalCard}>
+                            <View style={styles.deleteModalHeader}>
+                                <Text style={styles.deleteModalTitle}>Delete Account</Text>
+                                <TouchableOpacity onPress={handleClose} style={styles.deleteCloseBtn}>
+                                    <XCircle size={22} color={Colors.textGray} />
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={styles.deleteCardContent}>
+                                <View style={[styles.permIconCircle, { backgroundColor: Colors.logoutBg, width: 56, height: 56, borderRadius: 28, alignSelf: "center", marginBottom: 14 }]}>
+                                    <Trash2 size={24} color={Colors.logoutText} />
+                                </View>
+                                <Text style={styles.deleteTitle}>Are you sure?</Text>
+                                <Text style={styles.deleteSubtitle}>
+                                    Deleting your account requires parent approval. Enter the security PIN set by your parent to send a deletion request.
+                                </Text>
+
+                                <View style={styles.pinContainer}>
+                                    <Key size={16} color={Colors.buttonDarkPurple} style={{ marginRight: 8 }} />
+                                    <TextInput
+                                        style={styles.pinInput}
+                                        value={pin}
+                                        onChangeText={t => { setPin(t); setError(""); }}
+                                        placeholder="Enter parent PIN"
+                                        placeholderTextColor={Colors.textSecondary}
+                                        secureTextEntry
+                                        keyboardType="number-pad"
+                                        maxLength={6}
+                                        autoFocus={false}
+                                    />
+                                </View>
+
+                                {error ? <Text style={styles.pinError}>{error}</Text> : null}
+
+                                <TouchableOpacity style={styles.deleteConfirmBtn} onPress={handleConfirm} activeOpacity={0.8}>
+                                    <Text style={styles.deleteConfirmText}>Send Deletion Request</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.deleteCancelBtn} onPress={handleClose}>
+                                    <Text style={styles.deleteCancelText}>Cancel</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <Text style={styles.deleteTitle}>Are you sure?</Text>
-                        <Text style={styles.deleteSubtitle}>
-                            Deleting your account requires parent approval. Enter the security PIN set by your parent to send a deletion request.
-                        </Text>
-
-                        <View style={styles.pinContainer}>
-                            <Key size={18} color={Colors.buttonDarkPurple} style={{ marginRight: 8 }} />
-                            <TextInput
-                                style={styles.pinInput}
-                                value={pin}
-                                onChangeText={t => { setPin(t); setError(""); }}
-                                placeholder="Enter parent PIN"
-                                placeholderTextColor={Colors.textSecondary}
-                                secureTextEntry
-                                keyboardType="number-pad"
-                                maxLength={6}
-                            />
-                        </View>
-
-                        {error ? <Text style={styles.pinError}>{error}</Text> : null}
-
-                        <TouchableOpacity style={styles.deleteConfirmBtn} onPress={handleConfirm} activeOpacity={0.8}>
-                            <Text style={styles.deleteConfirmText}>Send Deletion Request</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.deleteCancelBtn} onPress={handleClose}>
-                            <Text style={styles.deleteCancelText}>Cancel</Text>
-                        </TouchableOpacity>
                     </View>
-                </SafeAreaView>
+                </KeyboardAvoidingView>
             </Modal>
 
             {/* Success */}
@@ -310,8 +331,8 @@ const ProfileTab = () => {
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <StatusBar barStyle="dark-content" />
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
+            <StatusBar translucent={false} barStyle="dark-content" backgroundColor={Colors.backgroundLight} />
 
             <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <Text style={styles.headerTitle}>Profile</Text>
@@ -408,7 +429,7 @@ export default ProfileTab;
 const styles = StyleSheet.create({
     safeArea: { flex: 1, backgroundColor: Colors.backgroundLight },
     scrollContainer: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 40 },
-    headerTitle: { fontSize: 26, fontFamily: Fonts.bold, color: Colors.textMain, marginTop: 45, marginBottom: 18 },
+    headerTitle: { fontSize: 26, fontFamily: Fonts.bold, color: Colors.textMain, marginTop: 15, marginBottom: 18 },
     cardGroup: { gap: 12 },
     sectionHeaderContainer: { marginTop: 18, marginBottom: 12, marginLeft: 4 },
     sectionHeader: { fontSize: 14, fontFamily: Fonts.bold, color: Colors.textGray, letterSpacing: 1 },
@@ -450,14 +471,52 @@ const styles = StyleSheet.create({
     sendLogsText: { fontSize: 14, fontFamily: Fonts.bold, color: Colors.buttonDarkPurple },
 
     // ── Delete Modal ──
-    deleteModalBody: { flex: 1, paddingHorizontal: 24, paddingTop: 24 },
-    deleteTitle: { fontSize: 20, fontFamily: Fonts.bold, color: Colors.Titles, textAlign: "center", marginBottom: 10 },
-    deleteSubtitle: { fontSize: 14, fontFamily: Fonts.regular, color: Colors.Subtitles, textAlign: "center", lineHeight: 20, marginBottom: 28 },
-    pinContainer: { flexDirection: "row", alignItems: "center", borderWidth: 1.5, borderColor: Colors.buttonDarkPurple, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12, marginBottom: 8 },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 20,
+    },
+    deleteModalCard: {
+        width: "100%",
+        maxWidth: 400,
+        backgroundColor: Colors.BackgroundColor,
+        borderRadius: 28,
+        overflow: "hidden",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
+        elevation: 10,
+    },
+    deleteModalHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: 20,
+        paddingVertical: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: "#F0F0F5",
+    },
+    deleteModalTitle: {
+        fontSize: 18,
+        fontFamily: Fonts.bold,
+        color: Colors.Titles,
+    },
+    deleteCloseBtn: {
+        padding: 4,
+    },
+    deleteCardContent: {
+        padding: 24,
+    },
+    deleteTitle: { fontSize: 20, fontFamily: Fonts.bold, color: Colors.Titles, textAlign: "center", marginBottom: 8 },
+    deleteSubtitle: { fontSize: 13, fontFamily: Fonts.regular, color: Colors.Subtitles, textAlign: "center", lineHeight: 18, marginBottom: 20 },
+    pinContainer: { flexDirection: "row", alignItems: "center", borderWidth: 1.5, borderColor: Colors.buttonDarkPurple, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10, marginBottom: 8 },
     pinInput: { flex: 1, fontSize: 16, fontFamily: Fonts.regular, color: Colors.textMain, letterSpacing: 4 },
     pinError: { fontSize: 12, fontFamily: Fonts.regular, color: Colors.pinkIcon, marginBottom: 8, textAlign: "center" },
-    deleteConfirmBtn: { backgroundColor: Colors.logoutText, borderRadius: 16, paddingVertical: 14, alignItems: "center", marginTop: 12 },
-    deleteConfirmText: { fontSize: 16, fontFamily: Fonts.bold, color: Colors.BackgroundColor },
-    deleteCancelBtn: { paddingVertical: 14, alignItems: "center", marginTop: 8 },
-    deleteCancelText: { fontSize: 15, fontFamily: Fonts.regular, color: Colors.textGray },
+    deleteConfirmBtn: { backgroundColor: Colors.logoutText, borderRadius: 16, paddingVertical: 14, alignItems: "center", marginTop: 8 },
+    deleteConfirmText: { fontSize: 15, fontFamily: Fonts.bold, color: Colors.BackgroundColor },
+    deleteCancelBtn: { paddingVertical: 12, alignItems: "center", marginTop: 4 },
+    deleteCancelText: { fontSize: 14, fontFamily: Fonts.regular, color: Colors.textGray },
 });

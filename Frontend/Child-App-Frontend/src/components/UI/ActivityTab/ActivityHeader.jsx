@@ -15,7 +15,7 @@ export default ActivityHeader;
 
 const styles = StyleSheet.create({
     header: {
-        marginTop: 45,
+        marginTop: 15,
         marginBottom: 20,
     },
     title: {

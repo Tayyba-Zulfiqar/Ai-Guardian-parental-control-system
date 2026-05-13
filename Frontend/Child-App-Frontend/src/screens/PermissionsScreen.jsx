@@ -2,13 +2,14 @@ import { useState } from "react";
 import {
     View,
     StyleSheet,
-    SafeAreaView,
+    StatusBar,
     ScrollView,
     TouchableOpacity,
     Text,
     Linking,
     Platform,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import PermissionCard from "../components/UI/PermissionCard";
 import PrimaryButton from "../components/UI/PrimaryButton";
@@ -57,59 +58,58 @@ const PermissionsScreen = ({ navigation }) => {
     };
 
     return (
-        <>
-            <SafeAreaView style={styles.safeArea}>
-                <ScrollView
-                    style={styles.container}
-                    contentContainerStyle={styles.scrollContent}
-                    showsVerticalScrollIndicator={false}
+        <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+            <StatusBar translucent={false} barStyle="dark-content" backgroundColor={Colors.BackgroundColor} />
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
+            >
+                <ScreenTitle
+                    title="Enable Protection Features"
+                    subtitle={getSubtitleText()}
+                    titleStyle={styles.headerTitle}
+                    subtitleStyle={styles.headerSubtitle}
+                    containerStyle={styles.headerContainer}
+                />
+
+                <View style={styles.cardList}>
+                    {permissions.map((p, i) => (
+                        <PermissionCard
+                            key={p.title}
+                            {...p}
+                            enabled={permissionStates[p.title]}
+                            onToggle={() =>
+                                setPermissionStates(prev => ({
+                                    ...prev,
+                                    [p.title]: !prev[p.title],
+                                }))
+                            }
+                            delay={0.15 + i * 0.1}
+                        />
+                    ))}
+                </View>
+
+                <Animated.View
+                    entering={FadeInDown.delay(600).duration(300)}
+                    style={styles.buttonContainer}
                 >
-                    <ScreenTitle
-                        title="Enable Protection Features"
-                        subtitle={getSubtitleText()}
-                        titleStyle={styles.headerTitle}
-                        subtitleStyle={styles.headerSubtitle}
-                        containerStyle={styles.headerContainer}
+                    <PrimaryButton
+                        title="Continue"
+                        onPress={handleContinue}
+                        disabled={!allPermissionsEnabled}
                     />
 
-                    <View style={styles.cardList}>
-                        {permissions.map((p, i) => (
-                            <PermissionCard
-                                key={p.title}
-                                {...p}
-                                enabled={permissionStates[p.title]}
-                                onToggle={() =>
-                                    setPermissionStates(prev => ({
-                                        ...prev,
-                                        [p.title]: !prev[p.title],
-                                    }))
-                                }
-                                delay={0.15 + i * 0.1}
-                            />
-                        ))}
-                    </View>
-
-                    <Animated.View
-                        entering={FadeInDown.delay(600).duration(300)}
-                        style={styles.buttonContainer}
+                    <TouchableOpacity
+                        onPress={() => setLearnMoreVisible(true)}
+                        style={styles.learnMoreContainer}
                     >
-                        <PrimaryButton
-                            title="Continue"
-                            onPress={handleContinue}
-                            disabled={!allPermissionsEnabled}
-                        />
-
-                        <TouchableOpacity
-                            onPress={() => setLearnMoreVisible(true)}
-                            style={styles.learnMoreContainer}
-                        >
-                            <Text style={styles.learnMoreText}>
-                                Learn More
-                            </Text>
-                        </TouchableOpacity>
-                    </Animated.View>
-                </ScrollView>
-            </SafeAreaView>
+                        <Text style={styles.learnMoreText}>
+                            Learn More
+                        </Text>
+                    </TouchableOpacity>
+                </Animated.View>
+            </ScrollView>
 
             <CustomAlert
                 visible={alertVisible}
@@ -132,7 +132,7 @@ const PermissionsScreen = ({ navigation }) => {
                 onConfirm={() => setLearnMoreVisible(false)}
                 onCancel={() => setLearnMoreVisible(false)}
             />
-        </>
+        </SafeAreaView>
     );
 };
 
@@ -143,11 +143,10 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        marginTop: 30,
     },
     scrollContent: {
         paddingHorizontal: 24,
-        paddingTop: 48,
+        paddingTop: 18,
         paddingBottom: 40,
     },
     headerContainer: {

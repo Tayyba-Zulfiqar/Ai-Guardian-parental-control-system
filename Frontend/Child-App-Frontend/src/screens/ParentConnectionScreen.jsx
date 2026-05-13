@@ -9,6 +9,7 @@ import {
     Keyboard,
     Animated,
     Text,
+    StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScreenTitle from '../components/UI/ScreenTitle';
@@ -51,6 +52,7 @@ const ParentConnectionScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+            <StatusBar translucent={false} barStyle="dark-content" backgroundColor={Colors.BackgroundColor} />
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={styles.keyboardView}
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
     contentWrapper: {
         flex: 1,
         paddingHorizontal: width * 0.06,
-        paddingTop: 20,
+        paddingTop: 10,
         paddingBottom: 20,
     },
     imageContainer: {

@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, StatusBar } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Fonts } from "../../../constants/Fonts";
 import { Colors } from "../../../constants/Colors";
 
@@ -25,51 +26,58 @@ const HomeTab = () => {
     const greeting = getGreeting();
 
     return (
-        <ScrollView
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-            showsVerticalScrollIndicator={false}
-        >
-            {/* Header */}
-            <View style={styles.header}>
-                <Text style={styles.greetingText}>
-                    {greeting.text}, Alex {greeting.emoji}
-                </Text>
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
+            <StatusBar translucent={false} barStyle="dark-content" backgroundColor={Colors.backgroundLight} />
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                showsVerticalScrollIndicator={false}
+            >
+                {/* Header */}
+                <View style={styles.header}>
+                    <Text style={styles.greetingText}>
+                        {greeting.text}, Alex {greeting.emoji}
+                    </Text>
 
-                <Text style={styles.mainTitle}>Hey there, buddy!</Text>
-            </View>
+                    <Text style={styles.mainTitle}>Hey there, buddy!</Text>
+                </View>
 
-            {/* Status Card */}
-            <StatusCard {...statusData} />
+                {/* Status Card */}
+                <StatusCard {...statusData} />
 
-            {/* Section Title */}
-            <View style={styles.sectionHeaderContainer}>
-                <Text style={styles.sectionHeader}>MY PROGRESS</Text>
-            </View>
+                {/* Section Title */}
+                <View style={styles.sectionHeaderContainer}>
+                    <Text style={styles.sectionHeader}>MY PROGRESS</Text>
+                </View>
 
-            {/* Safety Score */}
-            <ProgressCard {...safetyScoreData}>
-                {safetyScoreData.stats.map((item, index) => (
-                    <VerticalStat key={index} {...item} />
-                ))}
-            </ProgressCard>
+                {/* Safety Score */}
+                <ProgressCard {...safetyScoreData}>
+                    {safetyScoreData.stats.map((item, index) => (
+                        <VerticalStat key={index} {...item} />
+                    ))}
+                </ProgressCard>
 
-            {/* Screen Time */}
-            <ProgressCard {...screenTimeData} />
-        </ScrollView>
+                {/* Screen Time */}
+                <ProgressCard {...screenTimeData} />
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
 export default HomeTab;
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: Colors.backgroundLight,
+    },
     container: {
         flex: 1,
         backgroundColor: Colors.backgroundLight,
     },
     contentContainer: {
         paddingHorizontal: 20,
-        paddingTop: 60,
+        paddingTop: 30,
         paddingBottom: 40,
     },
     header: {
@@ -100,4 +108,4 @@ const styles = StyleSheet.create({
         color: Colors.textGray,
         letterSpacing: 1,
     },
-});
+});

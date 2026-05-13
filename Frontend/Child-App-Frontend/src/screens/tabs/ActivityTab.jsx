@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import {
     StyleSheet,
     ScrollView,
-    SafeAreaView,
     StatusBar,
     Text,
     View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Fonts } from "../../../constants/Fonts";
 import { Colors } from "../../../constants/Colors";
 
@@ -26,8 +26,8 @@ const ActivityTab = () => {
     const stats = period === 'Week' ? weeklyStats : monthlyStats;
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <StatusBar barStyle="dark-content" />
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
+            <StatusBar translucent={false} barStyle="dark-content" backgroundColor={Colors.backgroundLight} />
 
             <ScrollView
                 style={styles.container}
