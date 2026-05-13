@@ -9,6 +9,7 @@ import Modal from '../../components/common/Modal/Modal';
 import Button from '../../components/common/Button/Button';
 import { CheckCircle2 } from 'lucide-react';
 import '../Login/Login.css';
+import { capitalizeWords } from '../../utils/stringUtils';
 
 const Signup = () => {
   const { signup, login } = useAuth();
@@ -19,11 +20,17 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(signupSchema),
     mode: 'onBlur',
   });
+
+  const handleNameChange = (e) => {
+    const capitalized = capitalizeWords(e.target.value);
+    setValue('name', capitalized, { shouldValidate: true });
+  };
 
   const onSubmit = async (data) => {
     setServerError('');
@@ -65,7 +72,7 @@ const Signup = () => {
                   <input
                     id="name"
                     type="text"
-                    {...register('name')}
+                    {...register('name', { onChange: handleNameChange })}
                     placeholder="Enter your name"
                     className={errors.name ? 'error-input' : ''}
                   />

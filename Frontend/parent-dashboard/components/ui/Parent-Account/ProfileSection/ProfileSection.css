@@ -90,7 +90,7 @@
 }
 
 .display-field:hover {
-    border-color: var(--primary);
+    border-color: var(--sidebar-bg);
 }
 
 .display-field span {
@@ -132,7 +132,7 @@
 .edit-field input {
     flex: 1;
     background: var(--white);
-    border: 2px solid var(--primary);
+    border: 2px solid var(--sidebar-bg);
     padding: 0.875rem 1rem;
     border-radius: 0.75rem;
     font-size: 1rem;
@@ -152,23 +152,28 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
+    border: none;
+    padding: 0;
 }
 
 .btn-save {
     background: var(--success);
     color: var(--white);
-    border: none;
 }
 
 .btn-cancel {
-    background: var(--bg-card-light);
-    color: var(--text-muted);
-    border: 1px solid var(--border-light);
+    background: var(--error);
+    color: var(--white);
 }
 
-.btn-save:hover { background: #059669; }
-.btn-cancel:hover { background: #e2e8f0; }
+.btn-save svg, .btn-cancel svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+.btn-save:hover { background: #059669; transform: scale(1.05); }
+.btn-cancel:hover { background: #dc2626; transform: scale(1.05); }
 
 .change-pw-btn {
     align-self: flex-start;
@@ -178,15 +183,15 @@
     gap: 0.6rem;
     padding: 0.75rem 1.25rem;
     border-radius: 0.75rem;
-    border: 1px solid var(--primary);
+    border: 1px solid var(--sidebar-bg);
     background: transparent;
-    color: var(--primary);
+    color: var(--sidebar-bg);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .change-pw-btn:hover {
-    background: var(--primary);
+    background: var(--sidebar-bg);
     color: var(--white);
 }

@@ -5,6 +5,7 @@ import { loginSchema } from '../../../../src/validations/auth/loginSchema';
 import { User, Camera, Check, X, CheckCircle2, Lock } from 'lucide-react';
 import Modal from '../../../common/Modal/Modal';
 import Button from '../../../common/Button/Button';
+import { capitalizeWords } from '../../../../utils/stringUtils';
 import './ProfileSection.css';
 
 const emailSchema = loginSchema.pick({ email: true });
@@ -97,12 +98,12 @@ const ProfileSection = ({ profile, onUpdate, onChangePassword }) => {
                 <input
                   type="text"
                   value={tempName}
-                  onChange={(e) => setTempName(e.target.value)}
+                  onChange={(e) => setTempName(capitalizeWords(e.target.value))}
                   autoFocus
                 />
                 <div className="field-actions">
-                  <button className="btn-save" onClick={handleSaveName}><Check size={16} /></button>
-                  <button className="btn-cancel" onClick={() => { setIsEditingName(false); setTempName(profile.name); }}><X size={16} /></button>
+                  <button className="btn-save" onClick={handleSaveName}><Check size={20} strokeWidth={3} /></button>
+                  <button className="btn-cancel" onClick={() => { setIsEditingName(false); setTempName(profile.name); }}><X size={20} strokeWidth={3} /></button>
                 </div>
               </div>
             ) : (
@@ -130,10 +131,10 @@ const ProfileSection = ({ profile, onUpdate, onChangePassword }) => {
                   />
                   <div className="field-actions">
                     <button type="submit" className="btn-save" disabled={!isValid} style={{ opacity: !isValid ? 0.5 : 1 }}>
-                      <Check size={16} />
+                      <Check size={20} strokeWidth={3} />
                     </button>
                     <button type="button" className="btn-cancel" onClick={() => { setIsEditingEmail(false); reset({ email: profile.email }); }}>
-                      <X size={16} />
+                      <X size={20} strokeWidth={3} />
                     </button>
                   </div>
                 </div>
