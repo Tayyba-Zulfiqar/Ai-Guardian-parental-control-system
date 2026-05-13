@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '../../../../src/validations/auth/loginSchema';
-import { User, Camera, Check, X, CheckCircle2, Lock } from 'lucide-react';
+import { User, Check, X, CheckCircle2, Lock } from 'lucide-react';
+import AvatarUpload from './AvatarUpload/AvatarUpload';
 import Modal from '../../../common/Modal/Modal';
 import Button from '../../../common/Button/Button';
 import { capitalizeWords } from '../../../../utils/stringUtils';
@@ -77,18 +78,7 @@ const ProfileSection = ({ profile, onUpdate, onChangePassword }) => {
         <h2>Profile Settings</h2>
       </div>
       <div className="card profile-card">
-        <div className="avatar-section">
-          <div className="avatar-container">
-            <img src={profile.avatar} alt="Profile" className="profile-avatar" />
-            <button className="upload-btn" title="Change Avatar">
-              <Camera size={16} />
-            </button>
-          </div>
-          <div className="avatar-info">
-            <h3>Profile Picture</h3>
-            <p>JPG or PNG. Max size of 800K</p>
-          </div>
-        </div>
+        <AvatarUpload avatar={profile.avatar} onUpdate={onUpdate} />
 
         <div className="profile-fields">
           <div className="field-group">

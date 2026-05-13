@@ -25,7 +25,8 @@ const ParentAccount = () => {
             setProfile(prev => ({
                 ...prev,
                 name: user.name || prev.name,
-                email: user.email || prev.email
+                email: user.email || prev.email,
+                avatar: user.avatar || prev.avatar
             }));
         }
     }, [user]);
@@ -42,7 +43,7 @@ const ParentAccount = () => {
     }, []);
 
     const handleUpdateProfile = useCallback((newData) => {
-        if (newData.name || newData.email) {
+        if (newData.name || newData.email || newData.avatar) {
             const result = updateUser(newData);
             if (!result.success) {
                 showToast(result.error || 'Update failed', 'error');
