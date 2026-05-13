@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import { useAuth } from '../../context/AuthContext';
 import PageHeader from '../../components/common/PageHeader/PageHeader';
 import Toast from '../../components/common/Toast/Toast';
 import {
@@ -13,7 +14,19 @@ import { parentProfileData } from '../../data/Parent-Account/parentProfileData';
 import './ParentAccount.css';
 
 const ParentAccount = () => {
+    const { user, updateUser } = useAuth();
     const [profile, setProfile] = useState(parentProfileData);
+
+    // Sync with authenticated user data
+    useEffect(() => {
+        if (user) {
+            setProfile(prev => ({
+                ...prev,
+                name: user.name || prev.name,
+                email: user.email || prev.email
+            }));
+        }
+    }, [user]);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [toast, setToast] = useState(null);
@@ -24,10 +37,20 @@ const ParentAccount = () => {
     }, []);
 
     const handleUpdateProfile = useCallback((newData) => {
+        // If updating name or email, update AuthContext first
+        if (newData.name || newData.email) {
+            const result = updateUser(newData);
+            if (!result.success) {
+                showToast(result.error || 'Update failed', 'error');
+                return;
+            }
+        }
+
         setProfile(prev => ({ ...prev, ...newData }));
+        
         const field = Object.keys(newData)[0];
         showToast(`${field.charAt(0).toUpperCase() + field.slice(1)} updated successfully`);
-    }, [showToast]);
+    }, [showToast, updateUser]);
 
     const handleToggleNotifications = useCallback(() => {
         setProfile(prev => {

@@ -113,6 +113,75 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  // ======================
+  // UPDATE USER
+  // ======================
+  const updateUser = (newData) => {
+    if (!user) return { success: false, error: 'No user logged in' };
+
+    const users = safeParse(
+      localStorage.getItem(STORAGE_KEYS.USERS),
+      []
+    );
+
+    // Check if new email already exists for another user
+    if (newData.email && newData.email !== user.email) {
+      const emailExists = users.some(u => u.email === newData.email);
+      if (emailExists) {
+        return { success: false, error: 'Email already in use by another account' };
+      }
+    }
+
+    const updatedUser = { ...user, ...newData };
+    
+    // Update current session
+    localStorage.setItem(
+      STORAGE_KEYS.USER,
+      JSON.stringify(updatedUser)
+    );
+    setUser(updatedUser);
+
+    // Update in users list
+    const updatedUsers = users.map(u => 
+      u.id === user.id ? { ...u, ...newData } : u
+    );
+    localStorage.setItem(
+      STORAGE_KEYS.USERS,
+      JSON.stringify(updatedUsers)
+    );
+
+    return { success: true };
+  };
+
+  // ======================
+  // CHANGE PASSWORD
+  // ======================
+  const changePassword = (currentPassword, newPassword) => {
+    if (!user) return { success: false, error: 'No user logged in' };
+
+    const users = safeParse(
+      localStorage.getItem(STORAGE_KEYS.USERS),
+      []
+    );
+
+    const fullUser = users.find(u => u.id === user.id);
+
+    if (!fullUser || fullUser.password !== currentPassword) {
+      return { success: false, error: 'Incorrect current password' };
+    }
+
+    const updatedUsers = users.map(u => 
+      u.id === user.id ? { ...u, password: newPassword } : u
+    );
+
+    localStorage.setItem(
+      STORAGE_KEYS.USERS,
+      JSON.stringify(updatedUsers)
+    );
+
+    return { success: true };
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -121,6 +190,8 @@ export const AuthProvider = ({ children }) => {
         login,
         signup,
         logout,
+        updateUser,
+        changePassword,
       }}
     >
       {children}
