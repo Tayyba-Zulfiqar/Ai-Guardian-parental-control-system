@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 
-import PairingCard from '../../components/ui/Family-Profiles/PairingCard';
-import AddChildModal from '../../components/ui/Family-Profiles/AddChildModal';
+import PairingCard from '../../components/ui/Family-Profiles/PairingCard/PairingCard';
+import AddChildModal from '../../components/ui/Family-Profiles/AddChildModal/AddChildModal';
 
 import { usePairingCode } from '../../hooks/usePairingCode';
 import { useChild } from '../../context/ChildContext';
