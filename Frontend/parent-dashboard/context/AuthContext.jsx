@@ -182,6 +182,51 @@ export const AuthProvider = ({ children }) => {
     return { success: true };
   };
 
+  // ======================
+  // DELETE ACCOUNT
+  // ======================
+  const deleteAccount = (password) => {
+    if (!user) return { success: false, error: 'No user is currently logged in' };
+
+    // Validate password against the stored user record
+    let users = [];
+    try {
+      users = safeParse(localStorage.getItem(STORAGE_KEYS.USERS), []);
+    } catch {
+      users = [];
+    }
+
+    const fullUser = users.find(u => u.id === user.id);
+
+    if (!fullUser || fullUser.password !== password) {
+      return { success: false, error: 'Incorrect password. Please try again.' };
+    }
+
+    // Remove user from users list
+    const updatedUsers = users.filter(u => u.id !== user.id);
+
+    try {
+      // Persist updated users list (without the deleted user)
+      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(updatedUsers));
+
+      // Clear all user-scoped data from localStorage
+      const keysToDelete = Object.keys(localStorage).filter(
+        key => key.includes(user.id)
+      );
+      keysToDelete.forEach(key => localStorage.removeItem(key));
+
+      // Clear the active session
+      localStorage.removeItem(STORAGE_KEYS.USER);
+    } catch {
+      // Even if storage operations fail, still clear session state
+    }
+
+    // Reset auth context state
+    setUser(null);
+
+    return { success: true };
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -192,6 +237,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         updateUser,
         changePassword,
+        deleteAccount,
       }}
     >
       {children}

@@ -188,3 +188,46 @@ input[type="checkbox"]:checked + .checkbox-custom::after {
     color: var(--text-muted);
     line-height: 1.4;
 }
+
+/* Password field with show/hide toggle */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper input {
+    width: 100%;
+    padding-right: 3rem;
+}
+
+.toggle-password-btn {
+    position: absolute;
+    right: 0.875rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s ease;
+}
+
+.toggle-password-btn:hover {
+    color: var(--bg-dark);
+}
+
+/* Error border on password input */
+.form-group input.error-input {
+    border-color: var(--error, #ef4444);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+/* Inline error message below password field */
+.delete-error-text {
+    font-size: 0.8125rem;
+    color: var(--error, #ef4444);
+    margin-top: 0.25rem;
+    display: block;
+}
