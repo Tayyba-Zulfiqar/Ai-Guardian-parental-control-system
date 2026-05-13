@@ -154,6 +154,10 @@ export const useFamilyProfileActions = () => {
     setChildIdToRemove(null);
   };
 
+  const handleSwitchActiveChild = (id) => {
+    setActiveChild(id);
+  };
+
   return {
     formattedChildren,
     pairingCode,
@@ -182,7 +186,8 @@ export const useFamilyProfileActions = () => {
       handleRemoveChild,
       handleConfirmDelete,
       handleConfirmSwitch,
-      handleRegenerateCode
+      handleRegenerateCode,
+      handleSwitchActiveChild
     }
   };
 };

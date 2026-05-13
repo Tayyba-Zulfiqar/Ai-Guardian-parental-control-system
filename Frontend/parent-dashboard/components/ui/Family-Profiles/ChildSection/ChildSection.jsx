@@ -11,7 +11,8 @@ const ChildSection = ({
   const {
     handleRegenerateCode,
     handleSimulateConnect,
-    handleRemoveChild
+    handleRemoveChild,
+    handleSwitchActiveChild
   } = handlers;
 
   return (
@@ -30,6 +31,7 @@ const ChildSection = ({
         <ChildList 
           childrenList={formattedChildren} 
           onRemoveChild={handleRemoveChild}
+          onSwitchChild={handleSwitchActiveChild}
         />
       </div>
     </section>

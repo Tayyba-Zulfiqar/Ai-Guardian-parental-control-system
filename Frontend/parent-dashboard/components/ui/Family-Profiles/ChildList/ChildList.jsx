@@ -1,8 +1,8 @@
 import React from 'react';
-import { User, Trash2 } from 'lucide-react';
+import { User, Trash2, UserCheck } from 'lucide-react';
 import './ChildList.css';
 
-const ChildList = ({ childrenList, onRemoveChild }) => {
+const ChildList = ({ childrenList, onRemoveChild, onSwitchChild }) => {
   return (
     <div className="child-list-container">
       <div className="list-header">
@@ -49,17 +49,34 @@ const ChildList = ({ childrenList, onRemoveChild }) => {
                 </div>
               </div>
 
-              <button 
-                className="remove-child-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRemoveChild && onRemoveChild(child.id);
-                }}
-                title="Remove Child Profile"
-              >
-                <Trash2 size={14} />
-                <span className="btn-text">Remove Child Profile</span>
-              </button>
+              <div className="action-buttons-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <button 
+                  className={`switch-child-btn ${isCurrentlyActive ? 'active-disabled' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!isCurrentlyActive) {
+                      onSwitchChild && onSwitchChild(child.id);
+                    }
+                  }}
+                  disabled={isCurrentlyActive}
+                  title={isCurrentlyActive ? "Already Active" : "Switch to this child"}
+                >
+                  <UserCheck size={14} />
+                  <span className="btn-text">{isCurrentlyActive ? 'Currently Active' : 'Switch to Child'}</span>
+                </button>
+
+                <button 
+                  className="remove-child-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRemoveChild && onRemoveChild(child.id);
+                  }}
+                  title="Remove Child Profile"
+                >
+                  <Trash2 size={14} />
+                  <span className="btn-text">Remove Child Profile</span>
+                </button>
+              </div>
             </div>
           );
         })}
