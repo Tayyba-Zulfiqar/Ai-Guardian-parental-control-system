@@ -6,19 +6,26 @@ import { Fonts } from "../../../constants/Fonts";
 const PrimaryButton = ({
     title,
     onPress,
+    disabled = false,
     colors = [Colors.buttonDarkPurple, Colors.buttonLightPurple],
     buttonStyle,
     gradientStyle,
     textStyle
 }) => {
+    const activeColors = disabled ? ['#C4C4D4', '#D0D0E0'] : colors;
+
     return (
         <TouchableOpacity
-            style={[styles.button, buttonStyle]}
-            activeOpacity={0.8}
-            onPress={onPress}
+            style={[
+                styles.button,
+                disabled && styles.buttonDisabled,
+                buttonStyle,
+            ]}
+            activeOpacity={disabled ? 1 : 0.8}
+            onPress={disabled ? undefined : onPress}
         >
             <LinearGradient
-                colors={colors}
+                colors={activeColors}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={[styles.gradientButton, gradientStyle]}
@@ -40,6 +47,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 8,
         elevation: 4,
+    },
+    buttonDisabled: {
+        shadowOpacity: 0,
+        elevation: 0,
     },
     gradientButton: {
         width: '100%',

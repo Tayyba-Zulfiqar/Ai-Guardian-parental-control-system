@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
     View,
     StyleSheet,
@@ -20,9 +20,7 @@ import { Fonts } from "../../constants/Fonts";
 
 const PermissionsScreen = ({ navigation }) => {
     const [alertVisible, setAlertVisible] = useState(false);
-    const [missingPermissionsAlert, setMissingPermissionsAlert] = useState(false);
     const [learnMoreVisible, setLearnMoreVisible] = useState(false);
-    const [missingPermissionsList, setMissingPermissionsList] = useState([]);
 
     const [permissionStates, setPermissionStates] = useState(
         permissions.reduce((acc, p) => ({ ...acc, [p.title]: false }), {})
@@ -31,20 +29,10 @@ const PermissionsScreen = ({ navigation }) => {
     // Check if all permissions are enabled
     const allPermissionsEnabled = Object.values(permissionStates).every(state => state === true);
 
-    // Track which permissions are missing
-    useEffect(() => {
-        const missing = permissions
-            .filter(p => !permissionStates[p.title])
-            .map(p => p.title);
-        setMissingPermissionsList(missing);
-    }, [permissionStates]);
+
 
     const handleContinue = () => {
-        if (allPermissionsEnabled) {
-            setAlertVisible(true);
-        } else {
-            setMissingPermissionsAlert(true);
-        }
+        setAlertVisible(true);
     };
 
     const handleConfirmAll = () => {
@@ -64,7 +52,7 @@ const PermissionsScreen = ({ navigation }) => {
         if (allPermissionsEnabled) {
             return "All permissions granted. Ready to proceed.";
         }
-        const remainingCount = missingPermissionsList.length;
+        const remainingCount = permissions.filter(p => !permissionStates[p.title]).length;
         return `Please enable all ${permissions.length} permissions (${remainingCount} remaining) to continue with full protection.`;
     };
 
@@ -109,7 +97,6 @@ const PermissionsScreen = ({ navigation }) => {
                             title="Continue"
                             onPress={handleContinue}
                             disabled={!allPermissionsEnabled}
-                            style={!allPermissionsEnabled && styles.disabledButton}
                         />
 
                         <TouchableOpacity
@@ -134,18 +121,7 @@ const PermissionsScreen = ({ navigation }) => {
                 onCancel={() => setAlertVisible(false)}
             />
 
-            <CustomAlert
-                visible={missingPermissionsAlert}
-                title="Permissions Required"
-                message={`Please enable the following permissions to continue:\n\n${missingPermissionsList.map(p => `• ${p}`).join('\n')}\n\nSome permissions need to be enabled in system settings.`}
-                confirmText="Open Settings"
-                cancelText="Cancel"
-                onConfirm={() => {
-                    setMissingPermissionsAlert(false);
-                    openSystemSettings();
-                }}
-                onCancel={() => setMissingPermissionsAlert(false)}
-            />
+
 
             <CustomAlert
                 visible={learnMoreVisible}
@@ -203,9 +179,6 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.regular,
         color: Colors.Subtitles,
         textDecorationLine: "underline",
-    },
-    disabledButton: {
-        opacity: 0.5,
     },
 });
 
