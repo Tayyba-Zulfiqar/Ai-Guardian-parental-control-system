@@ -13,6 +13,7 @@ export const useProfileModals = () => {
     const [faqModal, setFaqModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [logoutAlert, setLogoutAlert] = useState(false);
+    const [requestConfirmAlert, setRequestConfirmAlert] = useState(false);
     const [requestSentAlert, setRequestSentAlert] = useState(false);
 
     const openPermissions = useCallback(() => setPermissionsModal(true), []);
@@ -30,6 +31,9 @@ export const useProfileModals = () => {
     const openLogout = useCallback(() => setLogoutAlert(true), []);
     const closeLogout = useCallback(() => setLogoutAlert(false), []);
 
+    const openRequestConfirm = useCallback(() => setRequestConfirmAlert(true), []);
+    const closeRequestConfirm = useCallback(() => setRequestConfirmAlert(false), []);
+
     const openRequestSent = useCallback(() => setRequestSentAlert(true), []);
     const closeRequestSent = useCallback(() => setRequestSentAlert(false), []);
 
@@ -40,6 +44,7 @@ export const useProfileModals = () => {
         faqModal,
         deleteModal,
         logoutAlert,
+        requestConfirmAlert,
         requestSentAlert,
 
         // Openers
@@ -48,6 +53,7 @@ export const useProfileModals = () => {
         openFaq,
         openDelete,
         openLogout,
+        openRequestConfirm,
         openRequestSent,
 
         // Closers
@@ -56,6 +62,7 @@ export const useProfileModals = () => {
         closeFaq,
         closeDelete,
         closeLogout,
+        closeRequestConfirm,
         closeRequestSent,
     };
 };

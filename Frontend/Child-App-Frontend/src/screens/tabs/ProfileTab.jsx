@@ -8,7 +8,7 @@ import {
     StyleSheet,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LogOut, Users, Trash2 } from "lucide-react-native";
+import { LogOut, Users, Trash2, CheckCircle } from "lucide-react-native";
 
 // Constants
 import { Colors } from "../../../constants/Colors";
@@ -50,6 +50,7 @@ const ProfileTab = () => {
         faqModal, openFaq, closeFaq,
         deleteModal, openDelete, closeDelete,
         logoutAlert, openLogout, closeLogout,
+        requestConfirmAlert, openRequestConfirm, closeRequestConfirm,
         requestSentAlert, openRequestSent, closeRequestSent,
     } = useProfileModals();
 
@@ -138,7 +139,7 @@ const ProfileTab = () => {
                         iconBgColor={Colors.purpleIconBg}
                         iconColor={Colors.purpleIcon}
                         showChevron={true}
-                        onPress={openRequestSent}
+                        onPress={openRequestConfirm}
                     />
                     <InfoCard
                         icon={Trash2}
@@ -171,8 +172,25 @@ const ProfileTab = () => {
                 message="Are you sure you want to log out? Your parent will need to reconnect the device."
                 confirmText="Log Out"
                 cancelText="Cancel"
+                Icon={LogOut}
+                iconColor={Colors.logoutText}
+                iconBgColor={Colors.logoutBg}
                 onConfirm={() => { closeLogout(); console.log("Logout"); }}
                 onCancel={closeLogout}
+            />
+
+            {/* ── Request confirmation alert ── */}
+            <CustomAlert
+                visible={requestConfirmAlert}
+                title="Send Request?"
+                message="This will notify your parent that you are requesting a permission update. Continue?"
+                confirmText="Yes, Send"
+                cancelText="Cancel"
+                Icon={Users}
+                iconColor={Colors.buttonDarkPurple}
+                iconBgColor={Colors.purpleIconBg}
+                onConfirm={() => { closeRequestConfirm(); openRequestSent(); }}
+                onCancel={closeRequestConfirm}
             />
 
             {/* ── Request sent confirmation alert ── */}
@@ -182,6 +200,9 @@ const ProfileTab = () => {
                 message="Your request has been sent to your parent for approval."
                 confirmText="OK"
                 cancelText={null}
+                Icon={CheckCircle}
+                iconColor={Colors.greenIcon}
+                iconBgColor={Colors.greenIconBg}
                 onConfirm={closeRequestSent}
                 onCancel={closeRequestSent}
             />

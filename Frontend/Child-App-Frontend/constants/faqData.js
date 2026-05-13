@@ -21,7 +21,7 @@ export const FAQ_ITEMS = [
     },
     {
         q: "How to contact support?",
-        a: "Email us at support@aiguardian.app or use the 'Send Logs' button below to attach diagnostic information to your request.",
+        a: "Email us at support@aiguardian.app for any technical assistance or feature requests.",
     },
 ];
 

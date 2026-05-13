@@ -18,7 +18,7 @@ import { Fonts } from "../../../../constants/Fonts";
  * FAQModal
  *
  * An expandable accordion-style FAQ sheet. Each question can be tapped
- * to reveal or hide its answer. Includes a "Send Logs" button at the bottom.
+ * to reveal or hide its answer.
  *
  * @param {boolean} visible - Whether the modal is shown
  * @param {function} onClose - Callback to dismiss the modal
@@ -31,10 +31,7 @@ const FAQModal = ({ visible, onClose }) => {
         setOpenIndex((prev) => (prev === idx ? null : idx));
     }, []);
 
-    const handleSendLogs = useCallback(() => {
-        // TODO: integrate with backend logging service
-        console.log("Send logs pressed");
-    }, []);
+
 
     return (
         <Modal
@@ -73,13 +70,7 @@ const FAQModal = ({ visible, onClose }) => {
                         );
                     })}
 
-                    <TouchableOpacity
-                        style={styles.sendLogsBtn}
-                        onPress={handleSendLogs}
-                        activeOpacity={0.8}
-                    >
-                        <Text style={styles.sendLogsText}>Send Logs to Support</Text>
-                    </TouchableOpacity>
+
                 </ScrollView>
             </SafeAreaView>
         </Modal>
@@ -122,17 +113,5 @@ const styles = StyleSheet.create({
         color: Colors.Subtitles,
         lineHeight: 20,
     },
-    sendLogsBtn: {
-        marginTop: 10,
-        borderWidth: 1.5,
-        borderColor: Colors.buttonDarkPurple,
-        borderRadius: 14,
-        paddingVertical: 14,
-        alignItems: "center",
-    },
-    sendLogsText: {
-        fontSize: 14,
-        fontFamily: Fonts.bold,
-        color: Colors.buttonDarkPurple,
-    },
+
 });
